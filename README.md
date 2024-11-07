@@ -67,3 +67,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Keterangan 
 Jalanin php artisan migrate --seed, jangan lupa bikin DB dengan nama SMP_al_madinah 
 php artisan serve, jangan lupa ini buat jalanin laravel
+User : admin@nowui.com
+Pass : secret
