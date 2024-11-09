@@ -12,7 +12,8 @@ Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
-Route::group(['middleware' => 'auth'], function () {
+// rute admin
+Route::middleware(['auth','user-access:Admin'])->group(function(){
     Route::get('register', [UserController::class,'register'])->name('register');
     Route::post('createUser', [UserController::class,'create'])->name('create');
     Route::get('user.index', [UserController::class,'index'])->name('user.index');
@@ -23,3 +24,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
 
+// // rute guru
+// Route::middleware(middleware: ['auth','user-access:Guru'])->group(function(){
+// });
+
+// // rute Tata_Usaha
+// Route::middleware(['auth','user-access:Tata_Usaha'])->group(function(){
+// });
+
+// // rute Calon Siswa
+// Route::middleware(['auth','user-access:Calon_Siswa'])->group(function(){
+// });
