@@ -1,13 +1,13 @@
-@extends('layouts.app', [
+@extends('layouts.admin', [
     'class' => 'sidebar-mini ',
     'namePage' => 'users',
     'activePage' => 'users',
-    'activeNav' => '',
+    'activeMenu'=>'User'
 ])
 
 @section('content')
-<div class="panel-header">
-  </div>
+<div class="panel-header panel-header-sm">
+</div>
   <div class="content">
     <div class="row">
       <div class="col-md-12">
@@ -28,6 +28,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Role</th>
                   <th>Creation date</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
@@ -40,6 +41,9 @@
                         </td>
                         <td>
                             {{$user->email}}
+                        </td>
+                        <td>
+                            {{$user->role}}
                         </td>
                         <td>
                             {{$user->created_at}}

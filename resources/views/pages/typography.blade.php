@@ -1,12 +1,14 @@
-@extends('layouts.app', [
+@extends('layouts.admin', [
   'namePage' => 'Typography',
   'class' => 'sidebar-mini',
   'activePage' => 'typography',
+  'activeMenu'=>'User',
 ])
 
 @section('content')
-  <div class="panel-header panel-header-sm">
-  </div>
+
+<div class="panel-header panel-header-sm">
+</div>
   <div class="content">
     <div class="row">
       <div class="col-md-12">

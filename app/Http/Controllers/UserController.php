@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string','max:255'],
             'email' => ['required', 'string','email', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => ['required']
         ]);
 
         $data = $request->all();
@@ -39,7 +41,8 @@ class UserController extends Controller
         return User::create([
             'name' => ucwords(trim($data['name'])),
             'email' => trim($data['email']),
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'role'=> $data['role']
         ]);
     }
 

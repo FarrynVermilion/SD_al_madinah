@@ -10,16 +10,6 @@
                   </a>
               </div>
               <div>
-                  <a href="{{ route('home') }}" class="@if ($activeMenu == 'SPP') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
-                      <p class="@if ($activeMenu == 'SPP') text-black @else  text-white @endif">{{ __('SPP') }}</p>
-                  </a>
-              </div>
-              <div>
-                  <a href="{{ route('home') }}" class="@if ($activeMenu == 'Pendaftaran') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
-                      <p class="@if ($activeMenu == 'Pendaftaran') text-black @else  text-white @endif">{{ __('Pendaftaran') }}</p>
-                  </a>
-              </div>
-              <div>
                   <a href="{{ route('home') }}" class="@if ($activeMenu == 'Pelanggaran') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
                       <p class="@if ($activeMenu == 'Pelanggaran') text-black @else  text-white @endif">{{ __('Pelanggaran') }}</p>
                   </a>
@@ -30,7 +20,7 @@
                   </a>
               </div>
               <div>
-                  <a href="{{ route('user.index') }}" class="@if ($activeMenu == 'User') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
+                  <a href="{{ route('profile.edit') }}" class="@if ($activeMenu == 'User') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
                       <p class="@if ($activeMenu == 'User') text-black @else  text-white @endif">{{ __('User') }}</p>
                   </a>
               </div>

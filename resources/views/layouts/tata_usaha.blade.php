@@ -19,12 +19,13 @@
   <link href="{{ asset('assets') }}/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="{{ asset('assets') }}/demo/demo.css" rel="stylesheet" />
+  @vite('resources/css/app.css')
 </head>
 
 <body class="{{ $class ?? '' }}">
   <div class="wrapper">
     @auth
-      @include('layouts.page_template.auth')
+      @include('layouts.page_template.tata_usaha')
     @endauth
     @guest
       @include('layouts.page_template.guest')

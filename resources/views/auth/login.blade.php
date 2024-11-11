@@ -1,4 +1,4 @@
-@extends('layouts.app', [
+@extends('layouts.calon_siswa', [
     'namePage' => 'Login page',
     'class' => 'login-page sidebar-mini ',
     'activePage' => 'login',

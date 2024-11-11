@@ -1,8 +1,9 @@
-@extends('layouts.app', [
+@extends('layouts.calon_siswa', [
     'namePage' => 'Dashboard',
     'class' => 'login-page sidebar-mini ',
     'activePage' => 'home',
     'backgroundImage' => asset('now') . "/img/bg14.jpg",
+    'activeMenu' => 'Home',
 ])
 
 @section('content')

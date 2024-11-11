@@ -1,7 +1,8 @@
-@extends('layouts.app', [
+@extends('layouts.admin', [
   'namePage' => 'Notifications',
   'class' => 'sidebar-mini',
   'activePage' => 'notifications',
+  'activeMenu'=>'User',
 ])
 
 @section('content')

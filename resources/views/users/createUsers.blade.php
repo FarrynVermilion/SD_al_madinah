@@ -1,13 +1,13 @@
-@extends('layouts.app', [
+@extends('layouts.admin', [
     'class' => 'sidebar-mini ',
     'namePage' => 'users',
     'activePage' => 'users',
-    'activeNav' => '',
+    'activeMenu'=>'User',
 ])
 
 @section('content')
-  <div class="panel-header panel-header-sm">
-  </div>
+<div class="panel-header panel-header-sm">
+</div>
   <div class="content">
     <div class="row">
       <div class="col-md-8">
@@ -28,6 +28,20 @@
                             <label>{{__(" Name")}}</label>
                                 <input type="text" name="name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="Name" value="{{ old('name') }}">
                                 @include('alerts.feedback', ['field' => 'name'])
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7 pr-1">
+                        <div class="form-group">
+                            <label>{{__(" role")}}</label>
+                                <select name="role" class="form-control {{ $errors->has('role') ? ' is-invalid' : '' }}" placeholder="Pilih role" value="{{ old('role') }}">
+                                    <option value="0" @if (old('role')==="0")selected @endif>Admin</option>
+                                    <option value="1" @if (old('role')==="1")selected @endif>Tata Usaha</option>
+                                    <option value="2" @if (old('role')==="2")selected @endif>Guru</option>
+                                    <option value="3" @if (old('role')==="3")selected @endif>Calon_Siswa</option>
+                                </select>
+                                @include('alerts.feedback', ['field' => 'role'])
                         </div>
                     </div>
                 </div>

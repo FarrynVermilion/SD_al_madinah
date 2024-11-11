@@ -1,9 +1,44 @@
-@extends('layouts.app', [
-    'class' => 'sidebar-mini ',
-    'namePage' => 'User Profile',
-    'activePage' => 'profile',
-    'activeNav' => '',
-])
+@switch(Auth::user()->role)
+    @case('Admin')
+        @extends('layouts.admin', [
+            'class' => 'sidebar-mini ',
+            'namePage' => 'User Profile',
+            'activePage' => Auth::user()->role,
+            'activeMenu'=>'User',
+        ])
+        @break
+    @case('Tata_Usaha')
+        @extends('layouts.tata_usaha', [
+            'class' => 'sidebar-mini ',
+            'namePage' => 'User Profile',
+            'activePage' => Auth::user()->role,
+            'activeMenu'=>'User',
+        ])
+        @break
+    @case('Guru')
+        @extends('layouts.guru', [
+            'class' => 'sidebar-mini ',
+            'namePage' => 'User Profile',
+            'activePage' => Auth::user()->role,
+            'activeMenu'=>'User',
+        ])
+        @break
+    @case('Calon_Siswa')
+        @extends('layouts.calon_siswa', [
+            'class' => 'sidebar-mini ',
+            'namePage' => 'User Profile',
+            'activePage' => Auth::user()->role,
+            'activeMenu'=>'User',
+        ])
+        @break
+    @default
+    @extends('layouts.tata_usaha', [
+        'class' => 'sidebar-mini ',
+        'namePage' => 'User Profile',
+        'activePage' => Auth::user()->role,
+        'activeMenu'=>'User',
+    ])
+@endswitch
 
 @section('content')
   <div class="panel-header panel-header-sm">
