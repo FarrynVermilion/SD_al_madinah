@@ -1,4 +1,4 @@
-@extends('layouts.admin', [
+@extends('layouts.app', [
     'class' => 'sidebar-mini ',
     'namePage' => 'users',
     'activePage' => 'users',

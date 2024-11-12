@@ -1,4 +1,4 @@
-@extends('layouts.admin', [
+@extends('layouts.app', [
   'namePage' => 'Notifications',
   'class' => 'sidebar-mini',
   'activePage' => 'notifications',

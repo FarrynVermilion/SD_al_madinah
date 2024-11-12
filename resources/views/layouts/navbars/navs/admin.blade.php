@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-sky-950 navbar-absolute">
+<nav class="navbar navbar-expand-lg bg-sky-950 navbar-absolute flex">
     <div class="container-fluid">
       <div class="navbar-wrapper">
           <div class="flex justify-normal">
@@ -35,7 +35,7 @@
                   </a>
               </div>
               <div class="flex justify-center rounded-full py-2 px-10 mx-2 background-color: transparent;">
-                  <a>{{ $activePage }}</a>
+                  <a>{{ $namePage }}</a>
               </div>
           </div>
       </div>
@@ -59,4 +59,4 @@
       </div>
     </div>
   </nav>
-    <!-- End Navbar -->
+<!-- End Navbar -->

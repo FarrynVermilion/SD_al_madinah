@@ -1,4 +1,4 @@
-@extends('layouts.calon_siswa', [
+@extends('layouts.app', [
     'namePage' => 'Dashboard',
     'class' => 'login-page sidebar-mini ',
     'activePage' => 'home',

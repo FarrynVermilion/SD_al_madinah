@@ -35,7 +35,7 @@
                   </a>
               </div>
               <div class="flex justify-center rounded-full py-2 px-10 mx-2 background-color: transparent;">
-                  <a>{{ $activePage }}</a>
+                  <a>{{ $namePage }}</a>
               </div>
           </div>
       </div>
