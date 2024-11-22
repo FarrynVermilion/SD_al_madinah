@@ -70,7 +70,14 @@ Jalanin
 npm install
 composer require laravel/ui
 php artisan ui bootstrap
+<<<<<<< HEAD
 jangan lupa bikin DB .env dengan nama SD_al_madinah
+=======
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+composer dump-autoload
+jangan lupa bikin DB .env dengan nama SMP_al_madinah
+>>>>>>> origin/main
 php artisan migrate --seed
 npm run dev
 php artisan serve, jangan lupa ini buat jalanin laravel
