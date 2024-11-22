@@ -38,4 +38,20 @@ class HomeController extends Controller
             return view('dashboard_calon_siswa');
         }
     }
+    public function indexAbsensi()
+    {
+        return view('absensi.home');
+    }
+    public function indexPelanggaran()
+    {
+        return view('pelanggaran.home');
+    }
+    public function indexPendaftaran()
+    {
+        return view('pendaftaran.home');
+    }
+    public function indexSPP()
+    {
+        return view('SPP.home');
+    }
 }

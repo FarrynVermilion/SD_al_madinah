@@ -10,12 +10,12 @@
                   </a>
               </div>
               <div>
-                  <a href="{{ route('home') }}" class="@if ($activeMenu == 'Pelanggaran') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
+                  <a href="{{ route('homePelanggaran') }}" class="@if ($activeMenu == 'Pelanggaran') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
                       <p class="@if ($activeMenu == 'Pelanggaran') text-black @else  text-white @endif">{{ __('Pelanggaran') }}</p>
                   </a>
               </div>
               <div>
-                  <a href="{{ route('home') }}" class="@if ($activeMenu == 'Absensi') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
+                  <a href="{{ route('homeAbsensi') }}" class="@if ($activeMenu == 'Absensi') bg-white @else  bg-orange-500 @endif flex justify-center rounded-full py-2 px-10 mx-2">
                       <p class="@if ($activeMenu == 'Absensi') text-black @else  text-white @endif">{{ __('Absensi') }}</p>
                   </a>
               </div>
