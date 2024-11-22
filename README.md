@@ -67,18 +67,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 Keterangan
 Jalanin 
-npm install
+
 composer require laravel/ui
 php artisan ui bootstrap
-<<<<<<< HEAD
 jangan lupa bikin DB .env dengan nama SD_al_madinah
-=======
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-composer dump-autoload
-jangan lupa bikin DB .env dengan nama SMP_al_madinah
->>>>>>> origin/main
 php artisan migrate --seed
+npm install
 npm run dev
 php artisan serve, jangan lupa ini buat jalanin laravel
 User : admin@nowui.com
