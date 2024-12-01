@@ -24,27 +24,28 @@
 
 <body class="{{ $class ?? '' }}">
   <div class="wrapper">
+    @if ($activePage!="login")
     @auth
-      @switch(Auth::user()->role)
-          @case("Admin")
-              @include('layouts.page_template.admin')
-              @break
-          @case("Tata_Usaha")
-              @include('layouts.page_template.tata_usaha')
-              @break
-          @case("Guru")
-              @include('layouts.page_template.guru')
-              @break
-          @case("Calon_Siswa")
-              @include('layouts.page_template.calon_siswa')
-              @break
-          @default
-      @endswitch
-
+        @switch(Auth::user()->role)
+            @case("Admin")
+                @include('layouts.page_template.admin')
+                @break
+            @case("Tata_Usaha")
+                @include('layouts.page_template.tata_usaha')
+                @break
+            @case("Guru")
+                @include('layouts.page_template.guru')
+                @break
+            @case("Calon_Siswa")
+                @include('layouts.page_template.calon_siswa')
+                @break
+            @default
+        @endswitch
     @endauth
-    @guest
-      @include('layouts.page_template.guest')
-    @endguest
+    @else
+        @include('layouts.page_template.guest')
+    @endif
+
   </div>
   <!--   Core JS Files   -->
   <script src="{{ asset('assets') }}/js/core/jquery.min.js"></script>

@@ -6,12 +6,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
+//note kalo mau taru di guru atai tata usaha tolong taro di admin juga copas aja
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
-
 
 //rute untuk semua role
 Route::group(['middleware' => 'auth'], function () {
@@ -21,13 +22,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile/password', [ProfileController::class,'password'])->name('profile.password');
 });
 
-// rute khusus guru && admin
+// rute khusus guru
 Route::middleware(['auth','user-access:Guru'])->group(callback: function(){
     Route::get(uri: '/pelanggaran/home', action: [HomeController::class,'indexPelanggaran'])->name(name: 'homePelanggaran');
     Route::get(uri: '/absensi/home', action: [HomeController::class,'indexAbsensi'])->name(name: 'homeAbsensi');
 });
 
-// rute khusus Tata_Usaha && admin
+// rute khusus Tata_Usaha
 Route::middleware(['auth','user-access:Tata_Usaha'])->group(callback: function(){
     Route::get(uri: '/pendaftaran/home', action: [HomeController::class,'indexPendaftaran'])->name(name: 'homePendaftaran');
     Route::get(uri: '/SPP/home', action: [HomeController::class,'indexSPP'])->name(name: 'homeSPP');

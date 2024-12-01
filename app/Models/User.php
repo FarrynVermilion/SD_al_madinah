@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     protected function role(): Attribute{
         return new Attribute(
-        fn($value)=>['Admin','Tata_Usaha','Guru','Calon_Siswa'][$value],
+        fn($value)=>['Admin','Tata_Usaha','Guru','Calon_Siswa'][$value]
         // kalo 0 = Admin, 1 Tata_Usaha, 2 = Guru, 3=Calon_Siswa
         );
     }
