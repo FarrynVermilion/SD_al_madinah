@@ -39,7 +39,7 @@
                                     <option value="0" @if (old('role')==="0")selected @endif>Admin</option>
                                     <option value="1" @if (old('role')==="1")selected @endif>Tata Usaha</option>
                                     <option value="2" @if (old('role')==="2")selected @endif>Guru</option>
-                                    <option value="3" @if (old('role')==="3")selected @endif>Calon_Siswa</option>
+                                    <option value="3" @if (old('role')==="3")selected @endif>Siswa</option>
                                 </select>
                                 @include('alerts.feedback', ['field' => 'role'])
                         </div>

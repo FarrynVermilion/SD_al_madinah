@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         // to do: buat side bar dan nav baru buat masing masing role
-        $role =Auth()->user()->role;
+        $role =Auth::user()->role;
         if($role=="Admin"){
             return view(view: 'dashboard_admin');
         }
@@ -34,10 +35,12 @@ class HomeController extends Controller
         if($role=="Guru"){
             return view('dashboard_guru');
         }
-        if($role=="Calon_Siswa"){
-            return view('dashboard_calon_siswa');
+        if($role=="Siswa"){
+            return view('dashboard_siswa');
         }
+        return json_encode('error role not found');
     }
+
     public function indexAbsensi()
     {
         return view('absensi.home');

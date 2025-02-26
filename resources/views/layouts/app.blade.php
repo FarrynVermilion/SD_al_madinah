@@ -36,8 +36,8 @@
             @case("Guru")
                 @include('layouts.page_template.guru')
                 @break
-            @case("Calon_Siswa")
-                @include('layouts.page_template.calon_siswa')
+            @case("Siswa")
+                @include('layouts.page_template.siswa')
                 @break
             @default
         @endswitch

@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 //note kalo mau taru di guru atai tata usaha tolong taro di admin juga copas aja
@@ -34,8 +35,8 @@ Route::middleware(['auth','user-access:Tata_Usaha'])->group(callback: function()
     Route::get(uri: '/SPP/home', action: [HomeController::class,'indexSPP'])->name(name: 'homeSPP');
 });
 
-// // rute Calon Siswa
-// Route::middleware(['auth','user-access:Calon_Siswa'])->group(function(){
+// // rute Siswa
+// Route::middleware(['auth','user-access:Siswa'])->group(function(){
 // });
 
 // rute khusus admin
