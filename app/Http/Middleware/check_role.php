@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class check_role
 {
@@ -15,9 +16,10 @@ class check_role
      */
     public function handle(Request $request, Closure $next, $role_submit): Response
     {
-        if(Auth()->user()->role==$role_submit){
+        $role_submits = explode('|', $role_submit);
+        if (in_array(Auth::user()->role, $role_submits)) {
             return $next($request);
         }
-        return response()->json(['Anda tidak di izinkan untuk mengakses ini']);
+        return response()->json(['error' => 'Unauthorized action.','your_permission'=>Auth::user()->role,'permission'=>$role_submits], 403);
     }
 }

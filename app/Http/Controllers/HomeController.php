@@ -26,19 +26,19 @@ class HomeController extends Controller
     {
         // to do: buat side bar dan nav baru buat masing masing role
         $role =Auth::user()->role;
-        if($role=="Admin"){
+        if($role==="Admin"){
             return view(view: 'dashboard_admin');
         }
-        if($role=="Tata_Usaha"){
+        if($role==="Tata_Usaha"){
             return view('dashboard_tata_usaha');
         }
-        if($role=="Guru"){
+        if($role==="Guru"){
             return view('dashboard_guru');
         }
-        if($role=="Siswa"){
+        if($role==="Siswa"){
             return view('dashboard_siswa');
         }
-        return json_encode('error role not found');
+        return response()->json(['error' => 'Unauthorized action.'], 403);
     }
 
     public function indexAbsensi()
