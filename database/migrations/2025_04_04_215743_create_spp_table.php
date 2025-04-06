@@ -39,6 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger("id_nominal");
             $table->foreign("id_siswa")->references("id")->on("users")->noActionOnDelete()->noActionOnUpdate();
             $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
+            $table->boolean("status_siswa")->default(true);
             $table->timestamps();
             $table->softDeletes();
             $table->string("created_by",255)->nullable();

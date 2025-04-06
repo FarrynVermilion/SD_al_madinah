@@ -12,7 +12,7 @@ class SPP_Siswa extends Model
 {
     use SoftDeletes, Prunable;
     protected $table = "spp_siswa";
-    protected $fillable =  ['id_siswa', 'id_nominal'];
+    protected $fillable =  ['id_siswa', 'id_nominal','status_siswa'];
     protected $primaryKey = 'id_spp_siswa';
     public $timestamps = true;
     protected static function boot()
