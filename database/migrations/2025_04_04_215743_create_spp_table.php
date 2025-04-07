@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string("nama_bayaran",255);
             $table->integer("nominal_spp")->unsigned();
             $table->timestamps();
-            $table->softDeletes();
-            $table->string("created_by",255)->nullable();
-            $table->string("updated_by",255)->nullable();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
             $table->string("deleted_by",255)->nullable();
         });
         Schema::create('potongan_spp', function (Blueprint $table) {
@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string("nama_potongan",255);
             $table->integer("potongan_spp")->unsigned();
             $table->timestamps();
-            $table->softDeletes();
-            $table->string("created_by",255)->nullable();
-            $table->string("updated_by",255)->nullable();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
             $table->string("deleted_by",255)->nullable();
         });
 
@@ -41,9 +41,9 @@ return new class extends Migration
             $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->boolean("status_siswa")->default(true);
             $table->timestamps();
-            $table->softDeletes();
-            $table->string("created_by",255)->nullable();
-            $table->string("updated_by",255)->nullable();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
             $table->string("deleted_by",255)->nullable();
         });
         //transaksi + ptongan tambahan siswa
@@ -63,9 +63,9 @@ return new class extends Migration
             $table->integer("tahun_ajaran")->unsigned();
             $table->boolean("status_lunas");
             $table->timestamps();
-            $table->softDeletes();
-            $table->string("created_by",255)->nullable();
-            $table->string("updated_by",255)->nullable();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
             $table->string("deleted_by",255)->nullable();
         });
     }

@@ -13,7 +13,7 @@ class SPPSiswaController extends Controller
      */
     public function index()
     {
-        //
+        return view("SPP.spp_siswa.index")->with("data", SPP_Siswa::all());
     }
 
     /**

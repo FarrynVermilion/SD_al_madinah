@@ -6,6 +6,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\nominalSPPController;
+use App\Http\Controllers\potonganSPPController;
+use App\Http\Controllers\SPPSiswaController;
+use App\Http\Controllers\transaksiSPPController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -30,7 +35,12 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 // rute khusus Tata_Usaha
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
+    Route::resource('/pendaftaratan/siswa', SiswaController::class);
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');
+    Route::resource('/spp/nominal', nominalSPPController::class);
+    Route::resource('/spp/potongan',  potonganSPPController::class);
+    Route::resource('/spp/SPPsiswa', SPPSiswaController::class);
+    Route::resource('/spp/transaksi', transaksiSPPController::class);
 });
 
 // // rute Siswa

@@ -13,7 +13,7 @@ class transaksiSPPController extends Controller
      */
     public function index()
     {
-        //
+        return view("SPP.transaksi_spp.index")->with("data", Transaksi_SPP::all());
     }
 
     /**

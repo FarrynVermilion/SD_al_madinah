@@ -15,8 +15,14 @@
         <li class="@if ($activePage == 'home') active @endif">
           <a href="{{ route('homePendaftaran') }}">
             <i class="now-ui-icons design_app"></i>
-            <p>{{ __('Dashboard') }}</p>
+            <p>{{ __('Dashboard Pendaftaran') }}</p>
           </a>
+        </li>
+        <li class="@if ($activePage == 'Pendaftaran Siswa') active @endif">
+            <a href="{{ route('siswa.index') }}">
+              <i class="now-ui-icons design_app"></i>
+              <p>{{ __('Pendaftaran Siswa') }}</p>
+            </a>
         </li>
       </ul>
     </div>

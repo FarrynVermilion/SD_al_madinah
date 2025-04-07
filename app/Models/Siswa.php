@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Siswa extends Model
 {
-    use SoftDeletes, Prunable;
-    protected $table = "siswa";
+    protected $table = "database_biodata_siswa";
     protected $fillable =  [
         'id_account',
         'id_beasiswa',
@@ -39,7 +38,7 @@ class Siswa extends Model
         'tempat_alamat',
         'nama_pemilik_tempat_alamat',
         'jarak_ke_sekolah',
-        'metode_transportasi',
+        'metode_transportasidatabase_biodata_siswa',
         'golongan_darah',
         'riwayat_rawat',
         'riwayat_penyakit',
@@ -110,16 +109,5 @@ class Siswa extends Model
         {
             $model->updated_by = Auth::user()->id;
         });
-        // creating deleted_by when model is deleted
-        static::deleting(function ($model)
-        {
-            $model->deleted_by = Auth::user()->id;
-        });
-    }
-
-    //get data to delete permanently
-    public function prunable(): Builder
-    {
-        return static::withTrashed()->whereNotNull("deleted_at");
     }
 }

@@ -13,7 +13,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        //
+        return view("pendaftaran.siswa.index")->with("data", Siswa::all());
     }
 
     /**

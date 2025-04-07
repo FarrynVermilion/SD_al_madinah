@@ -1,8 +1,8 @@
 @extends('layouts.app', [
     'class' => 'sidebar-mini ',
-    'namePage' => 'Pendaftaran Siswa Index',
-    'activePage' => 'Pendaftaran Siswa',
-    'activeMenu' => 'Pendaftaran',
+    'namePage' => 'Tramsaksi SPP Siswa Index',
+    'activePage' => 'Tramsaksi SPP',
+    'activeMenu' => 'SPP',
 ])
 @section('content')
 <div class="panel-header panel-header-sm">

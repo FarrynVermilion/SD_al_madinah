@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('papantulis'),
             'created_at' => now(),
             'updated_at' => now(),
-            'role' => 2
+            'role' => 3
         ]);
     }
 }

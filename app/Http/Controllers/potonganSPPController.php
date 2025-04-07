@@ -13,7 +13,7 @@ class potonganSPPController extends Controller
      */
     public function index()
     {
-        //
+        return view("SPP.potongan_spp.index")->with("data", Potongan_SPP::all());
     }
 
     /**

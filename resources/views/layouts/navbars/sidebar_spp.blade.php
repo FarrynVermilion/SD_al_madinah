@@ -18,6 +18,31 @@
             <p>{{ __('Dashboard') }}</p>
           </a>
         </li>
+        <li class="@if ($activePage == 'Nominal SPP') active @endif">
+          <a href="{{ route('nominal.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('Nominal SPP') }}</p>
+          </a>
+        </li>
+        <li class="@if ($activePage == 'Potongan SPP') active @endif">
+          <a href="{{ route('potongan.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('Potongan SPP') }}</p>
+          </a>
+        </li>
+        <li class="@if ($activePage == 'SPP Siswa') active @endif">
+          <a href="{{ route('SPPsiswa.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('SPP siswa') }}</p>
+          </a>
+        </li>
+        <li class="@if ($activePage == 'Tramsaksi SPP') active @endif">
+          <a href="{{ route('transaksi.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('Transaksi SPP') }}</p>
+          </a>
+        </li>
+
       </ul>
     </div>
   </div>

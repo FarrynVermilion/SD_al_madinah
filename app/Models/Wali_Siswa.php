@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Wali_Siswa extends Model
 {
     use SoftDeletes, Prunable;
-    protected $table = "wali_siswa";
+    protected $table = "database_biodata_wali_siswa";
     protected $fillable =  [
         'id_siswa',
         'nama_ayah',

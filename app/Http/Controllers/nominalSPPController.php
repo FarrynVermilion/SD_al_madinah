@@ -13,7 +13,7 @@ class nominalSPPController extends Controller
      */
     public function index()
     {
-        //
+        return view("SPP.nominal_spp.index")->with("data", Nominal_SPP::all());
     }
 
     /**

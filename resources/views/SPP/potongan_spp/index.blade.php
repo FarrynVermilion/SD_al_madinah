@@ -1,14 +1,14 @@
 @extends('layouts.app', [
     'class' => 'sidebar-mini ',
-    'namePage' => 'Pendaftaran Siswa Index',
-    'activePage' => 'Pendaftaran Siswa',
-    'activeMenu' => 'Pendaftaran',
+    'namePage' => 'Potongan SPP Index',
+    'activePage' => 'Potongan SPP',
+    'activeMenu' => 'SPP',
 ])
 @section('content')
 <div class="panel-header panel-header-sm">
 </div>
   <div class="content">
-    <div class="row">
+    <div class="row">home
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
