@@ -11,6 +11,7 @@ use App\Http\Controllers\nominalSPPController;
 use App\Http\Controllers\potonganSPPController;
 use App\Http\Controllers\SPPSiswaController;
 use App\Http\Controllers\transaksiSPPController;
+use App\Http\Controllers\WaliSiswaController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -36,6 +37,9 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
     Route::resource('/pendaftaratan/siswa', SiswaController::class);
+    Route::resource('/pendaftaran/wali', WaliSiswaController::class);
+
+
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');
     Route::resource('/spp/nominal', nominalSPPController::class);
     Route::resource('/spp/potongan',  potonganSPPController::class);

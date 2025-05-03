@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSiswaRequest;
 use App\Http\Requests\UpdateSiswaRequest;
 use App\Models\Siswa;
+use App\Models\Wali_Siswa;
+use Illuminate\Support\Facades\DB;
 
 class SiswaController extends Controller
 {
@@ -13,7 +15,14 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return view("pendaftaran.siswa.index")->with("data", Siswa::all());
+        $data = DB::table("database_biodata_siswa AS siswa")
+        ->select(
+            "siswa.*",
+            "wali.nama_wali",
+            'wali,id AS wali_id')
+            ->join('database_biodata_wali_siswa AS wali','id_siswa','=','siswa.id')
+            ->orderBy('','desc')->paginate(10);
+        return view("pendaftaran.siswa.index", ["data"=> $data]);
     }
 
     /**
@@ -21,7 +30,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view("pendaftaran.siswa.create");
     }
 
     /**

@@ -43,8 +43,8 @@ return new class extends Migration
             $table->string('riwayat_rawat',100)->nullable();
             $table->char('riwayat_penyakit',1)->nullable();
             $table->string('kelainan_jasmani',255)->nullable();
-            $table->char('tinggi_badan',3)->nullable();
-            $table->char('berat_badan',3)->nullable();
+            $table->integer('tinggi_badan',3)->nullable();
+            $table->integer('berat_badan',3)->nullable();
             $table->string('nama_sekolah_asal',255)->nullable();
             $table->date('tanggal_ijazah')->nullable();
             $table->string('nomor_ijazah',100)->nullable();

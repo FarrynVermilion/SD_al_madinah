@@ -27,20 +27,35 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Nama aset</th>
-                  <th>Merek aset</th>
-                  <th>Jumlah aset</th>
-                  <th>Aset tersedia</th>
-                  <th>Untuk</th>
-                  <th>Jumlah digunakan</th>
-                  <th>Pembuat</th>
-                  <th>Dibuat</th>
-                  <th>Editor</th>
-                  <th>Diubah</th>
+                  <th>Nama siswa</th>
+                  <th>Nama wali</th>
+                  <th>Jenis kelamin</th>
+                  <th>Tanggal lahir</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($data as $siswa)
+                <tr>
+                  <td>{{ $siswa->id }}</td>
+                  <td>{{ $siswa->nama_siswa }}</td>
+                  <td>{{ $siswa->nama_wali }}</td>
+                  <td>{{ $siswa->jenis_kelamin }}</td>
+                  <td>{{ $siswa->tanggal_lahir }}</td>
+                  <td>
+                    <table>
+                        <tr>
+                            <td class="td-actions text-left">
+                                <a href="{{ route('siswa.edit', $siswa->id) }}"><i class="material-icons">edit</i></a>
+                            </td>
+                            <td class="td-actions text-left">
+                                <a href="{{ route('wali.edit', $siswa->id) }}"><i class="material-icons">edit</i></a>
+                            </td>
+                            <td class="td-actions text-left"><i class="material-icons">show</i></td>
+                        </tr>
+                    </table>
+                  </td>
+                  @endforeach
               </tbody>
             </table>
           </div>

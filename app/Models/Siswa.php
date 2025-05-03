@@ -38,7 +38,7 @@ class Siswa extends Model
         'tempat_alamat',
         'nama_pemilik_tempat_alamat',
         'jarak_ke_sekolah',
-        'metode_transportasidatabase_biodata_siswa',
+        'metode_transportasi',
         'golongan_darah',
         'riwayat_rawat',
         'riwayat_penyakit',
@@ -88,8 +88,15 @@ class Siswa extends Model
     public function status_anak(): Attribute
     {
         return Attribute::make(
-            fn($value)=>['Nukan','Kandung'][$value]
-            // kalo 0 = Nukan, 1 Kandung
+            fn($value)=>['Angkat','Kandung'][$value]
+            // kalo 0 = Kandung,1 = tiri, 2 = angkat
+        );
+    }
+    public function metode_transportasi(): Attribute
+    {
+        return Attribute::make(
+            fn($value)=>['Antar','Sendiri'][$value]
+            // kalo 0 = Antar,1 = Sendiri
         );
     }
     protected $primaryKey = 'id';
