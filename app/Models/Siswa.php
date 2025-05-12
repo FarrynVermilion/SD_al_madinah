@@ -14,7 +14,6 @@ class Siswa extends Model
     protected $table = "database_biodata_siswa";
     protected $fillable =  [
         'id_account',
-        'id_beasiswa',
         'nama_lengkap',
         'nama_panggilan',
         'jenis_kelamin',
@@ -101,6 +100,7 @@ class Siswa extends Model
     }
     protected $primaryKey = 'id';
     public $timestamps = true;
+    public $hidden = ['created_by', 'updated_by', 'deleted_by'];
     protected static function boot()
     {
         // updating created_by and updated_by when model is created
@@ -115,6 +115,12 @@ class Siswa extends Model
         static::updating(function($model)
         {
             $model->updated_by = Auth::user()->id;
+        });
+
+        // creating deleted_by when model is deleted
+        static::deleting(function ($model)
+        {
+            $model->deleted_by = Auth::user()->id;
         });
     }
 }

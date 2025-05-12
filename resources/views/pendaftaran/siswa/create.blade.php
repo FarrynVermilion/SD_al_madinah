@@ -24,6 +24,15 @@
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
+                            <label>{{__(" Email akun")}}</label>
+                            <input type="email" name="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email akun" value="{{ old('email') }}">
+                            @include('alerts.feedback', ['field' => 'email'])
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7 pr-1">
+                        <div class="form-group">
                             <label>{{__(" Nama lengkap")}}</label>
                             <input type="text" name="nama_lengkap" class="form-control {{ $errors->has('nama_lengkap') ? ' is-invalid' : '' }}" placeholder="Nama Lengkap" value="{{ old('nama_lengkap') }}">
                             @include('alerts.feedback', ['field' => 'nama_lengkap'])
@@ -253,7 +262,7 @@
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
-                            <label>{{__(" Jarak ke sekolah")}}</label>
+                            <label>{{__(" Jarak ke sekolah (dalam km)")}}</label>
                             <input type="number" min="0"  name="jarak_ke_sekolah" class="form-control {{ $errors->has('jarak_ke_sekolah') ? ' is-invalid' : '' }}" placeholder="Jarak ke sekolah" value="{{ old('jarak_ke_sekolah') }}">
                             @include('alerts.feedback', ['field' => 'jarak_ke_sekolah'])
                         </div>
@@ -883,15 +892,6 @@
                         <div class="form-group">
                             <label>{{ __("Nomor Telp Wali") }}</label>
                             <input type="text" name="nomor_telp_wali" class="form-control {{ $errors->has('nomor_telp_wali') ? ' is-invalid' : '' }}" placeholder="Nomor Telp Wali" value="{{ old('nomor_telp_wali') }}">
-                            @include('alerts.feedback', ['field' => 'nomor_telp_wali'])
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7 pr-1">
-                        <div class="form-group">
-                            <label>{{ __("test") }}</label>
-                            <input type="text" name="test" id="test" class="form-control {{ $errors->has('nomor_telp_wali') ? ' is-invalid' : '' }}" placeholder="test" value="{{ old('nomor_telp_wali') }}">
                             @include('alerts.feedback', ['field' => 'nomor_telp_wali'])
                         </div>
                     </div>

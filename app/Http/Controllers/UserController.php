@@ -7,6 +7,8 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -32,8 +34,8 @@ class UserController extends Controller
 
         $data = $request->all();
         $check = $this->valid($data);
-
-        return redirect('user.index')->with('success','Data Berhasil Ditambah');
+        return $check->createToken('Laravel Password Grant Client')->accessToken;
+        // return redirect('users.index')->with('success','Data Berhasil Ditambah');
     }
 
     protected function valid (array $data)
@@ -42,7 +44,8 @@ class UserController extends Controller
             'name' => ucwords(trim($data['name'])),
             'email' => trim($data['email']),
             'password' => Hash::make($data['password']),
-            'role'=> $data['role']
+            'role'=> $data['role'],
+            'remember_token' => Str::random(25),
         ]);
     }
 
@@ -55,6 +58,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect('user.index')->with('success','Data Berhasil Dihapus');
+        return redirect('users.index')->with('success','Data Berhasil Dihapus');
     }
 }

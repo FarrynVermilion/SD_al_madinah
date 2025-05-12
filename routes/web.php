@@ -16,12 +16,11 @@ use App\Http\Controllers\WaliSiswaController;
 Route::get('/', function () {
     return view('auth.login');
 });
-
 Auth::routes();
 
 //rute untuk semua role
 Route::middleware(['auth','user-access:Guru|Admin|Tata_Usaha|Siswa'])->group(function () {
-	Route::get('/home',  [HomeController::class,'index'])->name('home');
+	Route::get('home',  [HomeController::class,'index'])->name('home');
 	Route::get('profile', [ProfileController::class,'edit'])->name('profile.edit');
 	Route::put('profile', [ProfileController::class,'update'])->name('profile.update');
 	Route::put('profile/password', [ProfileController::class,'password'])->name('profile.password');
@@ -56,7 +55,6 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
 Route::middleware(['auth','user-access:Admin'])->group(function(){
     Route::get('register', [UserController::class,'register'])->name('register');
     Route::post('createUser', [UserController::class,'create'])->name('create');
-    Route::get('user.index', [UserController::class,'index'])->name('user.index');
     Route::resource('user', UserController::class);
     Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });

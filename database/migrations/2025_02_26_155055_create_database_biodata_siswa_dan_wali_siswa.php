@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('database_biodata_siswa', function (Blueprint $table) {
             $table->id()->primary();
             $table->foreignId('id_account')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('id_beasiswa')->nullable();
             $table->string('nama_lengkap',255);
             $table->string('nama_panggilan',100);
             $table->char('jenis_kelamin',1);
@@ -22,10 +21,10 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('agama',50);
             $table->string('kewarganegaraan',50);
-            $table->integer('anak_ke');
-            $table->integer('jumlah_saudara_kandung');
-            $table->integer('jumlah_saudara_tiri')->nullable();
-            $table->integer('jumlah_saudara_angkat')->nullable();
+            $table->tinyInteger('anak_ke');
+            $table->tinyInteger('jumlah_saudara_kandung');
+            $table->tinyInteger('jumlah_saudara_tiri')->nullable();
+            $table->tinyInteger('jumlah_saudara_angkat')->nullable();
             $table->char('status_anak',1)->nullable();
             $table->string('bahasa_sehari_hari',100);
             $table->text('alamat');
@@ -43,20 +42,24 @@ return new class extends Migration
             $table->string('riwayat_rawat',100)->nullable();
             $table->char('riwayat_penyakit',1)->nullable();
             $table->string('kelainan_jasmani',255)->nullable();
-            $table->integer('tinggi_badan',3)->nullable();
-            $table->integer('berat_badan',3)->nullable();
+            $table->smallInteger('tinggi_badan')->nullable();
+            $table->smallInteger('berat_badan')->nullable();
             $table->string('nama_sekolah_asal',255)->nullable();
             $table->date('tanggal_ijazah')->nullable();
             $table->string('nomor_ijazah',100)->nullable();
             $table->date('tanggal_skhun')->nullable();
             $table->string('nomor_skhun',100)->nullable();
-            $table->integer('lama_belajar')->nullable();
+            $table->tinyInteger('lama_belajar')->nullable();
             $table->string('nisn',100)->nullable();
             $table->char('tipe_riwayat_sekolah',1)->nullable();
             $table->string('nama_riwayat_sekolah',255)->nullable();
             $table->date('tanggal_pindah')->nullable();
             $table->text('alasan_pindah')->nullable();
             $table->timestamps();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
+            $table->string("deleted_by",255)->nullable();
         });
         Schema::create('database_biodata_wali_siswa', function (Blueprint $table) {
             $table->id()->primary();
@@ -99,6 +102,10 @@ return new class extends Migration
             $table->string('alamat_rumah_wali',200)->nullable();
             $table->string('nomor_telp_wali',15)->nullable();
             $table->timestamps();
+            $table->softDeletes()->nullable();
+            $table->string("created_by",255);
+            $table->string("updated_by",255);
+            $table->string("deleted_by",255)->nullable();
         });
     }
 

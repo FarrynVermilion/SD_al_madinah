@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return Auth::check();
     }
 
     /**

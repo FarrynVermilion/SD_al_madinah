@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSiswaRequest extends FormRequest
@@ -11,18 +12,59 @@ class StoreSiswaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string=>[], \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'id_account' => 'required|exists:users,id',
+            'nama_lengkap' => 'required|string|max:255',
+            'nama_panggilan' => 'required|string|max:100',
+            'jenis_kelamin' => 'required|in:0,1',
+            'tempat_lahir' => 'required|string|max:100',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required|string|max:50',
+            'kewarganegaraan' => 'required|string|max:50',
+            'anak_ke' => 'required|integer|min:1',
+            'jumlah_saudara_kandung' => 'required|integer|min:0',
+            'jumlah_saudara_tiri' => 'nullable|integer|min:0',
+            'jumlah_saudara_angkat' => 'nullable|integer|min:0',
+            'status_anak' => 'nullable|in:0,1,2',
+            'bahasa_sehari_hari' => 'required|string|max:100',
+            'alamat' => 'required|string',
+            'no_kk' => 'required|string|max:20',
+            'kelurahan' => 'required|string|max:100',
+            'kecamatan' => 'required|string|max:100',
+            'kota' => 'required|string|max:100',
+            'kode_pos' => 'required|string|max:20',
+            'nomor_telepon' => 'required|string|max:20',
+            'tempat_alamat' => 'required|in:0,1',
+            'nama_pemilik_tempat_alamat' => 'required|string|max:100',
+            'jarak_ke_sekolah' => 'nullable|integer|min:0',
+            'metode_transportasi' => 'required|in:0,1',
+            'golongan_darah' => 'nullable|in:,O?,O+,O-,A?,A+,A-,B?,B+,B-,AB?,AB+,AB-',
+            'riwayat_penyakit' => 'nullable|in:0,1',
+            'riwayat_rawat' => 'nullable|string|max:100',
+            'kelainan_jasmani' => 'nullable|string|max:255',
+            'tinggi_badan' => 'nullable|integer|min:0|max:300',
+            'berat_badan' => 'nullable|integer|min:0|max:300',
+            'nama_sekolah_asal' => 'nullable|string|max:255',
+            'tanggal_ijazah' => 'nullable|date',
+            'nomor_ijazah' => 'nullable|string|max:100',
+            'tanggal_skhun' => 'nullable|date',
+            'nomor_skhun' => 'nullable|string|max:100',
+            'lama_belajar' => 'nullable|integer|min:0|max:20',
+            'nisn' => 'nullable|string|max:100',
+            'tipe_riwayat_sekolah' => 'nullable|in:0,1',
+            'nama_riwayat_sekolah' => 'nullable|string|max:255',
+            'tanggal_pindah' => 'nullable|date',
+            'alasan_pindah' => 'nullable|string',
         ];
     }
 }
