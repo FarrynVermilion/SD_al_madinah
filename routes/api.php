@@ -2,20 +2,30 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\AuthController;
-use Illuminate\Container\Attributes\Auth;
-use App\Http\Middleware\Cors;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 
 
-Route::group(['middleware' => ['cors']], function () {
-    Route::post('/shit', function (Request $request) {
-        return $request;
-    })->name('shit');
-    Route::post('/login', [AuthController::class, 'login'])->name('mlogin');
-    Route::post('/register', [AuthController::class,'register'])->name('mregister');
-    Route::middleware('auth:api')->group(function () {
-        // our routes to be protected will go in here
-        Route::post('/logout', [AuthController::class,'logout'])->name('mlogout');
-    });
+Route::post('/token/request', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'device_name' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $user->createToken($request->device_name)->plainTextToken;
 });

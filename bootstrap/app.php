@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cors' => \App\Http\Middleware\Cors::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            'login.api','register.api','logout.api'
+            // 'login.api','register.api','logout.api'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -34,8 +34,7 @@ class UserController extends Controller
 
         $data = $request->all();
         $check = $this->valid($data);
-        return $check->createToken('Laravel Password Grant Client')->accessToken;
-        // return redirect('users.index')->with('success','Data Berhasil Ditambah');
+        return redirect('users.index')->with('success','Data Berhasil Ditambah');
     }
 
     protected function valid (array $data)

@@ -35,7 +35,7 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 // rute khusus Tata_Usaha
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
-    Route::resource('/pendaftaratan/siswa', SiswaController::class);
+    Route::resource('/pendaftaran/siswa', SiswaController::class);
     Route::resource('/pendaftaran/wali', WaliSiswaController::class);
 
 

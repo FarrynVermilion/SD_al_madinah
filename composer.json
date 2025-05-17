@@ -9,7 +9,7 @@
         "laravel-frontend-presets/now-ui-dashboard": "dev-l11-compatibility",
         "laravel/framework": "^11.9",
         "laravel/helpers": "^1.7",
-        "laravel/passport": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5"
     },
