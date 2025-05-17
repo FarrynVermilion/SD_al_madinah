@@ -56,44 +56,17 @@ class Siswa extends Model
         'tanggal_pindah',
         'alasan_pindah',
     ];
-    public function jenis_kelamin(): Attribute
+
+    public function jenis_kelamins($value): Attribute
     {
-        return Attribute::make(
-            fn($value)=>['Laki laki','Perempuan'][$value]
-            // kalo 0 = Laki laki, 1 Perempuan
-        );
-    }
-    public function tipe_riwayat_sekolah(): Attribute
-    {
-        return Attribute::make(
-            fn($value)=>['Baru','Pindah'][$value]
-            // kalo 0 = Baru, 1 Pindah
-        );
-    }
-    public function riwayat_penyakit(): Attribute
-    {
-        return Attribute::make(
-            fn($value)=>['Tidak punya','Punya'][$value]
-            // kalo 0 = Tidak Punya, 1 Punya
-        );
-    }
-    public function tempat_alamat(): Attribute
-    {
-        return Attribute::make(
-            fn($value)=>['Sewa','Milik'][$value]
-            // kalo 0 = Sewa, 1 Milik
-        );
-    }
-    public function status_anak(): Attribute
-    {
-        return Attribute::make(
+        return new Attribute(
             fn($value)=>['Angkat','Kandung'][$value]
             // kalo 0 = Kandung,1 = tiri, 2 = angkat
         );
     }
-    public function metode_transportasi(): Attribute
+    protected function metode_transportasi(): Attribute
     {
-        return Attribute::make(
+        return new Attribute(
             fn($value)=>['Antar','Sendiri'][$value]
             // kalo 0 = Antar,1 = Sendiri
         );

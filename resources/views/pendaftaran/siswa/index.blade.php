@@ -28,9 +28,13 @@
                 <tr>
                   <th>ID</th>
                   <th>Nama siswa</th>
-                  <th>Nama wali</th>
                   <th>Jenis kelamin</th>
                   <th>Tanggal lahir</th>
+                  <th>Alamat</th>
+                  <th>Nama wali</th>
+                  <th>No wali</th>
+                  <th>nama_ayah</th>
+                  <th>nama_ibu</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
@@ -38,20 +42,32 @@
                 @foreach ($data as $siswa)
                 <tr>
                   <td>{{ $siswa->id }}</td>
-                  <td>{{ $siswa->nama_siswa }}</td>
-                  <td>{{ $siswa->nama_wali }}</td>
-                  <td>{{ $siswa->jenis_kelamin }}</td>
+                  <td>{{ $siswa->nama_lengkap }}</td>
+                  <td>{{ $siswa->jenis_kelamin == 0? "Laki-laki" :  "Perempuan" }}</td>
                   <td>{{ $siswa->tanggal_lahir }}</td>
+                  <td>{{ $siswa->alamat }}</td>
+                  <td>{{ $siswa->nama_wali }}</td>
+                  <td>{{ $siswa->no_hp_wali }}</td>
+                  <td>{{ $siswa->nama_ayah }}</td>
+                  <td>{{ $siswa->nama_ibu }}</td>
                   <td>
                     <table>
                         <tr>
                             <td class="td-actions text-left">
-                                <a href="{{ route('siswa.edit', $siswa->id) }}"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('siswa.edit', $siswa->id) }}">
+                                    <i class="material-icons">edit</i>
+                                </a>
                             </td>
                             <td class="td-actions text-left">
-                                <a href="{{ route('wali.edit', $siswa->id) }}"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('wali.edit', $siswa->id) }}">
+                                    <i class="material-icons">edit</i>
+                                </a>
                             </td>
-                            <td class="td-actions text-left"><i class="material-icons">show</i></td>
+                            <td class="td-actions text-left">
+                                <a href="{{ route('wali.edit', $siswa->id) }}">
+                                    <i class="material-icons">show</i>
+                                </a>
+                            </td>
                         </tr>
                     </table>
                   </td>

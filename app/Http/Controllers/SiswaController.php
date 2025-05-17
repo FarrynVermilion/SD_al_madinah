@@ -11,6 +11,8 @@ use Illuminate\Queue\RedisQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr\Array_;
 
 
 class SiswaController extends Controller
@@ -24,9 +26,12 @@ class SiswaController extends Controller
         ->select(
             "siswa.*",
             "wali.nama_wali",
-            'wali,id AS wali_id')
+            'wali.nama_ayah AS nama_ayah',
+            'wali.nama_ibu AS nama_ibu',
+            'wali.nama_wali AS nama_wali',
+            'wali.nomor_telp_wali AS no_hp_wali')
             ->join('database_biodata_wali_siswa AS wali','id_siswa','=','siswa.id')
-            ->orderBy('','desc')->paginate(10);
+            ->orderBy('siswa.id','desc')->paginate(10);
         return view("pendaftaran.siswa.index", ["data"=> $data]);
     }
 
@@ -41,57 +46,17 @@ class SiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(request $request)
+    public function store(StoreSiswaRequest $request)
     {
-
-
-
-        $email = request("email");
-        $nama_lengkap = request("nama_lengkap");
-        $nama_panggilan = request("nama_panggilan");
-        $jenis_kelamin = request("jenis_kelamin");
-        $tempat_lahir = request("tempat_lahir");
-        $tanggal_lahir = request("tanggal_lahir");
-        $agama = request("agama");
-        $kewarganegaraan = request("kewarganegaraan");
-        $anak_ke = request("anak_ke");
-        $jumlah_saudara_kandung = request("jumlah_saudara_kandung");
-        $jumlah_saudara_tiri = request("jumlah_saudara_tiri");
-        $jumlah_saudara_angkat = request("jumlah_saudara_angkat");
-        $status_anak = request("status_anak");
-        $bahasa_sehari_hari = request("bahasa_sehari_hari");
-        $alamat =request("alamat");
-        $no_kk = request("no_kk");
-        $kelurahan = request("kelurahan");
-        $kecamatan = request("kecamatan");
-        $kota = request("kota");
-        $kode_pos = request("kode_pos");
-        $nomor_telepon = request("nomor_telepon");
-        $tempat_alamat = request("tempat_alamat");
-        $nama_pemilik_tempat_alamat = request("nama_pemilik_tempat_alamat");
-        $jarak_ke_sekolah = request("jarak_ke_sekolah");
-        $metode_transportasi = request("metode_transportasi");
-        $golongan_darah = request("golongan_darah");
-        $riwayat_rawat = request("riwayat_rawat");
-        $kelainan_jasmani = request("kelainan_jasmani");
-        $tinggi_badan = request("tinggi_badan");
-        $berat_badan = request("berat_badan");
-        $nama_sekolah_asal = request("nama_sekolah_asal");
-        $tanggal_ijazah = request("tanggal_ijazah");
-        $nomor_ijazah = request("nomor_ijazah");
-        $tanggal_skhun = request("tanggal_skhun");
-        $nomor_skhun = request("nomor_skhun");
-        $lama_belajar = request("lama_belajar");
-        $nisn = request("nisn");
-        $tipe_riwayat_sekolah = request("tipe_riwayat_sekolah");
-        $nama_riwayat_sekolah = request("nama_riwayat_sekolah");
-        $tanggal_pindah = request("tanggal_pindah");
-        $alasan_pindah = request("alasan_pindah");
-
-        $user =user::create([
-            'name' => $nama_lengkap,
-            'email' => $email,
-            'password' => Hash::make("P".$tanggal_lahir),
+        $tanggal_lahir = explode("-",request("tanggal_lahir"));
+        $res = "";
+        for ($i = count($tanggal_lahir); $i > 0; $i--) {
+            $res .= $tanggal_lahir[$i-1];
+        }
+        $user = User::create([
+            'name' => request("nama_lengkap"),
+            'email' => request("email"),
+            'password' => Hash::make("P".$res),
             'role' => 3
         ]);
         // Create the Siswa record
@@ -182,9 +147,7 @@ class SiswaController extends Controller
         $wali->save();
 
 
-
-
-        return $request;
+        return redirect()->route("siswa.index",with(["success" => "Data Berhasil Disimpan"]));
     }
 
     /**

@@ -91,7 +91,7 @@ return new class extends Migration
             $table->string('status_hidup',100);
             $table->string('nama_wali',100)->nullable();
             $table->string('tempat_lahir_wali',50)->nullable();
-            $table->date('tanggal_lahit_wali')->nullable();
+            $table->date('tanggal_lahir_wali')->nullable();
             $table->string('nik_wali',16)->nullable();
             $table->string('agama_wali',20)->nullable();
             $table->string('kewarganegaraan_wali',50)->nullable();

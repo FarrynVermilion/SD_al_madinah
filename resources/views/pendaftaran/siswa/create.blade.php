@@ -105,8 +105,8 @@
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
-                            <label>{{__(" Anakke")}}</label>
-                            <input type="number" min="0" name="kewarganegaraan" class="form-control {{ $errors->has('anak_ke') ? ' is-invalid' : '' }}" placeholder="Anak ke" value="{{ old('anak_ke') }}">
+                            <label>{{__(" Anak ke")}}</label>
+                            <input type="number" min="0" name="anak_ke" class="form-control {{ $errors->has('anak_ke') ? ' is-invalid' : '' }}" placeholder="Anak ke" value="{{ old('anak_ke') }}">
                             @include('alerts.feedback', ['field' => 'anak_ke'])
                         </div>
                     </div>
