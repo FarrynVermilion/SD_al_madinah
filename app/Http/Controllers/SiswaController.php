@@ -30,8 +30,9 @@ class SiswaController extends Controller
             'wali.nama_ibu AS nama_ibu',
             'wali.nama_wali AS nama_wali',
             'wali.nomor_telp_wali AS no_hp_wali')
-            ->join('database_biodata_wali_siswa AS wali','id_siswa','=','siswa.id')
-            ->orderBy('siswa.id','desc')->paginate(10);
+        ->join('database_biodata_wali_siswa AS wali','id_siswa','=','siswa.id')
+        ->whereNull('siswa.deleted_at')
+        ->orderBy('siswa.id','desc')->paginate(10);
         return view("pendaftaran.siswa.index", ["data"=> $data]);
     }
 
@@ -48,104 +49,105 @@ class SiswaController extends Controller
      */
     public function store(StoreSiswaRequest $request)
     {
-        $tanggal_lahir = explode("-",request("tanggal_lahir"));
+        $validated = $request->validated();
+        // Create the user
+        $tanggal_lahir = explode("-",$validated["tanggal_lahir"]);
         $res = "";
         for ($i = count($tanggal_lahir); $i > 0; $i--) {
             $res .= $tanggal_lahir[$i-1];
         }
         $user = User::create([
-            'name' => request("nama_lengkap"),
-            'email' => request("email"),
+            'name' => $validated["nama_lengkap"],
+            'email' => $validated["email"],
             'password' => Hash::make("P".$res),
             'role' => 3
         ]);
         // Create the Siswa record
         $siswa = new Siswa();
         $siswa->id_account = $user->id;
-        $siswa->nama_lengkap = request("nama_lengkap") ?? null;
-        $siswa->nama_panggilan = request("nama_panggilan") ?? null;
-        $siswa->jenis_kelamin = request("jenis_kelamin") ?? null;
-        $siswa->tempat_lahir = request("tempat_lahir") ?? null;
-        $siswa->tanggal_lahir = request("tanggal_lahir") ?? null;
-        $siswa->agama = request("agama") ?? null;
-        $siswa->kewarganegaraan = request("kewarganegaraan") ?? null;
-        $siswa->anak_ke = request("anak_ke") ?? null;
-        $siswa->jumlah_saudara_kandung = request("jumlah_saudara_kandung") ?? null;
-        $siswa->jumlah_saudara_tiri = request("jumlah_saudara_tiri") ?? null;
-        $siswa->jumlah_saudara_angkat = request("jumlah_saudara_angkat") ?? null;
-        $siswa->status_anak = request("status_anak") ?? null;
-        $siswa->bahasa_sehari_hari = request("bahasa_sehari_hari") ?? null;
-        $siswa->alamat = request("alamat") ?? null;
-        $siswa->no_kk = request("no_kk") ?? null;
-        $siswa->kelurahan = request("kelurahan") ?? null;
-        $siswa->kecamatan = request("kecamatan") ?? null;
-        $siswa->kota = request("kota") ?? null;
-        $siswa->kode_pos = request("kode_pos") ?? null;
-        $siswa->nomor_telepon = request("nomor_telepon") ?? null;
-        $siswa->tempat_alamat = request("tempat_alamat") ?? null;
-        $siswa->nama_pemilik_tempat_alamat = request("nama_pemilik_tempat_alamat") ?? null;
-        $siswa->jarak_ke_sekolah = request("jarak_ke_sekolah") ?? null;
-        $siswa->metode_transportasi = request("metode_transportasi") ?? null;
-        $siswa->golongan_darah = request("golongan_darah") ?? null;
-        $siswa->riwayat_rawat = request("riwayat_rawat") ?? null;
-        $siswa->riwayat_penyakit = request("riwayat_penyakit") ?? null;
-        $siswa->kelainan_jasmani = request("kelainan_jasmani") ?? null;
-        $siswa->tinggi_badan = request("tinggi_badan") ?? null;
-        $siswa->berat_badan = request("berat_badan") ?? null;
-        $siswa->nama_sekolah_asal = request("nama_sekolah_asal") ?? null;
-        $siswa->tanggal_ijazah = request("tanggal_ijazah") ?? null;
-        $siswa->nomor_ijazah = request("nomor_ijazah") ?? null;
-        $siswa->tanggal_skhun = request("tanggal_skhun") ?? null;
-        $siswa->nomor_skhun = request("nomor_skhun") ?? null;
-        $siswa->lama_belajar = request("lama_belajar") ?? null;
-        $siswa->nisn = request("nisn") ?? null;
-        $siswa->tipe_riwayat_sekolah = request("tipe_riwayat_sekolah") ?? null;
-        $siswa->nama_riwayat_sekolah = request("nama_riwayat_sekolah") ?? null;
-        $siswa->tanggal_pindah = request("tanggal_pindah") ?? null;
-        $siswa->alasan_pindah = request("alasan_pindah") ?? null;
+        $siswa->nama_lengkap = $validated["nama_lengkap"] ?? null;
+        $siswa->nama_panggilan = $validated["nama_panggilan"] ?? null;
+        $siswa->jenis_kelamin = $validated["jenis_kelamin"] ?? null;
+        $siswa->tempat_lahir = $validated["tempat_lahir"] ?? null;
+        $siswa->tanggal_lahir = $validated["tanggal_lahir"] ?? null;
+        $siswa->agama = $validated["agama"] ?? null;
+        $siswa->kewarganegaraan = $validated["kewarganegaraan"] ?? null;
+        $siswa->anak_ke = $validated["anak_ke"] ?? null;
+        $siswa->jumlah_saudara_kandung = $validated["jumlah_saudara_kandung"] ?? null;
+        $siswa->jumlah_saudara_tiri = $validated["jumlah_saudara_tiri"] ?? null;
+        $siswa->jumlah_saudara_angkat = $validated["jumlah_saudara_angkat"] ?? null;
+        $siswa->status_anak = $validated["status_anak"] ?? null;
+        $siswa->bahasa_sehari_hari = $validated["bahasa_sehari_hari"] ?? null;
+        $siswa->alamat = $validated["alamat"] ?? null;
+        $siswa->no_kk = $validated["no_kk"] ?? null;
+        $siswa->kelurahan = $validated["kelurahan"] ?? null;
+        $siswa->kecamatan = $validated["kecamatan"] ?? null;
+        $siswa->kota = $validated["kota"] ?? null;
+        $siswa->kode_pos = $validated["kode_pos"] ?? null;
+        $siswa->nomor_telepon = $validated["nomor_telepon"] ?? null;
+        $siswa->tempat_alamat = $validated["tempat_alamat"] ?? null;
+        $siswa->nama_pemilik_tempat_alamat = $validated["nama_pemilik_tempat_alamat"] ?? null;
+        $siswa->jarak_ke_sekolah = $validated["jarak_ke_sekolah"] ?? null;
+        $siswa->metode_transportasi = $validated["metode_transportasi"] ?? null;
+        $siswa->golongan_darah = $validated["golongan_darah"] ?? null;
+        $siswa->riwayat_rawat = $validated["riwayat_rawat"] ?? null;
+        $siswa->riwayat_penyakit = $validated["riwayat_penyakit"] ?? null;
+        $siswa->kelainan_jasmani = $validated["kelainan_jasmani"] ?? null;
+        $siswa->tinggi_badan = $validated["tinggi_badan"] ?? null;
+        $siswa->berat_badan = $validated["berat_badan"] ?? null;
+        $siswa->nama_sekolah_asal = $validated["nama_sekolah_asal"] ?? null;
+        $siswa->tanggal_ijazah = $validated["tanggal_ijazah"] ?? null;
+        $siswa->nomor_ijazah = $validated["nomor_ijazah"] ?? null;
+        $siswa->tanggal_skhun = $validated["tanggal_skhun"] ?? null;
+        $siswa->nomor_skhun = $validated["nomor_skhun"] ?? null;
+        $siswa->lama_belajar = $validated["lama_belajar"] ?? null;
+        $siswa->nisn = $validated["nisn"] ?? null;
+        $siswa->tipe_riwayat_sekolah = $validated["tipe_riwayat_sekolah"] ?? null;
+        $siswa->nama_riwayat_sekolah = $validated["nama_riwayat_sekolah"] ?? null;
+        $siswa->tanggal_pindah = $validated["tanggal_pindah"] ?? null;
+        $siswa->alasan_pindah = $validated["alasan_pindah"] ?? null;
         $siswa->save();
 
         $wali = new Wali_Siswa();
         $wali->id_siswa = $siswa->id;
-        $wali->nama_ayah = request("nama_ayah") ?? null;
-        $wali->nama_ibu = request("nama_ibu") ?? null;
-        $wali->tempat_lahir_ayah = request("tempat_lahir_ayah") ?? null;
-        $wali->tempat_lahir_ibu = request("tempat_lahir_ibu") ?? null;
-        $wali->tanggal_lahir_ayah = request("tanggal_lahir_ayah") ?? null;
-        $wali->tanggal_lahir_ibu = request("tanggal_lahir_ibu") ?? null;
-        $wali->kewarganegaraan_ayah = request("kewarganegaraan_ayah") ?? null;
-        $wali->kewarganegaraan_ibu = request("kewarganegaraan_ibu") ?? null;
-        $wali->nik_ayah = request("nik_ayah") ?? null;
-        $wali->nik_ibu = request("nik_ibu") ?? null;
-        $wali->agama_ayah = request("agama_ayah") ?? null;
-        $wali->agama_ibu = request("agama_ibu") ?? null;
-        $wali->pendidikan_ayah = request("pendidikan_ayah") ?? null;
-        $wali->pendidikan_ibu = request("pendidikan_ibu") ?? null;
-        $wali->ijazah_ayah = request("ijazah_ayah") ?? null;
-        $wali->ijazah_ibu = request("ijazah_ibu") ?? null;
-        $wali->pekerjaan_ayah = request("pekerjaan_ayah") ?? null;
-        $wali->pekerjaan_ibu = request("pekerjaan_ibu") ?? null;
-        $wali->penghasilan_ayah = request("penghasilan_ayah") ?? null;
-        $wali->penghasilan_ibu = request("penghasilan_ibu") ?? null;
-        $wali->alamat_kerja_ayah = request("alamat_kerja_ayah") ?? null;
-        $wali->alamat_kerja_ibu = request("alamat_kerja_ibu") ?? null;
-        $wali->alamat_rumah_ayah = request("alamat_rumah_ayah") ?? null;
-        $wali->alamat_rumah_ibu = request("alamat_rumah_ibu") ?? null;
-        $wali->status_hidup = request("status_hidup") ?? null;
-        $wali->nama_wali = request("nama_wali") ?? null;
-        $wali->tempat_lahir_wali = request("tempat_lahir_wali") ?? null;
-        $wali->tanggal_lahir_wali = request("tanggal_lahir_wali") ?? null;
-        $wali->kewarganegaraan_wali = request("kewarganegaraan_wali") ?? null;
-        $wali->nik_wali = request("nik_wali") ?? null;
-        $wali->agama_wali = request("agama_wali") ?? null;
-        $wali->hubungan_keluarga = request("hubungan_keluarga") ?? null;
-        $wali->ijazah_wali = request("ijazah_wali") ?? null;
-        $wali->pekerjaan_wali = request("pekerjaan_wali") ?? null;
-        $wali->penghasilan_wali = request("penghasilan_wali") ?? null;
-        $wali->alamat_rumah_wali = request("alamat_rumah_wali") ?? null;
-        $wali->nomor_telp_wali = request("nomor_telp_wali") ?? null;
+        $wali->nama_ayah = $validated["nama_ayah"] ?? null;
+        $wali->nama_ibu = $validated["nama_ibu"] ?? null;
+        $wali->tempat_lahir_ayah = $validated["tempat_lahir_ayah"] ?? null;
+        $wali->tempat_lahir_ibu = $validated["tempat_lahir_ibu"] ?? null;
+        $wali->tanggal_lahir_ayah = $validated["tanggal_lahir_ayah"] ?? null;
+        $wali->tanggal_lahir_ibu = $validated["tanggal_lahir_ibu"] ?? null;
+        $wali->kewarganegaraan_ayah = $validated["kewarganegaraan_ayah"] ?? null;
+        $wali->kewarganegaraan_ibu = $validated["kewarganegaraan_ibu"] ?? null;
+        $wali->nik_ayah = $validated["nik_ayah"] ?? null;
+        $wali->nik_ibu = $validated["nik_ibu"] ?? null;
+        $wali->agama_ayah = $validated["agama_ayah"] ?? null;
+        $wali->agama_ibu = $validated["agama_ibu"] ?? null;
+        $wali->pendidikan_ayah = $validated["pendidikan_ayah"] ?? null;
+        $wali->pendidikan_ibu = $validated["pendidikan_ibu"] ?? null;
+        $wali->ijazah_ayah = $validated["ijazah_ayah"] ?? null;
+        $wali->ijazah_ibu = $validated["ijazah_ibu"] ?? null;
+        $wali->pekerjaan_ayah = $validated["pekerjaan_ayah"] ?? null;
+        $wali->pekerjaan_ibu = $validated["pekerjaan_ibu"] ?? null;
+        $wali->penghasilan_ayah = $validated["penghasilan_ayah"] ?? null;
+        $wali->penghasilan_ibu = $validated["penghasilan_ibu"] ?? null;
+        $wali->alamat_kerja_ayah = $validated["alamat_kerja_ayah"] ?? null;
+        $wali->alamat_kerja_ibu = $validated["alamat_kerja_ibu"] ?? null;
+        $wali->alamat_rumah_ayah = $validated["alamat_rumah_ayah"] ?? null;
+        $wali->alamat_rumah_ibu = $validated["alamat_rumah_ibu"] ?? null;
+        $wali->status_hidup = $validated["status_hidup"] ?? null;
+        $wali->nama_wali = $validated["nama_wali"] ?? null;
+        $wali->tempat_lahir_wali = $validated["tempat_lahir_wali"] ?? null;
+        $wali->tanggal_lahir_wali = $validated["tanggal_lahir_wali"] ?? null;
+        $wali->kewarganegaraan_wali = $validated["kewarganegaraan_wali"] ?? null;
+        $wali->nik_wali = $validated["nik_wali"] ?? null;
+        $wali->agama_wali = $validated["agama_wali"] ?? null;
+        $wali->hubungan_keluarga = $validated["hubungan_keluarga"] ?? null;
+        $wali->ijazah_wali = $validated["ijazah_wali"] ?? null;
+        $wali->pekerjaan_wali = $validated["pekerjaan_wali"] ?? null;
+        $wali->penghasilan_wali = $validated["penghasilan_wali"] ?? null;
+        $wali->alamat_rumah_wali = $validated["alamat_rumah_wali"] ?? null;
+        $wali->nomor_telp_wali = $validated["nomor_telp_wali"] ?? null;
         $wali->save();
-
 
         return redirect()->route("siswa.index",with(["success" => "Data Berhasil Disimpan"]));
     }
@@ -177,8 +179,13 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Siswa $siswa)
+    public function destroy($siswa)
     {
-        //
+
+        $siswa_data = Siswa::find($siswa);
+        User::where('id', $siswa_data->id_account)->delete();
+        Wali_Siswa::find(Wali_Siswa::where("id_siswa", $siswa_data->id)->first()->id)->delete();
+        $siswa_data->delete();
+        return redirect()->route("siswa.index")->with("success", "Data Berhasil Dihapus");
     }
 }

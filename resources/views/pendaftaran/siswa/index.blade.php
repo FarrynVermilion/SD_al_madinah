@@ -55,18 +55,25 @@
                         <tr>
                             <td class="td-actions text-left">
                                 <a href="{{ route('siswa.edit', $siswa->id) }}">
-                                    <i class="material-icons">edit</i>
+                                    <i class="material-icons">edit siswa</i>
                                 </a>
                             </td>
                             <td class="td-actions text-left">
                                 <a href="{{ route('wali.edit', $siswa->id) }}">
-                                    <i class="material-icons">edit</i>
+                                    <i class="material-icons">edit wali</i>
                                 </a>
                             </td>
                             <td class="td-actions text-left">
                                 <a href="{{ route('wali.edit', $siswa->id) }}">
                                     <i class="material-icons">show</i>
                                 </a>
+                            </td>
+                            <td class="td-actions text-left">
+                                <form method="POST" action="{{route('siswa.destroy',$siswa->id)}}" onsubmit="return hapus()">
+                                    @csrf
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                                </form>
                             </td>
                         </tr>
                     </table>

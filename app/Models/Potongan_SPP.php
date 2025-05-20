@@ -12,7 +12,7 @@ class Potongan_SPP extends Model
 {
     use SoftDeletes, Prunable;
     protected $table = "potongan_spp";
-    protected $fillable =  ['nama_potongan','potongan_spp'];
+    protected $fillable =  ['nama_potongan','nominal_potongan'];
     protected $primaryKey = 'id_potongan';
     public $timestamps = true;
     protected static function boot()

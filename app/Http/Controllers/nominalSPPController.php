@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNominal_SPPRequest;
 use App\Http\Requests\UpdateNominal_SPPRequest;
 use App\Models\Nominal_SPP;
+use Illuminate\Http\Request;
 
 class nominalSPPController extends Controller
 {
@@ -21,7 +22,7 @@ class nominalSPPController extends Controller
      */
     public function create()
     {
-        //
+        return view("SPP.nominal_spp.create");
     }
 
     /**
@@ -29,7 +30,13 @@ class nominalSPPController extends Controller
      */
     public function store(StoreNominal_SPPRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Nominal_SPP::create([
+            "nominal" => $validated["nominal"],
+            "nama_bayaran" => $validated["nama_bayaran"]
+        ]);
+        return redirect()->route("nominal.index")->with("success", "Nominal SPP berhasil ditambahkan");
+
     }
 
     /**
@@ -59,8 +66,10 @@ class nominalSPPController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Nominal_SPP $nominal_SPP)
+    public function destroy($nominal_SPP)
     {
-        //
+        $var = Nominal_SPP::find($nominal_SPP);
+        $var->delete();
+        return redirect()->route("nominal.index")->with("success", "Nominal SPP berhasil dihapus");
     }
 }

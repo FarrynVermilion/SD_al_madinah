@@ -8,12 +8,12 @@
 <div class="panel-header panel-header-sm">
 </div>
   <div class="content">
-    <div class="row">home
+    <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('siswa.create') }}">Daftar siswa</a>
-            <h4 class="card-title">Siswa</h4>
+            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('potongan.create') }}">Buat SPP baru</a>
+            <h4 class="card-title">Potongan</h4>
             <div class="col-12 mt-2"></div>
           </div>
           <div class="card-body">
@@ -26,21 +26,32 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
+                  <th>No</th>
                   <th>ID</th>
-                  <th>Nama aset</th>
-                  <th>Merek aset</th>
-                  <th>Jumlah aset</th>
-                  <th>Aset tersedia</th>
-                  <th>Untuk</th>
-                  <th>Jumlah digunakan</th>
-                  <th>Pembuat</th>
-                  <th>Dibuat</th>
-                  <th>Editor</th>
-                  <th>Diubah</th>
+                  <th>Nama Potongan</th>
+                  <th>Besar Potongan</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
+                @php
+                  $no = 1;
+                @endphp
+                @foreach($data as $potongan_spp)
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $potongan_spp->id_potongan}}</td>
+                  <td>{{ $potongan_spp->nama_potongan }}</td>
+                  <td>{{ $potongan_spp->nominal_potongan }}</td>
+                  <td class="td-actions text-left">
+                    <form method="POST" action="{{route('potongan.destroy',$potongan_spp)}}" onsubmit="return hapus()">
+                        @csrf
+                        <input name="_method" type="hidden" value="DELETE">
+                        <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                    </form>
+                  </td>
+                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
 
 class StoreNominal_SPPRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreNominal_SPPRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +24,8 @@ class StoreNominal_SPPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nominal' => ['required', 'numeric', 'min:0', 'max:999999999'],
+            'nama_bayaran' => ['required', 'string', 'max:55'],
         ];
     }
 }

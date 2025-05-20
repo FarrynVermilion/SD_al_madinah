@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Wali_Siswa extends Model
 {
-    use SoftDeletes, Prunable;
+    use SoftDeletes, Prunable, HasFactory;
     protected $table = "database_biodata_wali_siswa";
     protected $fillable =  [
         'id_siswa',
@@ -50,29 +52,41 @@ class Wali_Siswa extends Model
         'pekerjaan_wali',
         'penghasilan_wali',
         'alamat_rumah_wali',
-        'nomor_telp_wali'
+        'nomor_telp_wali',
+        'created_by', 'updated_by', 'deleted_by',
+        'created_at', 'updated_at', 'deleted_at'
     ];
     protected $primaryKey = 'id';
     public $timestamps = true;
+    public $hidden = [  ];
     protected static function boot()
     {
         // updating created_by and updated_by when model is created
         parent::boot();
-        static::creating(function($model)
-        {
-            $user = Auth::user();
-            $model->created_by = $user->id;
-            $model->updated_by = $user->id;
+
+        // updating created_by and updated_by when model is created
+        static::creating(function ($model) {
+            if (!$model->isDirty('created_by')) {
+                $model->created_by = Auth::user()->id;
+            }
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Auth::user()->id;
+            }
         });
+
         // updating updated_by when model is updated
-        static::updating(function($model)
-        {
-            $model->updated_by = Auth::user()->id;
+        static::updating(function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Auth::user()->id;
+            }
         });
+
         // creating deleted_by when model is deleted
-        static::deleting(function ($model)
-        {
-            $model->deleted_by = Auth::user()->id;
+        static::deleting(function ($model) {
+            if (!$model->isDirty('deleted_by')) {
+                $model->deleted_by = Auth::user()->id;
+                $model->save();
+            }
         });
     }
 

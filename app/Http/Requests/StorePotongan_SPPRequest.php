@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePotongan_SPPRequest extends FormRequest
@@ -11,7 +12,7 @@ class StorePotongan_SPPRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,8 @@ class StorePotongan_SPPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nominal_potongan' => ['required', 'numeric', 'min:0', 'max:999999999'],
+            'nama_potongan' => ['required', 'string', 'max:55'],
         ];
     }
 }

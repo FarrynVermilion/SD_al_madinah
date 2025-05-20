@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('nominal_spp', function (Blueprint $table) {
             $table->id("id_nominal")->primary();
-            $table->string("nama_bayaran",255);
-            $table->decimal("nominal_spp",9,2)->unsigned();
+            $table->string("nama_bayaran",50);
+            $table->decimal("nominal",9,2)->unsigned();
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->string("created_by",255);
@@ -23,8 +23,8 @@ return new class extends Migration
         });
         Schema::create('potongan_spp', function (Blueprint $table) {
             $table->id("id_potongan")->primary();
-            $table->string("nama_potongan",255);
-            $table->decimal("potongan_spp"."",9,2)->unsigned();
+            $table->string("nama_potongan",50);
+            $table->decimal("nominal_potongan"."",9,2)->unsigned();
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->string("created_by",255);
@@ -37,8 +37,9 @@ return new class extends Migration
             $table->id("id_spp_siswa")->primary();
             $table->unsignedBigInteger("id_siswa");
             $table->unsignedBigInteger("id_nominal");
-            $table->foreign("id_siswa")->references("id")->on("users")->noActionOnDelete()->noActionOnUpdate();
-            $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
+            $table->unsignedBigInteger("id_potongan");
+            // $table->foreign("id_siswa")->references("id")->on("users")->noActionOnDelete()->noActionOnUpdate();
+            // $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->boolean("status_siswa")->default(true);
             $table->timestamps();
             $table->softDeletes()->nullable();
@@ -52,19 +53,17 @@ return new class extends Migration
             // di hapus soalnya kalau ada perubahan spp atau potongan bakal berubah jadi langsung
             // aja gk pake fk
             $table->unsignedBigInteger("id_spp");
-            $table->unsignedBigInteger("id_potongan");
             // $table->foreign("id_spp")->references("id_spp_siswa")->on("spp_siswa")->noActionOnDelete()->noActionOnUpdate();
             // $table->foreign("id_potongan")->references("id_potongan")->on("potongan_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->decimal("spp",9,2)->unsigned();
             $table->decimal("potongan",9,2)->unsigned();
-            $table->decimal("transaksi",9,2)->unsigned();
             $table->tinyInteger("bulan")->unsigned();
             $table->smallInteger("tahun_ajaran")->unsigned();
             $table->boolean("status_lunas");
-            $table->unsignedBigInteger("id_ketua_komite");
-            $table->string("nama_ketua_komite");
-            $table->unsignedBigInteger("id_kepala_sekolah");
-            $table->string("kepala_sekolah");
+            $table->unsignedBigInteger("id_ketua_komite")->nullable();
+            $table->string("nama_ketua_komite")->nullable();
+            $table->unsignedBigInteger("id_kepala_sekolah")->nullable();
+            $table->string("kepala_sekolah")->nullable();
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->string("created_by",255);

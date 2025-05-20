@@ -21,7 +21,7 @@ class potonganSPPController extends Controller
      */
     public function create()
     {
-        //
+        return view("SPP.potongan_spp.create");
     }
 
     /**
@@ -29,7 +29,12 @@ class potonganSPPController extends Controller
      */
     public function store(StorePotongan_SPPRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Potongan_SPP::create([
+            "nominal_potongan" => $validated["nominal_potongan"],
+            "nama_potongan" => $validated["nama_potongan"]
+        ]);
+        return redirect()->route("potongan.index")->with("success", "Potongan SPP berhasil ditambahkan");
     }
 
     /**
@@ -59,8 +64,10 @@ class potonganSPPController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Potongan_SPP $potongan_SPP)
+    public function destroy($potongan_SPP)
     {
-        //
+        $potongan = Potongan_SPP::find($potongan_SPP);
+        $potongan->delete();
+        return redirect()->route("potongan.index")->with("success", "Potongan SPP berhasil dihapus");
     }
 }

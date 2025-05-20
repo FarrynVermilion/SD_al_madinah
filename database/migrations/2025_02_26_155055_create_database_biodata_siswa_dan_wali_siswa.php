@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('database_biodata_siswa', function (Blueprint $table) {
             $table->id()->primary();
-            $table->foreignId('id_account')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('id_account');
+            // $table->foreignId('id_account')->references('id')->on('users')->onDelete('cascade');
             $table->string('nama_lengkap',255);
             $table->string('nama_panggilan',100);
             $table->char('jenis_kelamin',1);

@@ -13,13 +13,16 @@ class Transaksi_SPP extends Model
     use SoftDeletes, Prunable;
     protected $table = "transaksi_spp";
     protected $fillable =  [
+        'id_spp',
         'spp',
         'potongan',
-        'transaksi',
-        'sisa_pembayaran',
         'bulan',
         'tahun_ajaran',
-        'status_lunas'
+        'status_lunas',
+        'id_ketua_komite',
+        'nama_ketua_komite',
+        'id_kepala_sekolah',
+        'kepala_sekolah'
     ];
     protected $primaryKey = 'id_transaksi';
     public $timestamps = true;

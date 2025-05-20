@@ -12,7 +12,7 @@ class Nominal_SPP extends Model
 {
     use SoftDeletes, Prunable;
     protected $table = "nominal_spp";
-    protected $fillable =  ['nama_bayaran', 'nominal_spp'];
+    protected $fillable =  ['nama_bayaran', 'nominal'];
     protected $primaryKey = 'id_nominal';
     public $timestamps = true;
     protected static function boot()
