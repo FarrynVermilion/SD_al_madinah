@@ -181,11 +181,10 @@ class SiswaController extends Controller
      */
     public function destroy($siswa)
     {
-
         $siswa_data = Siswa::find($siswa);
         User::where('id', $siswa_data->id_account)->delete();
         Wali_Siswa::find(Wali_Siswa::where("id_siswa", $siswa_data->id)->first()->id)->delete();
         $siswa_data->delete();
-        return redirect()->route("siswa.index")->with("success", "Data Berhasil Dihapus");
+        return redirect()->back()->with("success", "Data Berhasil Dihapus");
     }
 }

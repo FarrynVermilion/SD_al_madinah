@@ -14,7 +14,7 @@ class nominalSPPController extends Controller
      */
     public function index()
     {
-        return view("SPP.nominal_spp.index")->with("data", Nominal_SPP::all());
+        return view("SPP.nominal_spp.index")->with("data", Nominal_SPP::orderBy("id_nominal", "asc")->paginate(10));
     }
 
     /**
