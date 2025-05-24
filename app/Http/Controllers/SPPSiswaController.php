@@ -18,9 +18,19 @@ class SPPSiswaController extends Controller
      */
     public function index()
     {
-
         $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))->orderBy('nama_lengkap', 'asc')->paginate(10);
-        $data2 = SPP_Siswa::where('status_siswa', 1)->paginate(10);
+        $data2 = SPP_Siswa::where('status_siswa', "=",1)
+        ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+        ->join('nominal_spp', 'nominal_spp.id_nominal', '=', 'spp_siswa.id_nominal')
+        ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
+        ->select('database_biodata_siswa.nama_lengkap',
+        'database_biodata_siswa.id',
+        'nominal_spp.nama_bayaran',
+        'nominal_spp.nominal',
+        'potongan_spp.nama_potongan',
+        'potongan_spp.nominal_potongan',
+        'spp_siswa.*')
+        ->paginate(10);
         return view("SPP.spp_siswa.index")->with(["data1" => $data1, "data2" => $data2]);
     }
     public function cari(Request $request)
@@ -31,7 +41,9 @@ class SPPSiswaController extends Controller
             $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))->where('id',"LIKE", "%".$request->cari_siswa."%")->orderBy('nama_lengkap', 'asc')->paginate(10);
         }
         if ($request->has('cari_siswa_aktif')) {
-            $data2 = SPP_Siswa::where('status_siswa', 1)->where('id_siswa',"LIKE", "%".$request->cari_siswa_aktif."%")->paginate(10);
+            $data2 = SPP_Siswa::where('status_siswa', 1)->where('id_siswa',"LIKE", "%".$request->cari_siswa_aktif."%")
+            ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+            ->paginate(10);
         }
         return view("SPP.spp_siswa.index")->with(["data1" => $data1, "data2" => $data2, "cari_siswa" => $request->cari_siswa, "cari_siswa_aktif" => $request->cari_siswa_aktif]);
     }
@@ -44,9 +56,9 @@ class SPPSiswaController extends Controller
     {
         //
     }
-    public function create_spp(Request $request)
+    public function create_spp($request)
     {
-        $id_siswa = $request->id_siswa;
+        $id_siswa = $request;
         $nominal_spp = Nominal_SPP::all();
         $potongan_spp = Potongan_SPP::all();
         return view("SPP.spp_siswa.create")->with(["id_siswa" => $id_siswa, "nominal_spp" => $nominal_spp, "potongan_spp" => $potongan_spp]);
@@ -57,7 +69,18 @@ class SPPSiswaController extends Controller
      */
     public function store(StoreSPP_SiswaRequest $request)
     {
-        //
+        $validated = $request->validated();
+        if ($validated["Potongan_SPP"]==-1) {
+            $validated["Potongan_SPP"] = null;
+        }
+        SPP_Siswa::create([
+            "id_siswa" => $validated["id_siswa"],
+            "id_nominal" => $validated["Nominal_SPP"],
+            "id_potongan" => $validated["Potongan_SPP"],
+            "status_siswa" => 1,
+        ]);
+        // return $validated;
+        return redirect()->route("SPPsiswa.index")->with("success_create", "SPP Siswa berhasil ditambahkan");
     }
 
     /**

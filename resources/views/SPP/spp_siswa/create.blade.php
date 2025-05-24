@@ -12,30 +12,53 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header">
-            <h5 class="title">{{__(" Buat Nominal SPP")}}</h5>
+            <h5 class="title">{{__(" Buat SPP siswa")}}</h5>
           </div>
           <div class="card-body">
-            <form method="post" action="{{ route('nominal.store') }}" autocomplete="off" enctype="multipart/form-data">
+            <form method="post" action="{{ route('SPPsiswa.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @include('alerts.errors')
               @include('alerts.success')
               <div class="row">
               </div>
+                <input type="hidden" name="id_siswa" value="{{ $id_siswa }}">
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
-                            <label>{{__(" Nama bayaran SPP")}}</label>
-                            <input type="text" name="nama_bayaran" class="form-control {{ $errors->has('nama_bayaran') ? ' is-invalid' : '' }}" placeholder="Nama bayaran" value="{{ old('nama_bayaran') }}">
-                            @include('alerts.feedback', ['field' => 'nama_bayaran'])
+                            <label>{{__("Nominal SPP")}}</label>
+                            <select name="Nominal_SPP" class="form-control {{ $errors->has('Nominal_SPP') ? ' is-invalid' : '' }}">
+                                @foreach ($nominal_spp as $as )
+                                    <option value="{{$as->id_nominal}}"
+                                        @if ( old('Nominal_SPP')=='0')
+                                            selected
+                                        @endif>
+                                        Nama : {{$as->nama_bayaran}} | Nominal : {{$as->nominal}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'Nominal_SPP'])
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
-                            <label>{{__(" Nominal SPP")}}</label>
-                            <input type="number" name="nominal" class="form-control {{ $errors->has('nominal') ? ' is-invalid' : '' }}" placeholder="Nominal SPP" value="{{ old('nominal') }}" max="999999999" min="0">
-                            @include('alerts.feedback', ['field' => 'nominal'])
+                            <label>{{__("Potongan SPP")}}</label>
+                            <select name="Potongan_SPP" class="form-control {{ $errors->has('Potongan_SPP') ? ' is-invalid' : '' }}">
+                                <option value="-1"
+                                @if ( old('Potongan_SPP')=='-1')
+                                    selected
+                                @endif>Tidak ada</option>
+                                @foreach ($potongan_spp as $as )
+                                    <option value="{{$as->id_potongan}}"
+                                        @if ( old('Potongan_SPP')=='0')
+                                            selected
+                                        @endif>
+                                        Nama : {{$as->nama_potongan}} | Nominal : {{$as->nominal_potongan}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'Potongan_SPP'])
                         </div>
                     </div>
                 </div>

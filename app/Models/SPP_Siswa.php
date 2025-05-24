@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class SPP_Siswa extends Model
 {
@@ -15,6 +16,15 @@ class SPP_Siswa extends Model
     protected $fillable =  ['id_siswa', 'id_nominal','id_potongan','status_siswa'];
     protected $primaryKey = 'id_spp_siswa';
     public $timestamps = true;
+
+    protected function statusSiswa(): Attribute
+    {
+        return new Attribute(
+            fn($value)=>['Non-aktuf','Aktif'][$value]
+            // kalo 0 = Antar,1 = Sendiri
+        );
+    }
+
     protected static function boot()
     {
         // updating created_by and updated_by when model is created

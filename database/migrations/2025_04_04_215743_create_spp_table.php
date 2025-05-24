@@ -37,7 +37,7 @@ return new class extends Migration
             $table->id("id_spp_siswa")->primary();
             $table->unsignedBigInteger("id_siswa");
             $table->unsignedBigInteger("id_nominal");
-            $table->unsignedBigInteger("id_potongan");
+            $table->unsignedBigInteger("id_potongan")->nullable();
             // $table->foreign("id_siswa")->references("id")->on("users")->noActionOnDelete()->noActionOnUpdate();
             // $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->boolean("status_siswa")->default(true);
@@ -48,6 +48,7 @@ return new class extends Migration
             $table->string("deleted_by",255)->nullable();
         });
         //transaksi + ptongan tambahan siswa
+        //key enkripsi = no kk|nama_lengkap kurang tambahin 0000 sampe 16 byte lebih potong sampe 16 byte
         Schema::create('transaksi_spp', function (Blueprint $table) {
             $table->id("id_transaksi")->primary();
             // di hapus soalnya kalau ada perubahan spp atau potongan bakal berubah jadi langsung
@@ -59,7 +60,7 @@ return new class extends Migration
             $table->decimal("potongan",9,2)->unsigned();
             $table->tinyInteger("bulan")->unsigned();
             $table->smallInteger("tahun_ajaran")->unsigned();
-            $table->boolean("status_lunas");
+            $table->string("status_lunas");
             $table->unsignedBigInteger("id_ketua_komite")->nullable();
             $table->string("nama_ketua_komite")->nullable();
             $table->unsignedBigInteger("id_kepala_sekolah")->nullable();

@@ -47,7 +47,7 @@
                     <table>
                       <tr>
                         <td>
-                          <form method="POST" action="{{route('spp.SPPsiswa.createSPP',$siswa)}}">
+                          <form method="HEAD" action="{{route('spp.SPPsiswa.createSPP',$siswa->id)}}">
                             @csrf
                             <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Buat SPP</i></button>
                           </form>
@@ -90,17 +90,49 @@
               <thead>
                 <tr>
                   <th>No.</th>
+                  <th>ID SPP siswa</th>
                   <th>ID siswa</th>
                   <th>Nama siswa</th>
                   <th>NISN</th>
                   <th>SPP</th>
                   <th>Potongan</th>
+                  <th>Aktif</th>
                   <th>Diubah oleh</th>
                   <th>Terakhir diubah</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
+                @php
+                  $no = 1;
+                @endphp
+                @foreach($data2 as $siswa)
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $siswa->id_spp_siswa }}</td>
+                  <td>{{ $siswa->id_siswa }}</td>
+                  <td>{{ $siswa->nama_lengkap }}</td>
+                  <td>{{ $siswa->nisn }}</td>
+                  <td>{{ $siswa->nama_bayaran}}<br>RP.{{$siswa->nominal }}</td>
+                  <td>{{ ($siswa->id_potongan==null) ? "Tidak ada potongan":$siswa->nama_potongan."<br>RP.".$siswa->nominal_potongan }}</td>
+                  <td>{{ $siswa->status_siswa }}</td>
+                  <td>{{ $siswa->updated_by }}</td>
+                  <td>{{ $siswa->updated_at }}</td>
+                  <td class="td-actions text-left">
+                    <table>
+                      <tr>
+                        <td>
+                          <form method="POST" action="{{route('SPPsiswa.destroy',$siswa)}}">
+                            @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                          </form>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                @endforeach
               </tbody>
             </table>
             <div class="d-flex justify-content-center">{{ $data2->links() }}</div>
