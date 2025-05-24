@@ -11,6 +11,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          @include('alerts.errors')
+          @include('alerts.success')
           <div class="card-header">
             <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('nominal.create') }}">Buat SPP baru</a>
             <h4 class="card-title">SPP</h4>

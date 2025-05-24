@@ -11,6 +11,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          @include('alerts.errors')
+          @include('alerts.success')
           <div class="card-header">
             <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('siswa.create') }}">Daftar siswa</a>
             <h4 class="card-title">Siswa</h4>
@@ -21,8 +23,6 @@
               <!--        Here you can write extra buttons/actions for the toolbar              -->
             </div>
             @csrf
-            @include('alerts.errors')
-            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>

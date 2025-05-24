@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSPP_SiswaRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateSPP_SiswaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,9 @@ class UpdateSPP_SiswaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // "id_siswa" => ["required", "exists:database_biodata_siswa,id", "unique:spp_siswa,id_siswa"],
+            "Nominal_SPP" => "required",
+            "Potongan_SPP" => "required",
         ];
     }
 }

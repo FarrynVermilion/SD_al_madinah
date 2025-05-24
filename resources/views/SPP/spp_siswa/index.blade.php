@@ -11,6 +11,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          @include('alerts.errors')
+          @include('alerts.success')
           <div class="card-header">
             <h4 class="card-title">Siswa belum aktif</h4>
           </div>
@@ -23,8 +25,6 @@
                 </form>
             </div>
             @csrf
-            @include('alerts.errors')
-            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -84,8 +84,6 @@
                 </form>
             </div>
             @csrf
-            @include('alerts.errors')
-            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -114,7 +112,7 @@
                   <td>{{ $siswa->nama_lengkap }}</td>
                   <td>{{ $siswa->nisn }}</td>
                   <td>{{ $siswa->nama_bayaran}}<br>RP.{{$siswa->nominal }}</td>
-                  <td>{{ ($siswa->id_potongan==null) ? "Tidak ada potongan":$siswa->nama_potongan."<br>RP.".$siswa->nominal_potongan }}</td>
+                  <td>{!! ($siswa->id_potongan==null) ? "Tidak ada potongan": nl2br(e($siswa->nama_potongan."\nRP.".$siswa->nominal_potongan)) !!}</td>
                   <td>{{ $siswa->status_siswa }}</td>
                   <td>{{ $siswa->updated_by }}</td>
                   <td>{{ $siswa->updated_at }}</td>
@@ -122,7 +120,13 @@
                     <table>
                       <tr>
                         <td>
-                          <form method="POST" action="{{route('SPPsiswa.destroy',$siswa)}}">
+                          <form method="GET" action="{{route('SPPsiswa.edit',$siswa->id_spp_siswa)}}">
+                            @csrf
+                            <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Edit SPP</i></button>
+                          </form>
+                        </td>
+                        <td>
+                          <form method="POST" action="{{route('SPPsiswa.destroy',$siswa->id_spp_siswa)}}" onsubmit="return hapus()">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>

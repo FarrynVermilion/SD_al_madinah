@@ -58,10 +58,10 @@ class SPPSiswaController extends Controller
     }
     public function create_spp($request)
     {
-        $id_siswa = $request;
+        $siswa = Siswa::where("id", "=", $request)->first();
         $nominal_spp = Nominal_SPP::all();
         $potongan_spp = Potongan_SPP::all();
-        return view("SPP.spp_siswa.create")->with(["id_siswa" => $id_siswa, "nominal_spp" => $nominal_spp, "potongan_spp" => $potongan_spp]);
+        return view("SPP.spp_siswa.create")->with(["siswa" => $siswa, "nominal_spp" => $nominal_spp, "potongan_spp" => $potongan_spp]);
     }
 
     /**
@@ -79,7 +79,6 @@ class SPPSiswaController extends Controller
             "id_potongan" => $validated["Potongan_SPP"],
             "status_siswa" => 1,
         ]);
-        // return $validated;
         return redirect()->route("SPPsiswa.index")->with("success_create", "SPP Siswa berhasil ditambahkan");
     }
 
@@ -94,24 +93,39 @@ class SPPSiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SPP_Siswa $sPP_Siswa)
+    public function edit($SPP_Siswa)
     {
-        //
+        $SPP_Siswa = SPP_Siswa::find($SPP_Siswa);
+        $siswa = Siswa::where("id", "=", $SPP_Siswa->id_siswa)->first();
+        $nominal_spp = Nominal_SPP::all();
+        $potongan_spp = Potongan_SPP::all();
+        return view("SPP.spp_siswa.update")->with(["SPP_Siswa" => $SPP_Siswa, "siswa" => $siswa, "nominal_spp" => $nominal_spp, "potongan_spp" => $potongan_spp]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSPP_SiswaRequest $request, SPP_Siswa $sPP_Siswa)
+    public function update(UpdateSPP_SiswaRequest $request, $SPP_Siswa)
     {
-        //
+        $SPP_Siswa = SPP_Siswa::find($SPP_Siswa);
+        $validated = $request->validated();
+        if ($validated["Potongan_SPP"]==-1) {
+            $validated["Potongan_SPP"] = null;
+        }
+        $SPP_Siswa->update([
+            "id_nominal" => $validated["Nominal_SPP"],
+            "id_potongan" => $validated["Potongan_SPP"],
+        ]);
+        return redirect()->route("SPPsiswa.index")->with("success", "SPP Siswa berhasil diupdate");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SPP_Siswa $sPP_Siswa)
+    public function destroy($SPP_Siswa)
     {
-        //
+        $SPP_Siswa = SPP_Siswa::find($SPP_Siswa);
+        $SPP_Siswa->delete();
+        return redirect()->route("SPPsiswa.index")->with("success", "SPP Siswa berhasil dihapus");
     }
 }

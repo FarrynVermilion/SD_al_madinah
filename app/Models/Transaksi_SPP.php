@@ -30,21 +30,29 @@ class Transaksi_SPP extends Model
     {
         // updating created_by and updated_by when model is created
         parent::boot();
-        static::creating(function($model)
-        {
-            $user = Auth::user();
-            $model->created_by = $user->id;
-            $model->updated_by = $user->id;
+        // updating created_by and updated_by when model is created
+        static::creating(function ($model) {
+            if (!$model->isDirty('created_by')) {
+                $model->created_by = Auth::user()->id;
+            }
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Auth::user()->id;
+            }
         });
+
         // updating updated_by when model is updated
-        static::updating(function($model)
-        {
-            $model->updated_by = Auth::user()->id;
+        static::updating(function ($model) {
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Auth::user()->id;
+            }
         });
+
         // creating deleted_by when model is deleted
-        static::deleting(function ($model)
-        {
-            $model->deleted_by = Auth::user()->id;
+        static::deleting(function ($model) {
+            if (!$model->isDirty('deleted_by')) {
+                $model->deleted_by = Auth::user()->id;
+                $model->save();
+            }
         });
     }
 

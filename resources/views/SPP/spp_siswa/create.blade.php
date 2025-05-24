@@ -21,7 +21,7 @@
               @include('alerts.success')
               <div class="row">
               </div>
-                <input type="hidden" name="id_siswa" value="{{ $id_siswa }}">
+                <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
                 <div class="row">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
@@ -29,7 +29,7 @@
                             <select name="Nominal_SPP" class="form-control {{ $errors->has('Nominal_SPP') ? ' is-invalid' : '' }}">
                                 @foreach ($nominal_spp as $as )
                                     <option value="{{$as->id_nominal}}"
-                                        @if ( old('Nominal_SPP')=='0')
+                                        @if ( old('Nominal_SPP')==$as->id_nominal)
                                             selected
                                         @endif>
                                         Nama : {{$as->nama_bayaran}} | Nominal : {{$as->nominal}}
@@ -51,7 +51,7 @@
                                 @endif>Tidak ada</option>
                                 @foreach ($potongan_spp as $as )
                                     <option value="{{$as->id_potongan}}"
-                                        @if ( old('Potongan_SPP')=='0')
+                                        @if ( old('Potongan_SPP')==$as->id_potongan)
                                             selected
                                         @endif>
                                         Nama : {{$as->nama_potongan}} | Nominal : {{$as->nominal_potongan}}

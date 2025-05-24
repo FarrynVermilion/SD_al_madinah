@@ -1,3 +1,76 @@
-<div>
-    <!-- Waste no more time arguing what a good man should be, be one. - Marcus Aurelius -->
-</div>
+@extends('layouts.app', [
+    'class' => 'sidebar-mini ',
+    'namePage' => 'SPP Siswa Index',
+    'activePage' => 'SPP Siswa',
+    'activeMenu' => 'SPP',
+])
+@section('content')
+  <div class="panel-header panel-header-sm"></div>
+  <div class="content">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">{{__(" Edit SPP siswa")}}</h5>
+            <p class="text-left">{{__("ID Siswa : ")}} {{$SPP_Siswa->id_siswa}}</p>
+            <p class="text-left">{{__("Nama siswa : ")}} {{$siswa->nama_lengkap}}</p>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{{ route('SPPsiswa.update', $SPP_Siswa->id_spp_siswa) }}" autocomplete="off" enctype="multipart/form-data">
+              @csrf
+              @include('alerts.errors')
+              @include('alerts.success')
+              @method('PUT')
+              <div class="row">
+              </div>
+              <div class="row">
+                    <div class="col-md-7 pr-1">
+                        <div class="form-group">
+                            <label>{{__("Nominal SPP")}}</label>
+                            <select name="Nominal_SPP" class="form-control {{ $errors->has('Nominal_SPP') ? ' is-invalid' : '' }}">
+                                @foreach ($nominal_spp as $as )
+                                    <option value="{{$as->id_nominal}}"
+                                        @if ( old('Nominal_SPP')==$as->id_nominal||$SPP_Siswa->id_nominal==$as->id_nominal)
+                                            selected
+                                        @endif>
+                                        Nama : {{$as->nama_bayaran}} | Nominal : {{$as->nominal}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'Nominal_SPP'])
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7 pr-1">
+                        <div class="form-group">
+                            <label>{{__("Potongan SPP")}}</label>
+                            <select name="Potongan_SPP" class="form-control {{ $errors->has('Potongan_SPP') ? ' is-invalid' : '' }}">
+                                <option value="-1"
+                                @if ( old('Potongan_SPP')=='-1')
+                                    selected
+                                @endif>Tidak ada</option>
+                                @foreach ($potongan_spp as $as )
+                                    <option value="{{$as->id_potongan}}"
+                                        @if ( old('Potongan_SPP')==$as->id_potongan||$SPP_Siswa->id_potongan==$as->id_potongan)
+                                            selected
+                                        @endif>
+                                        Nama : {{$as->nama_potongan}} | Nominal : {{$as->nominal_potongan}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'Potongan_SPP'])
+                        </div>
+                    </div>
+                </div>
+              <div class="card-footer ">
+                <button type="submit" class="btn btn-primary btn-round">{{__('Save')}}</button>
+              </div>
+              <hr class="half-rule"/>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
