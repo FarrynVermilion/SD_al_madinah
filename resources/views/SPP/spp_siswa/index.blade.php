@@ -126,12 +126,22 @@
                           </form>
                         </td>
                         <td>
-                          <form method="POST" action="{{route('SPPsiswa.destroy',$siswa->id_spp_siswa)}}" onsubmit="return hapus()">
+                          <form method="POST" action="{{route('SPPsiswa.destroy',$siswa->id_spp_siswa)}}" onsubmit="return nonAktifkan()">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                            <button type="submit" class="btn btn-warning" style="width: 12em;"><i class="material-icons">Nonaktifkan</i></button>
                           </form>
                         </td>
+                        @if ( Auth::user()->role=='Admin')
+                        <td>
+                          <form method="POST" action="{{route('spp.SPPsiswa.delete',$siswa->id_spp_siswa)}}" onsubmit="return nonAktifkan()">
+                            @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus siswa</i></button>
+                          </form>
+                        </td>
+                        @endif
+
                       </tr>
                     </table>
                   </td>
@@ -154,6 +164,13 @@
 <script>
     function hapus(){
         if(confirm("Anda yakin akan menghapus")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function nonAktifkan(){
+        if(confirm("Anda yakin akan menonaktifkan siswa ini?")){
             return true;
         }else{
             return false;

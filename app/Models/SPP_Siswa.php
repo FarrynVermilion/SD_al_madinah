@@ -20,7 +20,7 @@ class SPP_Siswa extends Model
     protected function statusSiswa(): Attribute
     {
         return new Attribute(
-            fn($value)=>['Non-aktuf','Aktif'][$value]
+            fn($value)=>['Nonaktif','Aktif'][$value]
             // kalo 0 = Antar,1 = Sendiri
         );
     }

@@ -45,13 +45,16 @@
                   <td>{{ $nominal_spp->id_nominal}}</td>
                   <td>{{ $nominal_spp->nama_bayaran }}</td>
                   <td>{{ $nominal_spp->nominal }}</td>
-                  <td class="td-actions text-left">
-                    <form method="POST" action="{{route('nominal.destroy',$nominal_spp)}}" onsubmit="return hapus()">
-                        @csrf
-                        <input name="_method" type="hidden" value="DELETE">
-                        <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
-                    </form>
-                  </td>
+                  @if ( Auth::user()->role=='Admin')
+                    <td class="td-actions text-left">
+                        <form method="POST" action="{{route('nominal.destroy',$nominal_spp)}}" onsubmit="return hapus()">
+                            @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                        </form>
+                    </td>
+                  @endif
+
                 </tr>
                 @endforeach
               </tbody>

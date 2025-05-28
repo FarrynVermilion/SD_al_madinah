@@ -6,6 +6,7 @@ use App\Http\Requests\StoreNominal_SPPRequest;
 use App\Http\Requests\UpdateNominal_SPPRequest;
 use App\Models\Nominal_SPP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class nominalSPPController extends Controller
 {
@@ -68,8 +69,12 @@ class nominalSPPController extends Controller
      */
     public function destroy($nominal_SPP)
     {
-        $var = Nominal_SPP::find($nominal_SPP);
-        $var->delete();
-        return redirect()->route("nominal.index")->with("success", "Nominal SPP berhasil dihapus");
+        if(Auth::user()->role == "Admin"){
+            $var = Nominal_SPP::find($nominal_SPP);
+            $var->delete();
+            return redirect()->route("nominal.index")->with("success", "Nominal SPP berhasil dihapus");
+        }
+        return redirect()->back()->with("error", "Anda tidak memiliki akses hubungi admin untuk menghapus");
+
     }
 }

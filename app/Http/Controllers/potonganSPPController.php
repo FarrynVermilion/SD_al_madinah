@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePotongan_SPPRequest;
 use App\Http\Requests\UpdatePotongan_SPPRequest;
 use App\Models\Potongan_SPP;
-
+use Illuminate\Support\Facades\Auth;
 class potonganSPPController extends Controller
 {
     /**
@@ -66,8 +66,12 @@ class potonganSPPController extends Controller
      */
     public function destroy($potongan_SPP)
     {
-        $potongan = Potongan_SPP::find($potongan_SPP);
-        $potongan->delete();
-        return redirect()->route("potongan.index")->with("success", "Potongan SPP berhasil dihapus");
+        if(Auth::user()->role == "Admin"){
+
+            $potongan = Potongan_SPP::find($potongan_SPP);
+            $potongan->delete();
+            return redirect()->route("potongan.index")->with("success", "Potongan SPP berhasil dihapus");
+        }
+        return redirect()->back()->with("error", "Anda tidak memiliki akses hubungi admin untuk menghapus");
     }
 }

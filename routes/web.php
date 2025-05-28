@@ -37,8 +37,6 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
     Route::resource('/pendaftaran/siswa', SiswaController::class);
     Route::resource('/pendaftaran/wali', WaliSiswaController::class);
-
-
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');
     Route::resource('/spp/nominal', nominalSPPController::class);
     Route::resource('/spp/potongan',  potonganSPPController::class);
@@ -59,6 +57,7 @@ Route::middleware(['auth','user-access:Admin'])->group(function(){
     Route::post('createUser', [UserController::class,'create'])->name('create');
     Route::resource('user', UserController::class);
     Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
+    Route::get("spp/SPPsiswa/delete/{SPPsiswa}", [SPPSiswaController::class,'hapus'])->name("spp.SPPsiswa.delete");
 });
 
 

@@ -62,14 +62,15 @@ class Siswa extends Model
         'created_at', 'updated_at', 'deleted_at'
     ];
 
-    public function jenisKelamin(): Attribute
+    public function getJenisKelamin(): Attribute
     {
         return new Attribute(
             fn($value)=>['Angkat','Kandung'][$value]
             // kalo 0 = Kandung,1 = tiri, 2 = angkat
         );
     }
-    protected function metodeTransportasi(): Attribute
+
+    public function getMetodeTransportasi(): Attribute
     {
         return new Attribute(
             fn($value)=>['Antar','Sendiri'][$value]
