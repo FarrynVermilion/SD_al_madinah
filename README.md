@@ -68,8 +68,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Keterangan
 Jalanin 
 
-composer require laravel/ui
-php artisan ui bootstrap
+composer install
+
 jangan lupa bikin DB .env dengan nama SD_al_madinah
 php artisan migrate --seed
 npm install
@@ -77,3 +77,7 @@ npm run dev
 php artisan serve, jangan lupa ini buat jalanin laravel
 User : admin@nowui.com
 Pass : secret
+
+kalo gk bisa
+composer require laravel/ui
+php artisan ui bootstrap
