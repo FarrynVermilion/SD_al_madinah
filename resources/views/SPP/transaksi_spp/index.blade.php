@@ -14,8 +14,8 @@
           @include('alerts.errors')
           @include('alerts.success')
           <div class="card-header">
-            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('siswa.create') }}">Daftar siswa</a>
-            <h4 class="card-title">Siswa</h4>
+            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('transaksi.create') }}">Buat SPP untuk semua siswa aktif</a>
+            <h4 class="card-title">Transaksi SPP</h4>
             <div class="col-12 mt-2"></div>
           </div>
           <div class="card-body">

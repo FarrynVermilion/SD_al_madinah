@@ -59,6 +59,7 @@ return new class extends Migration
             $table->decimal("spp",9,2)->unsigned();
             $table->decimal("potongan",9,2)->unsigned();
             $table->tinyInteger("bulan")->unsigned();
+            $table->boolean("semester");
             $table->smallInteger("tahun_ajaran")->unsigned();
             $table->string("status_lunas");
             $table->unsignedBigInteger("id_ketua_komite")->nullable();
