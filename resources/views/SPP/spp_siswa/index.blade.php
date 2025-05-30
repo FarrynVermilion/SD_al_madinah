@@ -111,8 +111,9 @@
                   <td>{{ $siswa->id_siswa }}</td>
                   <td>{{ $siswa->nama_lengkap }}</td>
                   <td>{{ $siswa->nisn }}</td>
-                  <td>{{ $siswa->nama_bayaran}}<br>RP.{{$siswa->nominal }}</td>
-                  <td>{!! ($siswa->id_potongan==null) ? "Tidak ada potongan": nl2br(e($siswa->nama_potongan."\nRP.".$siswa->nominal_potongan)) !!}</td>
+                  <td>{{ $siswa->nama_bayaran}}<br>RP. {{ number_format($siswa->nominal,2,',','.') }}</td>
+                  <td>{!! ($siswa->id_potongan==null) ? "Tidak ada potongan":
+                  nl2br(e($siswa->nama_potongan."\nRP. ".number_format($siswa->nominal_potongan,2,',','.'))) !!}</td>
                   <td>{{ $siswa->status_siswa }}</td>
                   <td>{{ $siswa->updated_by }}</td>
                   <td>{{ $siswa->updated_at }}</td>

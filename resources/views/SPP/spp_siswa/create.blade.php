@@ -32,7 +32,7 @@
                                         @if ( old('Nominal_SPP')==$as->id_nominal)
                                             selected
                                         @endif>
-                                        Nama : {{$as->nama_bayaran}} | Nominal : {{$as->nominal}}
+                                        Nama : {{$as->nama_bayaran}} | Nominal : Rp. {{ number_format($as->nominal,2,',','.')}}
                                     </option>
                                 @endforeach
                             </select>
@@ -54,7 +54,7 @@
                                         @if ( old('Potongan_SPP')==$as->id_potongan)
                                             selected
                                         @endif>
-                                        Nama : {{$as->nama_potongan}} | Nominal : {{$as->nominal_potongan}}
+                                        Nama : {{$as->nama_potongan}} | Nominal : Rp. {{ number_format($as->nominal_potongan,2,',','.')}}
                                     </option>
                                 @endforeach
                             </select>

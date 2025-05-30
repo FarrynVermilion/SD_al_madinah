@@ -25,81 +25,81 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Bulan")}}</label>
-                            <select name="Bulan" class="form-control {{ $errors->has('Bulan') ? ' is-invalid' : '' }}">
+                            <select name="bulan" class="form-control {{ $errors->has('bulan') ? ' is-invalid' : '' }}">
                                 <option value="1"
-                                    @if ( old('Bulan')=='1')
+                                    @if ( old('bulan')=='1')
                                         selected
                                     @endif>
                                     Januari
                                 </option>
                                 <option value="2"
-                                    @if ( old('Bulan')=='2')
+                                    @if ( old('bulan')=='2')
                                         selected
                                     @endif>
                                     Februari
                                 </option>
                                 <option value="3"
-                                    @if ( old('Bulan')=='3')
+                                    @if ( old('bulan')=='3')
                                         selected
                                     @endif>
                                     Maret
                                 </option>
                                 <option value="4"
-                                    @if ( old('Bulan')=='4')
+                                    @if ( old('bulan')=='4')
                                         selected
                                     @endif>
                                     April
                                 </option>
                                 <option value="5"
-                                    @if ( old('Bulan')=='5')
+                                    @if ( old('bulan')=='5')
                                         selected
                                     @endif>
                                     Mei
                                 </option>
                                 <option value="6"
-                                    @if ( old('Bulan')=='6')
+                                    @if ( old('bulan')=='6')
                                         selected
                                     @endif>
                                     Juni
                                 </option>
                                 <option value="7"
-                                    @if ( old('Bulan')=='7')
+                                    @if ( old('bulan')=='7')
                                         selected
                                     @endif>
                                     Juli
                                 </option>
                                 <option value="8"
-                                    @if ( old('Bulan')=='8')
+                                    @if ( old('bulan')=='8')
                                         selected
                                     @endif>
                                     Agustus
                                 </option>
                                 <option value="9"
-                                    @if ( old('Bulan')=='9')
+                                    @if ( old('bulan')=='9')
                                         selected
                                     @endif>
                                     September
                                 </option>
                                 <option value="10"
-                                    @if ( old('Bulan')=='10')
+                                    @if ( old('bulan')=='10')
                                         selected
                                     @endif>
                                     Oktober
                                 </option>
                                 <option value="11"
-                                    @if ( old('Bulan')=='11')
+                                    @if ( old('bulan')=='11')
                                         selected
                                     @endif>
                                     November
                                 </option>
                                 <option value="12"
-                                    @if ( old('Bulan')=='12')
+                                    @if ( old('bulan')=='12')
                                         selected
                                     @endif>
                                     Dessember
                                 </option>
                             </select>
-                            @include('alerts.feedback', ['field' => 'Bulan'])
+                            @include('alerts.feedback', ['field' => 'bulan'])
                         </div>
                     </div>
                 </div>
@@ -107,21 +107,21 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Semester")}}</label>
-                            <select name="Semester" class="form-control {{ $errors->has('Semester') ? ' is-invalid' : '' }}">
+                            <select name="semester" class="form-control {{ $errors->has('semester') ? ' is-invalid' : '' }}">
                                 <option value="0"
-                                    @if ( old('Semester')=='0')
+                                    @if ( old('semester')=='0')
                                         selected
                                     @endif>
                                     Ganjil
                                 </option>
                                 <option value="1"
-                                    @if ( old('Semester')=='1')
+                                    @if ( old('semester')=='1')
                                         selected
                                     @endif>
                                     Genap
                                 </option>
                             </select>
-                            @include('alerts.feedback', ['field' => 'Semester'])
+                            @include('alerts.feedback', ['field' => 'semester'])
                         </div>
                     </div>
                 </div>

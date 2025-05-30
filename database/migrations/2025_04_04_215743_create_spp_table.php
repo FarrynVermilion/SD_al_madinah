@@ -60,7 +60,7 @@ return new class extends Migration
             $table->decimal("potongan",9,2)->unsigned();
             $table->tinyInteger("bulan")->unsigned();
             $table->boolean("semester");
-            $table->smallInteger("tahun_ajaran")->unsigned();
+            $table->string("tahun_ajaran",9);
             $table->string("status_lunas");
             $table->unsignedBigInteger("id_ketua_komite")->nullable();
             $table->string("nama_ketua_komite")->nullable();

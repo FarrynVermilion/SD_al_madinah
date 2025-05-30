@@ -42,7 +42,7 @@
                   <td>{{ $no++ }}</td>
                   <td>{{ $potongan_spp->id_potongan}}</td>
                   <td>{{ $potongan_spp->nama_potongan }}</td>
-                  <td>{{ $potongan_spp->nominal_potongan }}</td>
+                  <td>Rp. {{ number_format($potongan_spp->nominal_potongan,2,',','.') }}</td>
                   @if ( Auth::user()->role=='Admin')
                     <td class="td-actions text-left">
                         <form method="POST" action="{{route('potongan.destroy',$potongan_spp)}}" onsubmit="return hapus()">

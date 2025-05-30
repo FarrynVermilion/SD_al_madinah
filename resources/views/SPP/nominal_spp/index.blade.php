@@ -44,7 +44,7 @@
                   <td>{{ $no++ }}</td>
                   <td>{{ $nominal_spp->id_nominal}}</td>
                   <td>{{ $nominal_spp->nama_bayaran }}</td>
-                  <td>{{ $nominal_spp->nominal }}</td>
+                  <td>Rp. {{ number_format($nominal_spp->nominal,2,',','.') }}</td>
                   @if ( Auth::user()->role=='Admin')
                     <td class="td-actions text-left">
                         <form method="POST" action="{{route('nominal.destroy',$nominal_spp)}}" onsubmit="return hapus()">

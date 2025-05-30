@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Transaksi_SPP extends Model
 {
@@ -18,14 +19,29 @@ class Transaksi_SPP extends Model
         'potongan',
         'bulan',
         'tahun_ajaran',
+        'semester',
         'status_lunas',
         'id_ketua_komite',
         'nama_ketua_komite',
         'id_kepala_sekolah',
         'kepala_sekolah'
     ];
+
     protected $primaryKey = 'id_transaksi';
     public $timestamps = true;
+
+    public function getBulan(): Attribute
+    {
+        return new Attribute(
+            fn($value)=>['Null','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][$value]
+        );
+    }
+    public function getSemester(): Attribute
+    {
+        return new Attribute(
+            fn($value)=>['Ganjil','Genap'][$value]
+        );
+    }
     protected static function boot()
     {
         // updating created_by and updated_by when model is created
