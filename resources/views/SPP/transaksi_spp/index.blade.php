@@ -65,7 +65,7 @@
                           </td>
                           @if ( Auth::user()->role=='Admin')
                             <td>
-                                <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}">
+                                <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
