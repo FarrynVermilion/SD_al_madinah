@@ -13,13 +13,18 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', function (Request $request) {
-        Auth::user()->tokens()->delete();
-        return response()->json([
-            'message' => 'logout success'
-        ]);
-    });
+Route::post('/logout', function (Request $request) {
+    $getToken = $request->token;
+    $id = explode('|', $getToken)[0];
+    $token = explode('|', $getToken)[1];
+    $hashed = DB::table('personal_access_tokens')->where('id', $id)->get()[0]->token;
+    if(hash_equals($hashed, hash('sha256', $token))){
+        DB::table('personal_access_tokens')->where('id', $id)->delete();
+    }
+
+    return response()->json([
+        'message' => 'logout success'
+    ]);
 });
 Route::post('/token/request', function (Request $request) {
     $request->validate([
