@@ -63,12 +63,11 @@ class AuthController extends Controller
 
         $token = explode('|', $tokenGen)[1];
         $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->get()[0]->token;
-        $correct = hash_equals($hashed, hash('sha256', $token));
 
         $response = [
             'token' => base64_encode(json_encode(["typ" => "SANCTUM"])) . '.' .$tokenGen,
-            'valid' => $correct,
-            'decryption_key' => $decryption_key,
+            'decryption_key' => base64_encode($decryption_key),
+            'valid' => hash_equals($hashed, hash('sha256', $token)),
         ];
 
         return response($response);
@@ -118,7 +117,6 @@ class AuthController extends Controller
                 "email" => $user->email,
                 "role" => $user->role
             ],
-            "decryption_key" =>$decryption_key,
             "iss" => time()
         ];
         $signature = base64_encode(
@@ -160,6 +158,7 @@ class AuthController extends Controller
             // 'header'=>$headers,
             // 'payload'=>$payloads,
             // 'signature'=>$signraw,
+            'decryption_key'=>base64_encode($decryption_key),
             'valid'=>hash_equals($hashed, hash('sha256', $signraw)),
             'tempered'=>!$tempered
         ];
