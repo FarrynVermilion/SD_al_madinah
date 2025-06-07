@@ -74,6 +74,7 @@ class AuthController extends Controller
     }
     public function request_jwt_token(Request $request)
     {
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -128,6 +129,7 @@ class AuthController extends Controller
                 )
             );
 
+
         $tokenGen = $user->createToken('access_token')->plainTextToken;
         DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->update([
             'token' => hash('sha256', $signature)
@@ -142,13 +144,14 @@ class AuthController extends Controller
         $payloads = json_decode(base64_decode($tokenget[1]));
         $signraw = $tokenget[2];
 
+
         $tempered = hash_equals(
             $signraw,
             base64_encode(
                 hash_hmac(
                     'sha256',
                     json_encode($headers) . "." . json_encode($payloads),
-                    $payloads->decryption_key,
+                    $decryption_key,
                     true
                 )
             )
@@ -173,62 +176,13 @@ class AuthController extends Controller
         ],[
             'token.required' => 'Token is required',
         ]);
-
-        $getToken = explode('.', $request->token);
-        $header = json_decode(base64_decode($getToken[0]));
-
-        if($header->typ == "JWT"){
-            $payload = json_decode(base64_decode($getToken[1]));
-            $signraw = $getToken[2];
-            $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
-            if($hashed == null){
-                return response()->json([
-                    'message' => 'unauthorized'
-                ]);
-            }
-            $valid = hash_equals($hashed, hash('sha256', $signraw));
-            $tempered = hash_equals(
-                $signraw,
-                base64_encode(
-                    hash_hmac(
-                        'sha256',
-                        json_encode($header) . "." . json_encode($payload),
-                        $payload->decryption_key,
-                        true
-                    )
-                )
-            );
-            if($valid && $tempered){
-                DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->delete();
-                return response()->json([
-                    'message' => 'logout success'
-                ]);
-            }else{
-                return response()->json([
-                    'message' => 'unauthorized'
-                ]);
-            }
+        $access_token_user_id = json_decode($this->verify_token($request->token));
+        if($access_token_user_id->message != "success"){
+            return response()->json(['message' => $access_token_user_id->message]);
         }
-        if($header->typ == "SANCTUM"){
-            $sanctum = explode("|", $getToken[1]);
-            $id = $sanctum[0];
-            $token = $sanctum[1];
-            $hashed = DB::table('personal_access_tokens')->where('id', $id)->get()[0]->token;
-
-            if(hash_equals($hashed, hash('sha256', $token))){
-                DB::table('personal_access_tokens')->where('id', $id)->delete();
-            }else{
-                return response()->json([
-                    'message' => 'unauthorized'
-                ]);
-            }
-
-            return response()->json([
-                'message' => 'logout success'
-            ]);
-        }
+        DB::table('personal_access_tokens')->where('tokenable_id', $access_token_user_id->id)->delete();
         return response()->json([
-            'message' => 'unauthorized unknown token type',
+            'message' => 'logout success'
         ]);
     }
     public function transaction(Request $request){
@@ -237,84 +191,96 @@ class AuthController extends Controller
         ],[
             'token.required' => 'Token is required',
         ]);
-        $getToken = explode('.', $request->token);
+        $access_token_user_id = json_decode($this->verify_token($request->token));
+        if($access_token_user_id->message != "success"){
+            return response()->json(['message' => $access_token_user_id->message]);
+        }
+        $transction = Transaksi_SPP::withTrashed()
+            ->join('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
+            ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+            ->join('users', 'users.id', '=', 'database_biodata_siswa.id')
+            ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
+            ->select(
+                'transaksi_spp.*',
+                'database_biodata_siswa.nama_lengkap',
+                'database_biodata_siswa.id_account'
+            )->get();
+
+        return response()->json([
+            'message' => 'tansaction request success',
+            'data' => $transction,
+        ]);
+    }
+    public function verify_token(String $token){
+        $getToken = explode('.', $token);
         $header = json_decode(base64_decode($getToken[0]));
         if ($header->typ == "JWT") {
             $payload = json_decode(base64_decode($getToken[1]));
             $signraw = $getToken[2];
-            $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
-            if($hashed == null){
-                return response()->json([
-                    'message' => 'unauthorized'
+            if(DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->exists() == false){
+                return json_encode([
+                    'message' => 'token not found in DB'
                 ]);
             }
+            $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
             $valid = hash_equals($hashed, hash('sha256', $signraw));
+
+            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->no_kk;
+            $nama=Siswa::where('id_account', $payload->user->id)->get()[0]->nama_lengkap;
+            $decryption_key = $kk.$nama;
+            if(strlen($decryption_key) > 32){
+                $decryption_key = substr($decryption_key, 0, 32);
+            }
+            if(strlen($decryption_key) < 32){
+                $decryption_key = str_pad($decryption_key, 32, 0);
+            }
+
             $tempered = hash_equals(
                 $signraw,
                 base64_encode(
                     hash_hmac(
                         'sha256',
                         json_encode($header) . "." . json_encode($payload),
-                        $payload->decryption_key,
+                        $decryption_key,
                         true
                     )
                 )
             );
             if($valid && $tempered){
                 if (User::where('id', $payload->user->id)->get()[0]->role != 'Siswa') {
-                    return response()->json([
-                        'message' => 'unauthorized'
+                    return json_encode([
+                        'message' => 'unauthorized user role'
                     ]);
                 }
-                $transction = Transaksi_SPP::withTrashed()
-                ->join('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
-                ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-                ->join('users', 'users.id', '=', 'database_biodata_siswa.id')
-                ->where('database_biodata_siswa.id_account',$payload->user->id)
-                ->select(
-                    'transaksi_spp.*',
-                    'database_biodata_siswa.nama_lengkap',
-                    'database_biodata_siswa.id_account'
-                )->get();
-                return response()->json($transction);
-            }else{
-                return response()->json([
-                    'message' => 'unauthorized'
+                return json_encode([
+                    "message"=>"success",
+                    "id"=>$payload->user->id
                 ]);
             }
+            return json_encode([
+                'message' => 'invalid token'
+            ]);
         }
         if ($header->typ == "SANCTUM") {
             $sanctum = explode('|', $getToken[1]);
             $id = $sanctum[0];
             $token = $sanctum[1];
-            //kalo jwt unvlock ini
             $record = DB::table('personal_access_tokens')->where('id', $id)->get()[0];
             if(hash_equals($record->token, hash('sha256', $token))){
                 if (User::where('id', $record->tokenable_id)->get()[0]->role != 'Siswa') {
-                    return response()->json([
-                        'message' => 'unauthorized'
+                    return json_encode([
+                        'message' => 'unauthorized user role'
                     ]);
                 }
-                $transction = Transaksi_SPP::withTrashed()
-                ->join('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
-                ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-                ->join('users', 'users.id', '=', 'database_biodata_siswa.id')
-                ->where('database_biodata_siswa.id_account',$record->tokenable_id)
-                ->select(
-                    'transaksi_spp.*',
-                    'database_biodata_siswa.nama_lengkap',
-                    'database_biodata_siswa.id_account'
-                )->get();
-
-                return response()->json([
-                    'message' => 'tansaction request success',
-                    'data' => $transction,
+                return json_encode([
+                    "message"=>"success",
+                    "id"=>$record->tokenable_id
                 ]);
             }
+            return json_encode([
+                'message' => 'invalid token'
+            ]);
         }
-
-        return response()->json([
-            'message' => 'unauthorized',
-        ]);
     }
+
 }
