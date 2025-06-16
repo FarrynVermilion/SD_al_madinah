@@ -40,9 +40,11 @@ class transaksiSPPController extends Controller
     {
         //ketua komite dam kepala sekolah nanti dibuat setelah penggabungan aplikasi SPP utama selesai kkp karena bukan bagian SPP
         $validated = $request->validated();
-        // $raw = shell_exec('./../kkp_cryptography "12345678123456781234567812345678" "0|'.date("Y-m-d").'"');
-        // $a =json_decode($raw, true);
-        // return $a["cyphertext"];
+        $val = Transaksi_SPP::withTrashed()->where("bulan", $validated["bulan"])
+        ->where("tahun_ajaran", $validated["tahun_ajar"])->exists();
+        if($val==true){
+            return redirect()->route("transaksi.index")->with("errors", "Data sudah ada");
+        }
         SPP_Siswa::where("status_siswa", "1")
         ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
         ->join("nominal_spp", "nominal_spp.id_nominal", "=", "spp_siswa.id_nominal")
@@ -50,13 +52,14 @@ class transaksiSPPController extends Controller
         ->select(
             "spp_siswa.*",
             "database_biodata_siswa.no_kk",
+            "database_biodata_siswa.nama_lengkap",
             "nominal_spp.nominal",
             "potongan_spp.nominal_potongan"
         )
         // ->get();
         // return $spp;
-        ->each(function ($spp) use ($validated) {
-            $key = $spp->no_kk.$spp->nama_lengkap;
+        ->each(function ($spp) use ( $validated) {
+            $key =$spp->no_kk.$spp->nama_lengkap;
             if (strlen($key) < 32) {
                 $key = str_pad($key, 32, 0);
             }

@@ -50,11 +50,23 @@
                             {{$user->created_at}}
                         </td>
                         <td>
-                            <form method="POST" action="{{route('user.destroy',$user->id)}}" onsubmit="return hapus()">
-                                @csrf
-                                <input name="_method" type="hidden" value="DELETE">
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <form method="GET" action="{{route('user_edit',$user->id)}}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning">Edit</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{{route('user.destroy',$user->id)}}" onsubmit="return hapus()">
+                                            @csrf
+                                            <input name="_method" type="hidden" value="DELETE">
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 @endforeach

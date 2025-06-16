@@ -5,13 +5,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\nominalSPPController;
 use App\Http\Controllers\potonganSPPController;
 use App\Http\Controllers\SPPSiswaController;
 use App\Http\Controllers\transaksiSPPController;
 use App\Http\Controllers\WaliSiswaController;
+use App\Http\Controllers\JabatanController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -58,8 +58,14 @@ Route::middleware(['auth','user-access:Admin'])->group(function(){
     Route::get('register', [UserController::class,'register'])->name('register');
     Route::post('createUser', [UserController::class,'create'])->name('create');
     Route::resource('user', UserController::class);
-    Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
+    Route::get('user/{user}/edit', [UserController::class,'edit'])->name('user_edit');
+    Route::post('user/{user}/update', [UserController::class,'update'])->name('user_update');
+    Route::get('user/{id}/passwordEdit', [UserController::class,'passwordEdit'])->name('user.passwordEdit');
+    Route::resource("jabatan", JabatanController::class);
+    Route::post("jabatan/{jabatan}", [JabatanController::class,'insert'])->name("jabatan_insert");
     Route::get("spp/SPPsiswa/delete/{SPPsiswa}", [SPPSiswaController::class,'hapus'])->name("spp.SPPsiswa.delete");
+
+    Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
 
 

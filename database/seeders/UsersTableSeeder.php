@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'name' => 'Admin_admin',
             'email' => 'admin@nowui.com',
             'password' => Hash::make('secret'),
             'created_at' => now(),
@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
             'role' => 0
         ]);
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'name' => 'Admin_tata_usaha',
             'email' => 'testTataUsaha@gmail.com',
             'password' => Hash::make('papantulis'),
             'created_at' => now(),
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
             'role' => 1
         ]);
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'name' => 'Admin_guru',
             'email' => 'testGuru@gmail.com',
             'password' => Hash::make('papantulis'),
             'created_at' => now(),
@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
             'role' => 2
         ]);
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'name' => 'Admin_siswa',
             'email' => 'testSiswa@gmail.com',
             'password' => Hash::make('papantulis'),
             'created_at' => now(),

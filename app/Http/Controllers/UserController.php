@@ -56,7 +56,42 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-
         return redirect('users.index')->with('success','Data Berhasil Dihapus');
+    }
+    public function edit(User $user)
+    {
+        return view('users.edit')->with('edit', $user);
+    }
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'nama' => ['required', 'string','max:255'],
+            'email' => ['required', 'string','email'],
+            'role' => ['required']
+        ]);
+        $user->update([
+            "name" => $validated['nama'],
+            "email" => $validated['email'],
+            "role" => $validated['role']
+        ]);
+        return redirect()->route('user.index')->with('success','Data Berhasil Diubah');
+    }
+    public function passwordEdit(request $request, $id)
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:8'],
+
+        ], [
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Password tidak sesuai',
+            'password_confirmation.required' => 'Password wajib diisi',
+            'password_confirmation.min' => 'Password minimal 8 karakter',
+        ]);
+        $user = User::find($id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return redirect()->route('user.index')->with('success','Password Berhasil Diubah');;
     }
 }

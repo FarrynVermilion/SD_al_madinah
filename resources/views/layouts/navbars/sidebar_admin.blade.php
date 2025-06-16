@@ -24,6 +24,12 @@
             <p> {{ __("User Management") }} </p>
             </a>
         </li>
+        <li class="@if ($activePage == 'jabatan') active @endif">
+            <a href="{{ route('jabatan.index') }}">
+            <i class="now-ui-icons design_bullet-list-67"></i>
+            <p> {{ __("Jabatan Management") }} </p>
+            </a>
+        </li>
         <li class="@if ($activePage == 'icons') active @endif">
           <a href="{{ route('page.index','icons') }}">
             <i class="now-ui-icons education_atom"></i>

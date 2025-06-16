@@ -5,12 +5,14 @@
  */
 
 import './bootstrap';
+import '../sass/app.scss';
+import '../css/app.css';
 import { createApp } from 'vue';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
+ * to use in your application's views. An eximport '../css/app.css'ample is included for you.
  */
 
 const app = createApp({});
