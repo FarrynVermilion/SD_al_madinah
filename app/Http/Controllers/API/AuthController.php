@@ -204,7 +204,10 @@ class AuthController extends Controller
                 'transaksi_spp.*',
                 'database_biodata_siswa.nama_lengkap',
                 'database_biodata_siswa.id_account'
-            )->get();
+            )
+            ->orderBy('transaksi_spp.tahun_ajaran', 'desc')
+            ->orderBy('transaksi_spp.semster', 'desc')
+            ->get();
 
         return response()->json([
             'message' => 'tansaction request success',

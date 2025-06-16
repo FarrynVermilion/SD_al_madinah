@@ -22,7 +22,11 @@ class transaksiSPPController extends Controller
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")->get();
+                "database_biodata_siswa.nama_lengkap")
+            ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
+            ->orderBy("transaksi_spp.tahun_ajaran", "asc")
+            ->orderBy("transaksi_spp.bulan", "asc")
+            ->get();
         return view("SPP.transaksi_spp.index")->with("data", $data);
     }
     /**
