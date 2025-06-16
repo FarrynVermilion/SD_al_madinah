@@ -63,8 +63,9 @@ Route::middleware(['auth','user-access:Admin'])->group(function(){
     Route::get('user/{id}/passwordEdit', [UserController::class,'passwordEdit'])->name('user.passwordEdit');
     Route::resource("jabatan", JabatanController::class);
     Route::post("jabatan/{jabatan}", [JabatanController::class,'insert'])->name("jabatan_insert");
+    Route::post("jabatan/transaksi_jabatan_sekolah/destroy", [JabatanController::class,'jabatan_pengajar_destroy'])->name("jabatan_pengajar_destroy");
+    Route::post("jabatan/transaksi_jabatan_wali/destroy", [JabatanController::class,'jabatan_wali_destroy'])->name("jabatan_wali_destroy");
     Route::get("spp/SPPsiswa/delete/{SPPsiswa}", [SPPSiswaController::class,'hapus'])->name("spp.SPPsiswa.delete");
-
     Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
 

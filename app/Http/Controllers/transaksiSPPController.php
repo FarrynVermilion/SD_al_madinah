@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransaksi_SPPRequest;
 use App\Http\Requests\UpdateTransaksi_SPPRequest;
+use App\Models\jabatan;
 use App\Models\Siswa;
+use App\Models\transaksi_jabatan_sekolah;
 use App\Models\Transaksi_SPP;
 use App\Models\SPP_Siswa;
 use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
+use App\Models\transaksi_jabatan_wali;
 use Illuminate\Http\Request;
 
 class transaksiSPPController extends Controller
@@ -26,7 +29,7 @@ class transaksiSPPController extends Controller
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
             ->orderBy("transaksi_spp.tahun_ajaran", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
-            ->get();
+            ->paginate(10);
         return view("SPP.transaksi_spp.index")->with("data", $data);
     }
     /**
@@ -71,6 +74,11 @@ class transaksiSPPController extends Controller
                 $key = substr($key, 0, 32);
             }
             $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
+
+            $ketua_komite = transaksi_jabatan_wali::where("id_jabatan", 3)->first();
+            $kepala_sekolah = transaksi_jabatan_sekolah::where("id_jabatan", 1)
+            ->join("users", "users.id", "=", "transaksi_jabatan_sekolah.id_account")
+            ->first();
             Transaksi_SPP::create([
                 "id_spp" => $spp->id_spp_siswa,
                 "spp" => $spp->nominal,
@@ -79,10 +87,10 @@ class transaksiSPPController extends Controller
                 'semester'=>$validated["semester"],
                 'tahun_ajaran'=>$validated["tahun_ajar"],
                 'status_lunas'=>json_encode($encode),
-                // 'id_ketua_komite',
-                // 'nama_ketua_komite',
-                // 'id_kepala_sekolah',
-                // 'kepala_sekolah'
+                'id_ketua_komite'=>$ketua_komite->id_transaksi_jabatan_wali,
+                'nama_ketua_komite'=>$ketua_komite->nama_wali,
+                'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah,
+                'kepala_sekolah'=>$kepala_sekolah->name
             ]);
         });
 
@@ -144,7 +152,7 @@ class transaksiSPPController extends Controller
             ->where("database_biodata_siswa.nama_lengkap", "LIKE", "%".$cari."%")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")->get();
-        return view("SPP.transaksi_spp.index")->with("data", $data);
+                "database_biodata_siswa.nama_lengkap")->paginate(10);
+        return view("SPP.transaksi_spp.index")->with(["data" => $data, "cari_siswa" => $cari]);
     }
 }

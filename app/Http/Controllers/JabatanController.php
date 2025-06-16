@@ -19,20 +19,22 @@ class JabatanController extends Controller
     {
         $sekolah = transaksi_jabatan_sekolah::join("jabatan as a", "transaksi_jabatan_sekolah.id_jabatan", "=", "a.id_jabatan")
         ->join("users as b", "b.id", "=", "id_account")
-        ->select("transaksi_jabatan_sekolah.*","a.*", "b.*")
+        ->select(
+            "transaksi_jabatan_sekolah.*",
+            "a.nama_jabatan",
+            "b.name",
+            "b.role"
+            )
         ->orderBy("a.nama_jabatan", "asc")
-        // ->paginate(10)
-        ->get();
+        ->paginate(10);
         $wali = transaksi_jabatan_wali::join("jabatan as a", "transaksi_jabatan_wali.id_jabatan", "=", "a.id_jabatan")
-        ->select("transaksi_jabatan_wali.*","a.*")
+        ->select("transaksi_jabatan_wali.*","a.nama_jabatan")
         ->orderBy("a.nama_jabatan", "asc")
-        // ->paginate(10)
-        ->get();
+        ->paginate(10);
         $empty = jabatan::whereNotIn('id_jabatan', transaksi_jabatan_sekolah::pluck('id_jabatan'))
         ->whereNotIn('id_jabatan', transaksi_jabatan_wali::pluck('id_jabatan'))
-        // ->paginate(10)
-        ->get();
-        $users = User::where("role", "Admin")->get();
+        ->paginate(10);
+        $users = User::whereIn('role', ['0', '1', '2'])->get();
         return view("jabatan.index")->with(["sekolah" => $sekolah, "wali" => $wali, "empty" => $empty, "users" => $users]);
     }
 
@@ -70,7 +72,18 @@ class JabatanController extends Controller
      */
     public function insert( Request $request , jabatan $jabatan)
     {
-        return ["jabatan" => $jabatan,"request" => $request->all()];
+        if($jabatan->jenis_jabatan == 0){
+            transaksi_jabatan_sekolah::create([
+                "id_jabatan" => $jabatan->id_jabatan,
+                "id_account" => $request->nama
+            ]);
+        }else{
+            transaksi_jabatan_wali::create([
+                "id_jabatan" => $jabatan->id_jabatan,
+                "nama_wali" => $request->nama
+            ]);
+        }
+        return redirect()->back()->with("success", "Jabatan berhasil ditambahkan");
     }
 
     /**
@@ -86,6 +99,21 @@ class JabatanController extends Controller
      */
     public function destroy(jabatan $jabatan)
     {
-        //
+        if($jabatan->id_jabatan == 1||$jabatan->id_jabatan == 3){
+            return redirect()->back()->with("error", "Jabatan tidak boleh dihapus");
+        }
+        $jabatan->delete();
+        return redirect()->back()->with("success", "Jabatan berhasil dihapus");
     }
+    public function jabatan_pengajar_destroy(Request $request){
+        $jabatan_sekolah = transaksi_jabatan_sekolah::find($request->id_transaksi_jabatan_sekolah)->first();
+        $jabatan_sekolah->delete();
+        return redirect()->back()->with("success", "Jabatan sekolah berhasil dicopot");
+    }
+    public function jabatan_wali_destroy(Request $request){
+        $jabatan_sekolah = transaksi_jabatan_wali::find($request->id_transaksi_jabatan_wali)->first();
+        $jabatan_sekolah->delete();
+        return redirect()->back()->with("success", "Jabatan sekolah berhasil dicopot");
+    }
+
 }

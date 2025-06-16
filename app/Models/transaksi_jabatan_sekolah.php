@@ -17,7 +17,7 @@ class transaksi_jabatan_sekolah extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'id_user_admin',
+        'id_account',
         'id_jabatan'
     ];
     protected static function boot()

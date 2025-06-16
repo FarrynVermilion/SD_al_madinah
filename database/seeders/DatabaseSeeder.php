@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**  
+    /**
      * Seed the application's database.
      *
      * @return void
@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->truncate();
 
-        $this->call([ UsersTableSeeder::class]);
+        $this->call([ UsersTableSeeder::class, JabatanSeeder::class ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }

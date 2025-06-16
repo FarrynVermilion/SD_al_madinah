@@ -42,6 +42,7 @@
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
+              <tbody>
                 @foreach ($data as $siswa)
                     <tr>
                     <td>{{$siswa->nama_lengkap}}</td>
@@ -77,10 +78,9 @@
                     </td>
                     </tr>
                 @endforeach
-              <tbody>
-
               </tbody>
             </table>
+            <div class="d-flex justify-content-center">{{ $data->links() }}</div>
           </div>
           <!-- end content-->
         </div>

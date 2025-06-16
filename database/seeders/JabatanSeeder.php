@@ -15,26 +15,34 @@ class JabatanSeeder extends Seeder
     public function run(): void
     {
         DB::table('jabatan')->insert([
-            'jabatan' => 'Kepala Sekolah',
-            'Kepemilikan jabatan'=> 0,
+            'nama_jabatan' => 'Kepala Sekolah',
+            'jenis_jabatan'=> 0,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('jabatan')->insert([
-            'jabatan' => 'Wakil Kepala Sekolah',
-            'Kepemilikan jabatan'=> 0,
+            'nama_jabatan' => 'Wakil Kepala Sekolah',
+            'jenis_jabatan'=> 0,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('jabatan')->insert([
-            'jabatan' => 'Ketua Komite Sekolah',
-            'Kepemilikan jabatan'=> 1,
+            'nama_jabatan' => 'Ketua Komite Sekolah',
+            'jenis_jabatan'=> 1,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('jabatan')->insert([
-            'jabatan' => 'Wakil Ketua Komite Sekolah',
-            'Kepemilikan jabatan'=> 1,
+            'nama_jabatan' => 'Wakil Ketua Komite Sekolah',
+            'jenis_jabatan'=> 1,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

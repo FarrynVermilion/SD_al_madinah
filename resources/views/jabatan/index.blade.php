@@ -44,14 +44,14 @@
                             <td>
                                 Sekolah
                             </td>
-                            <td  style="white-space: nowrap;width:1%; ">
-                                <table class="table table-bordered " cellspacing="0" >
-                                    <tbody class="text-right " >
+                            <td style=" white-space: nowrap; width:1%; " >
+                                <table class="table-borderless" cellspacing="0"  >
+                                    <tbody class="text-right align-middle" >
                                         <form method="post" action="{{route('jabatan_insert',$jabatan->id_jabatan)}}" >
                                         @csrf
                                             <tr id="{{ "isi_jabatan_sekolah_".$jabatan->id_jabatan }}" style="display: none;">
                                                 <td >
-                                                    <select style="width: 150px" name="user_id" class=" form-control">
+                                                    <select style="width: 150px" name="nama" class=" form-control">
                                                         @foreach ($users as $user)
                                                             <option value="{{$user->id}}">{{$user->name}}</option>
                                                         @endforeach
@@ -75,14 +75,14 @@
                             <td>
                                 Wali
                             </td>
-                            <td  style="white-space: nowrap;width:1%; ">
-                                <table class="table table-bordered " cellspacing="0" >
-                                    <tbody class="text-right " >
+                            <td style=" white-space: nowrap; width:1%; " >
+                                <table class="table-borderless" cellspacing="0"  >
+                                    <tbody class="text-right align-middle" >
                                         <form method="post" action="{{route('jabatan_insert',$jabatan->id_jabatan)}}" >
                                         @csrf
                                             <tr id="{{ "isi_jabatan_sekolah_".$jabatan->id_jabatan }}" style="display: none;">
                                                 <td >
-                                                    <input style="width: 150px"  type="text" placeholder="Masukan nama wali" name="user_id" class="form-control" >
+                                                    <input style="width: 150px"  type="text" placeholder="Masukan nama wali" name="nama" class="form-control" >
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-primary">Save</button>
@@ -103,13 +103,14 @@
                             <form method="POST" action="{{route('jabatan.destroy',$jabatan->id_jabatan)}}" onsubmit="return hapus()">
                                 @csrf
                                 <input name="_method" type="hidden" value="DELETE">
-                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-danger">Hapus Jabatan</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
               </tbody>
             </table>
+            <div class="d-flex justify-content-center">{{ $empty->links() }}</div>
           </div>
           <!-- end content-->
         </div>
@@ -127,39 +128,48 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
+                  <th>Jabatan</th>
+                  <th>Nama</th>
                   <th>Role</th>
-                  <th>Creation date</th>
+                  <th>Dibuat</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {{-- @foreach ( $users as $user)
+                @foreach ( $sekolah as $Pengajar)
                     <tr>
                         <td>
-                            {{$user->name}}
+                            {{$Pengajar->nama_jabatan}}
                         </td>
                         <td>
-                            {{$user->email}}
+                            {{$Pengajar->name}}
                         </td>
                         <td>
-                            {{$user->role}}
+                            @if ($Pengajar->role==0)
+                                Admin
+                            @elseif ($Pengajar->role==1)
+                                Guru
+                            @elseif ($Pengajar->role==2)
+                                Tata usaha
+                            @endif
                         </td>
                         <td>
-                            {{$user->created_at}}
+                            {{$Pengajar->created_at}}
                         </td>
                         <td>
-                            <form method="POST" action="{{route('user.destroy',$user->id)}}" onsubmit="return hapus()">
+                            <form method="POST" action="{{ route('jabatan_pengajar_destroy') }}">
                                 @csrf
-                                <input name="_method" type="hidden" value="DELETE">
-                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                <input name="id_transaksi_jabatan_sekolah" type="hidden" value="{{$Pengajar->id_transaksi_jabatan_sekolah}}">
+                                <button type="submit" class="btn btn-danger">Copot Jabatan</button>
                             </form>
                         </td>
+
                     </tr>
-                @endforeach --}}
+                @endforeach
               </tbody>
             </table>
+
+            <div class="d-flex justify-content-center">{{ $sekolah->links() }}</div>
           </div>
           <!-- end content-->
         </div>
@@ -177,39 +187,37 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Creation date</th>
+                  <th>Jabatan</th>
+                  <th>Nama</th>
+                  <th>Dibuat</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {{-- @foreach ( $users as $user)
+                @foreach ( $wali as $Wali)
                     <tr>
                         <td>
-                            {{$user->name}}
+                            {{$Wali->nama_jabatan}}
                         </td>
                         <td>
-                            {{$user->email}}
+                            {{$Wali->nama_wali}}
                         </td>
                         <td>
-                            {{$user->role}}
+                            {{$Wali->created_at}}
                         </td>
                         <td>
-                            {{$user->created_at}}
-                        </td>
-                        <td>
-                            <form method="POST" action="{{route('user.destroy',$user->id)}}" onsubmit="return hapus()">
+                            <form method="POST" action="{{ route('jabatan_wali_destroy') }}">
                                 @csrf
-                                <input name="_method" type="hidden" value="DELETE">
-                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                <input name="id_transaksi_jabatan_wali" type="hidden" value="{{$Wali->id_transaksi_jabatan_wali}}">
+                                <button type="submit" class="btn btn-danger">Copot Jabatan</button>
                             </form>
                         </td>
                     </tr>
-                @endforeach --}}
+                @endforeach
               </tbody>
             </table>
+
+            <div class="d-flex justify-content-center">{{ $wali->links() }}</div>
           </div>
           <!-- end content-->
         </div>
@@ -232,10 +240,10 @@
     }
     function show_isi_jabatan_sekolah(id_jabatan){
         let table = document.getElementById("isi_jabatan_sekolah_"+id_jabatan);
-        if (table.style.display === "inline-block") {
+        if (table.style.display === "block") {
             table.style.display = "none";
         }else if (table.style.display === "none") {
-            table.style.display = "inline-block";
+            table.style.display = "block";
         }
     }
 </script>
