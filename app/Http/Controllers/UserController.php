@@ -50,7 +50,7 @@ class UserController extends Controller
 
     public function index(User $model)
     {
-        $users = User::orderBy('Name')->paginate(15);
+        $users = User::orderBy('Name')->paginate(5);
         return view('users.index', compact('users'));
     }
     public function destroy(User $user)
@@ -61,6 +61,10 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return view('users.edit')->with('edit', $user);
+    }
+    public function show(User $user)
+    {
+        //
     }
     public function update(Request $request, User $user)
     {
@@ -93,5 +97,12 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
         return redirect()->route('user.index')->with('success','Password Berhasil Diubah');;
+    }
+    public function cari(Request $request)
+    {
+        $cari = $request->cari;
+        $users = User::where('name', 'like', "%".$cari."%")
+        ->orderBy('name', 'asc')->paginate(5);
+        return view('users.index')->with(['users' => $users, 'cari' => $cari]);
     }
 }

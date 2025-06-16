@@ -29,7 +29,7 @@ class transaksiSPPController extends Controller
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
             ->orderBy("transaksi_spp.tahun_ajaran", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
-            ->paginate(10);
+            ->paginate(5);
         return view("SPP.transaksi_spp.index")->with("data", $data);
     }
     /**

@@ -23,6 +23,11 @@
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
+                <form action="{{ route('cariUser') }}" method="GET">
+                    @csrf
+                    <input type="text" name="cari" placeholder="Cari User" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari') }}">
+                    <button type="submit" class="btn btn-primary btn-round text-white pull-right m-3 p-2" style="width: 10%">Cari</button>
+                </form>
             </div>
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
@@ -72,6 +77,7 @@
                 @endforeach
               </tbody>
             </table>
+            <div class="d-flex justify-content-center">{{ $users->links() }}</div>
           </div>
           <!-- end content-->
         </div>

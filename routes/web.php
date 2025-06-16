@@ -55,6 +55,8 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
 
 // rute khusus admin
 Route::middleware(['auth','user-access:Admin'])->group(function(){
+
+    Route::get('cariUser', [UserController::class,'cari'])->name('cariUser');
     Route::get('register', [UserController::class,'register'])->name('register');
     Route::post('createUser', [UserController::class,'create'])->name('create');
     Route::resource('user', UserController::class);
