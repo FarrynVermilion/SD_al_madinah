@@ -29,7 +29,7 @@ class transaksiSPPController extends Controller
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
             ->orderBy("transaksi_spp.tahun_ajaran", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
-            ->paginate(5);
+            ->paginate();
         return view("SPP.transaksi_spp.index")->with("data", $data);
     }
     /**
@@ -47,6 +47,10 @@ class transaksiSPPController extends Controller
     {
         //ketua komite dam kepala sekolah nanti dibuat setelah penggabungan aplikasi SPP utama selesai kkp karena bukan bagian SPP
         $validated = $request->validated();
+        $ketua_komite = transaksi_jabatan_wali::where("id_jabatan", 3)->first();
+        $kepala_sekolah = transaksi_jabatan_sekolah::where("id_jabatan", 1)
+        ->join("users", "users.id", "=", "transaksi_jabatan_sekolah.id_account")
+        ->first();
         $val = Transaksi_SPP::withTrashed()->where("bulan", $validated["bulan"])
         ->where("tahun_ajaran", $validated["tahun_ajar"])->exists();
         if($val==true){
@@ -65,7 +69,7 @@ class transaksiSPPController extends Controller
         )
         // ->get();
         // return $spp;
-        ->each(function ($spp) use ( $validated) {
+        ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah) {
             $key =$spp->no_kk.$spp->nama_lengkap;
             if (strlen($key) < 32) {
                 $key = str_pad($key, 32, 0);
@@ -75,10 +79,7 @@ class transaksiSPPController extends Controller
             }
             $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
 
-            $ketua_komite = transaksi_jabatan_wali::where("id_jabatan", 3)->first();
-            $kepala_sekolah = transaksi_jabatan_sekolah::where("id_jabatan", 1)
-            ->join("users", "users.id", "=", "transaksi_jabatan_sekolah.id_account")
-            ->first();
+
             Transaksi_SPP::create([
                 "id_spp" => $spp->id_spp_siswa,
                 "spp" => $spp->nominal,
@@ -87,10 +88,10 @@ class transaksiSPPController extends Controller
                 'semester'=>$validated["semester"],
                 'tahun_ajaran'=>$validated["tahun_ajar"],
                 'status_lunas'=>json_encode($encode),
-                'id_ketua_komite'=>$ketua_komite->id_transaksi_jabatan_wali,
-                'nama_ketua_komite'=>$ketua_komite->nama_wali,
-                'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah,
-                'kepala_sekolah'=>$kepala_sekolah->name
+                'id_ketua_komite'=>$ketua_komite->id_transaksi_jabatan_wali??null,
+                'nama_ketua_komite'=>$ketua_komite->nama_wali??null,
+                'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah??null,
+                'kepala_sekolah'=>$kepala_sekolah->name??null
             ]);
         });
 
