@@ -115,5 +115,32 @@ class JabatanController extends Controller
         $jabatan_sekolah->delete();
         return redirect()->back()->with("success", "Jabatan sekolah berhasil dicopot");
     }
+    public function search(Request $request){
+        $search = $request->search;
+        $sekolah = transaksi_jabatan_sekolah::join("jabatan as a", "transaksi_jabatan_sekolah.id_jabatan", "=", "a.id_jabatan")
+        ->join("users as b", "b.id", "=", "id_account")
+        ->select(
+            "transaksi_jabatan_sekolah.*",
+            "a.nama_jabatan",
+            "b.name",
+            "b.role"
+            )
+        ->where("b.name", "like", "%$search%")
+        ->orWhere("a.nama_jabatan", "like", "%$search%")
+        ->orderBy("a.nama_jabatan", "asc")
+        ->paginate(10);
+        $wali = transaksi_jabatan_wali::join("jabatan as a", "transaksi_jabatan_wali.id_jabatan", "=", "a.id_jabatan")
+        ->select("transaksi_jabatan_wali.*","a.nama_jabatan")
+        ->where("transaksi_jabatan_wali.nama_wali", "like", "%$search%")
+        ->orWhere("a.nama_jabatan", "like", "%$search%")
+        ->orderBy("a.nama_jabatan", "asc")
+        ->paginate(10);
+        $empty = jabatan::whereNotIn('id_jabatan', transaksi_jabatan_sekolah::pluck('id_jabatan'))
+        ->whereNotIn('id_jabatan', transaksi_jabatan_wali::pluck('id_jabatan'))
+        ->where("jabatan.nama_jabatan", "like", "%$search%")
+        ->paginate(10);
+        $users = User::whereIn('role', ['0', '1', '2'])->get();
+        return view("jabatan.index")->with(["sekolah" => $sekolah, "wali" => $wali, "empty" => $empty, "users" => $users, "search" => $search]);
+    }
 
 }

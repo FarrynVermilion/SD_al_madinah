@@ -23,6 +23,10 @@
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
+              <form action="{{ route('jabatan_cari') }}" method="GET">
+                    <input type="text" name="search" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary btn-round text-white pull-right m-3 p-2" style="width: 10%">Cari</button>
+              </form>
             </div>
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
