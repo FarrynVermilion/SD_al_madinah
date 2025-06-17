@@ -77,8 +77,10 @@ class transaksiSPPController extends Controller
             if (strlen($key) > 32) {
                 $key = substr($key, 0, 32);
             }
+            // ini unuk linux
             $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
-
+            // // ini untuk windows
+            // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
 
             Transaksi_SPP::create([
                 "id_spp" => $spp->id_spp_siswa,
@@ -120,7 +122,10 @@ class transaksiSPPController extends Controller
         if (strlen($key) > 32) {
             $key = substr($key, 0, 32);
         }
+        //ini unuk linux
         $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
+        // // ini untuk windows
+        // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
