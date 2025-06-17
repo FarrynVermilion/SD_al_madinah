@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Admin_admin',
             'email' => 'admin@nowui.com',
-            'password' => Hash::make('secret'),
+            'password' => Hash::make('papantulis'),
             'created_at' => now(),
             'updated_at' => now(),
             'role' => 0
