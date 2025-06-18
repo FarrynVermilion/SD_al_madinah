@@ -58,9 +58,9 @@ return new class extends Migration
             $table->text('alasan_pindah')->nullable();
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('database_biodata_wali_siswa', function (Blueprint $table) {
             $table->id()->primary();
@@ -104,9 +104,9 @@ return new class extends Migration
             $table->string('nomor_telp_wali',15)->nullable();
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
     }
 

@@ -11,30 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jabatan', function (Blueprint $table) {
-            $table->id("id_jabatan");
-            $table->string("nama_jabatan",50);
-            $table->boolean("jenis_jabatan");
+        Schema::create('kelas', function (Blueprint $table) {
+            $table->id("id_kelas")->primary();
+            $table->string("nama_kelas",10);
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->unsignedBigInteger("created_by");
             $table->unsignedBigInteger("updated_by");
             $table->unsignedBigInteger("deleted_by")->nullable();
         });
-        Schema::create('transaksi_jabatan_sekolah', function (Blueprint $table) {
-            $table->id("id_transaksi_jabatan_sekolah");
-            $table->unsignedBigInteger("id_jabatan");
-            $table->unsignedBigInteger("id_account");
+        Schema::create('siswa_kelas', function (Blueprint $table) {
+            $table->id("id_siswa_kelas")->primary();
+            $table->unsignedBigInteger("id_siswa");
+            $table->unsignedBigInteger("id_kelas");
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->unsignedBigInteger("created_by");
             $table->unsignedBigInteger("updated_by");
             $table->unsignedBigInteger("deleted_by")->nullable();
         });
-        Schema::create('transaksi_jabatan_wali', function (Blueprint $table) {
-            $table->id("id_transaksi_jabatan_wali");
-            $table->unsignedBigInteger("id_jabatan");
-            $table->string("nama_wali",50);
+        Schema::create('NIS', function (Blueprint $table) {
+            $table->char("id_NIS",7)->primary();
+            $table->unsignedBigInteger("id_siswa");
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->unsignedBigInteger("created_by");
@@ -48,6 +46,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jabatan');
+        Schema::dropIfExists('kelas');
+        Schema::dropIfExists('transaksi_siswa_kelas');
+        Schema::dropIfExists('NIS');
     }
 };

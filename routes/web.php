@@ -12,6 +12,10 @@ use App\Http\Controllers\SPPSiswaController;
 use App\Http\Controllers\transaksiSPPController;
 use App\Http\Controllers\WaliSiswaController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\kelasController;
+use App\Http\Controllers\siswaKelasController;
+use App\Http\Controllers\siswaNISController;
+use App\Http\Controllers\verifikasiController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -36,16 +40,20 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
     Route::resource('/pendaftaran/siswa', SiswaController::class);
-    Route::resource('/pendaftaran/wali', WaliSiswaController::class);
+    // Route::resource('/pendaftaran/wali', WaliSiswaController::class);
+    Route::resource('pendaftaran/kelas', kelasController::class);
+    Route::resource('pendaftaran/siswa_kelas', siswaKelasController::class);
+    Route::resource('pendaftaran/NIS',siswaNISController::class);
+
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');
     Route::resource('/spp/nominal', nominalSPPController::class);
     Route::resource('/spp/potongan',  potonganSPPController::class);
     Route::resource('/spp/SPPsiswa', SPPSiswaController::class);
     Route::resource('/spp/transaksi', transaksiSPPController::class);
+    Route::resource('spp/verifikasi', verifikasiController::class);
     Route::get("spp/siswa/cari", [SPPSiswaController::class,'cari'])->name("spp.siswa.cari");
     Route::get("spp/SPPsiswa/create_spp/{siswa}", [SPPSiswaController::class,'create_spp'])->name("spp.SPPsiswa.createSPP");
     Route::get("spp/transakis/cari/", [transaksiSPPController::class,'cari'])->name("transaksi.cari");
-
 });
 
 // // rute Siswa

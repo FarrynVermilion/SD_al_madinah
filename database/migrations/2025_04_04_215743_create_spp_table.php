@@ -17,9 +17,9 @@ return new class extends Migration
             $table->decimal("nominal",9,2)->unsigned();
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('potongan_spp', function (Blueprint $table) {
             $table->id("id_potongan")->primary();
@@ -27,9 +27,9 @@ return new class extends Migration
             $table->decimal("nominal_potongan"."",9,2)->unsigned();
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
 
         //default settting bayaran siswa
@@ -43,9 +43,9 @@ return new class extends Migration
             $table->boolean("status_siswa")->default(true);
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
         //transaksi + ptongan tambahan siswa
         //key enkripsi = no kk|nama_lengkap kurang tambahin 0000 sampe 16 byte lebih potong sampe 16 byte
@@ -68,9 +68,16 @@ return new class extends Migration
             $table->string("kepala_sekolah")->nullable();
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by")->nullable();
+            $table->unsignedBigInteger("deleted_by")->nullable();
+        });
+        Schema::create('verifikasi_spp', function (Blueprint $table) {
+            $table->id("id_verifikasi")->primary();
+            $table->unsignedBigInteger("id_transaksi");
+            $table->noolean("status_verifikasi");
+            $table->timestamps();
+            $table->softDeletes()->nullable();
         });
     }
 
@@ -83,5 +90,6 @@ return new class extends Migration
         Schema::dropIfExists('potongan_spp');
         Schema::dropIfExists('spp_siswa');
         Schema::dropIfExists('transaksi_spp');
+        Schema::dropIfExists('verifikasi_spp');
     }
 };

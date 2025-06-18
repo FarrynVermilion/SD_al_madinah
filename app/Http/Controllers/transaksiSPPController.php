@@ -13,6 +13,7 @@ use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
 use App\Models\transaksi_jabatan_wali;
 use Illuminate\Http\Request;
+use App\Models\verifikasi_SPP;
 
 class transaksiSPPController extends Controller
 {
@@ -82,7 +83,7 @@ class transaksiSPPController extends Controller
             // // ini untuk windows
             // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
 
-            Transaksi_SPP::create([
+            $a = Transaksi_SPP::create([
                 "id_spp" => $spp->id_spp_siswa,
                 "spp" => $spp->nominal,
                 'potongan' => $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan,
@@ -94,6 +95,10 @@ class transaksiSPPController extends Controller
                 'nama_ketua_komite'=>$ketua_komite->nama_wali??null,
                 'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah??null,
                 'kepala_sekolah'=>$kepala_sekolah->name??null
+            ]);
+            verifikasi_SPP::create([
+                "id_transaksi" => $a->id_transaksi,
+                "status_verifikasi" => false
             ]);
         });
 

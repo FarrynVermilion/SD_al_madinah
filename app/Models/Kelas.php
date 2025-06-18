@@ -5,37 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Transaksi_SPP extends Model
+class Kelas extends Model
 {
-    use SoftDeletes, Prunable;
-    protected $table = "transaksi_spp";
-    protected $fillable =  [
-        'id_spp',
-        'spp',
-        'potongan',
-        'bulan',
-        'tahun_ajaran',
-        'semester',
-        'status_lunas',
-        'id_ketua_komite',
-        'nama_ketua_komite',
-        'id_kepala_sekolah',
-        'kepala_sekolah'
-    ];
-
-    protected $primaryKey = 'id_transaksi';
+    use SoftDeletes;
+    protected $table = 'kelas';
+    protected $primaryKey = 'id_kelas';
     public $timestamps = true;
-
-    public function getSemester(): Attribute
-    {
-        return new Attribute(
-            fn($value)=>['Ganjil','Genap'][$value]
-        );
-    }
+    protected $fillable = [
+        'nama_kelas'
+    ];
     protected static function boot()
     {
         // updating created_by and updated_by when model is created
@@ -44,6 +23,9 @@ class Transaksi_SPP extends Model
         static::creating(function ($model) {
             if (!$model->isDirty('created_by')) {
                 $model->created_by = Auth::user()->id;
+            }
+            if (!$model->isDirty('updated_by')) {
+                $model->updated_by = Auth::user()->id;
             }
         });
 
@@ -61,11 +43,5 @@ class Transaksi_SPP extends Model
                 $model->save();
             }
         });
-    }
-
-    //get data to delete permanently
-    public function prunable(): Builder
-    {
-        return static::withTrashed()->whereNotNull("deleted_at");
     }
 }

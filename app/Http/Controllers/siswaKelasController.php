@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreWali_SiswaRequest;
-use App\Http\Requests\UpdateWali_SiswaRequest;
-use App\Models\Wali_Siswa;
 use Illuminate\Http\Request;
+use App\Models\Siswa_Kelas;
+use App\Models\Siswa;
+use App\Models\Kelas;
 
-class WaliSiswaController extends Controller
+class siswaKelasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view("pendaftaran.siswa_kelas.index");
     }
 
     /**
@@ -36,7 +36,7 @@ class WaliSiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Wali_Siswa $wali_Siswa)
+    public function show(string $id)
     {
         //
     }
@@ -44,7 +44,7 @@ class WaliSiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Wali_Siswa $wali_Siswa)
+    public function edit(string $id)
     {
         //
     }
@@ -52,7 +52,7 @@ class WaliSiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWali_SiswaRequest $request, Wali_Siswa $wali_Siswa)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -60,7 +60,7 @@ class WaliSiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Wali_Siswa $wali_Siswa)
+    public function destroy(string $id)
     {
         //
     }
