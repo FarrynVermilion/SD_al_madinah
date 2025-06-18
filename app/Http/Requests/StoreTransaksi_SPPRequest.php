@@ -23,7 +23,7 @@ class StoreTransaksi_SPPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "bulan" => ["required", "in:1,2,3,4,5,6,7,8,9,10,11,12"],
+            "bulan" => ["required", "in:1,2,3,4,5,6"],
             "tahun_ajar" => ["required","in:".date("Y")."/".(date("Y")+1).",".(date("Y")-1)."/".date("Y")],
             "semester" => ["required", "in:0,1"],
         ];

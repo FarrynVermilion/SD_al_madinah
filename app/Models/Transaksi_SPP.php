@@ -30,12 +30,6 @@ class Transaksi_SPP extends Model
     protected $primaryKey = 'id_transaksi';
     public $timestamps = true;
 
-    public function getBulan(): Attribute
-    {
-        return new Attribute(
-            fn($value)=>['Null','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][$value]
-        );
-    }
     public function getSemester(): Attribute
     {
         return new Attribute(

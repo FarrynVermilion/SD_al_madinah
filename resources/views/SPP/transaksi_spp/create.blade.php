@@ -30,73 +30,37 @@
                                     @if ( old('bulan')=='1')
                                         selected
                                     @endif>
-                                    Januari
+                                    1
                                 </option>
                                 <option value="2"
                                     @if ( old('bulan')=='2')
                                         selected
                                     @endif>
-                                    Februari
+                                    2
                                 </option>
                                 <option value="3"
                                     @if ( old('bulan')=='3')
                                         selected
                                     @endif>
-                                    Maret
+                                    3
                                 </option>
                                 <option value="4"
                                     @if ( old('bulan')=='4')
                                         selected
                                     @endif>
-                                    April
+                                    4
                                 </option>
                                 <option value="5"
                                     @if ( old('bulan')=='5')
                                         selected
                                     @endif>
-                                    Mei
+                                    5
                                 </option>
                                 <option value="6"
                                     @if ( old('bulan')=='6')
                                         selected
                                     @endif>
-                                    Juni
-                                </option>
-                                <option value="7"
-                                    @if ( old('bulan')=='7')
-                                        selected
-                                    @endif>
-                                    Juli
-                                </option>
-                                <option value="8"
-                                    @if ( old('bulan')=='8')
-                                        selected
-                                    @endif>
-                                    Agustus
-                                </option>
-                                <option value="9"
-                                    @if ( old('bulan')=='9')
-                                        selected
-                                    @endif>
-                                    September
-                                </option>
-                                <option value="10"
-                                    @if ( old('bulan')=='10')
-                                        selected
-                                    @endif>
-                                    Oktober
-                                </option>
-                                <option value="11"
-                                    @if ( old('bulan')=='11')
-                                        selected
-                                    @endif>
-                                    November
-                                </option>
-                                <option value="12"
-                                    @if ( old('bulan')=='12')
-                                        selected
-                                    @endif>
-                                    Dessember
+                                    6
                                 </option>
                             </select>
                             @include('alerts.feedback', ['field' => 'bulan'])

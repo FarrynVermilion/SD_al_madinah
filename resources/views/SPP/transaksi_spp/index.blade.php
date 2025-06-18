@@ -50,9 +50,8 @@
                     <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
                     <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
                     <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
-                    {{-- <td>{{  DateTime::createFromFormat('!m', $siswa->bulan)->format('F')}}</td> --}}
-                    <td>{{ $siswa->bulan }}</td>
-                    <td>{{ $siswa->semester==0?"Ganjil": "Genap" }}</td>
+                    <td>{{$siswa->bulan }}</td>
+                    <td>{{$siswa->semester==0?"Ganjil": "Genap" }}</td>
                     <td>{{$siswa->tahun_ajaran}}</td>
                     <td>{{$siswa->status_lunas}}</td>
                     <td class="td-actions text-left">
