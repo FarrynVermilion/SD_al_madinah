@@ -4127,17 +4127,17 @@ Created using IcoMoon - icomoon.io
 }
 .sidebar[data-color="dark-green"]:after,
 .off-canvas-sidebar[data-color="dark-green"]:after {
-    background: #003200;
+    background: #226F54;
 }
 
 .sidebar[data-color="dark-green"] .nav li.active>a:not([data-toggle="collapse"]),
 .off-canvas-sidebar[data-color="dark-green"] .nav li.active>a:not([data-toggle="collapse"]) {
-    color: #003200;
+    color: #226F54;
 }
 
 .sidebar[data-color="dark-green"] .nav li.active>a:not([data-toggle="collapse"]) i,
 .off-canvas-sidebar[data-color="dark-green"] .nav li.active>a:not([data-toggle="collapse"]) i {
-    color: #003200;
+    color: #226F54;
 }
 
 .visible-on-sidebar-regular {
