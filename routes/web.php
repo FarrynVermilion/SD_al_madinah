@@ -45,6 +45,7 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::resource('pendaftaran/siswa_kelas', siswaKelasController::class);
     Route::resource('pendaftaran/NIS',siswaNISController::class);
 
+    Route::get("spp/verifikasi/cari/", [verifikasiController::class,'cari'])->name("verifikasi_cari");
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');
     Route::resource('/spp/nominal', nominalSPPController::class);
     Route::resource('/spp/potongan',  potonganSPPController::class);

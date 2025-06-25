@@ -73,7 +73,7 @@ return new class extends Migration
             $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('verifikasi_spp', function (Blueprint $table) {
-            $table->id("id_verifikasi_spp")->primary();
+            $table->id("id_verifikasi")->primary();
             $table->unsignedBigInteger("id_transaksi");
             $table->boolean("status_verifikasi");
             $table->timestamps();

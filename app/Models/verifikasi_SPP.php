@@ -10,7 +10,7 @@ class verifikasi_SPP extends Model
 {
     use SoftDeletes, Prunable;
     protected $table = 'verifikasi_spp';
-    protected $primaryKey = 'id_verifikasi_spp';
+    protected $primaryKey = 'id_verifikasi';
     protected $fillable =  [
         "id_transaksi",
         "status_verifikasi"

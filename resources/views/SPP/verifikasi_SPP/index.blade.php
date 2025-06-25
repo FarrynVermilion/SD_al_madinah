@@ -15,13 +15,13 @@
           @include('alerts.errors')
           @include('alerts.success')
           <div class="card-header">
-            <h4 class="card-title">Transaksi SPP</h4>
+            <h4 class="card-title">Verifikasi SPP</h4>
             <div class="col-12 mt-2"></div>
           </div>
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
-              <form action="{{ route('transaksi.cari') }}" method="GET">
+              <form action="{{ route('verifikasi_cari') }}" method="GET">
                     <input type="text" name="cari_siswa" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
                     <button type="submit" class="btn btn-primary btn-round text-white pull-right m-3 p-2" style="width: 10%">Cari</button>
               </form>
@@ -38,7 +38,6 @@
                   <th>Bulan</th>
                   <th>Semester</th>
                   <th>Tahun ajaran</th>
-                  <th>Lunas</th>
                   <th>Verifikasi</th>
                 </tr>
               </thead>
