@@ -40,7 +40,7 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
     Route::resource('/pendaftaran/siswa', SiswaController::class);
-    // Route::resource('/pendaftaran/wali', WaliSiswaController::class);
+    Route::resource('/pendaftaran/wali', WaliSiswaController::class);
     Route::resource('pendaftaran/kelas', kelasController::class);
     Route::resource('pendaftaran/siswa_kelas', siswaKelasController::class);
     Route::resource('pendaftaran/NIS',siswaNISController::class);

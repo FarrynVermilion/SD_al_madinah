@@ -10,11 +10,16 @@ class verifikasi_SPP extends Model
 {
     use SoftDeletes, Prunable;
     protected $table = 'verifikasi_spp';
-
-    protected $primaryKey = ['id_verifikasi'];
+    protected $primaryKey = 'id_verifikasi_spp';
     protected $fillable =  [
         "id_transaksi",
         "status_verifikasi"
     ];
     public $timestamps = true;
+    public $incrementing = true;
+
+    // public function transaksi()
+    // {
+    //     return $this->belongsTo(Transaksi_SPP::class, 'id_transaksi', 'id_transaksi');
+    // }
 }

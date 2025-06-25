@@ -12,8 +12,9 @@ use App\Models\SPP_Siswa;
 use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
 use App\Models\transaksi_jabatan_wali;
-use Illuminate\Http\Request;
 use App\Models\verifikasi_SPP;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class transaksiSPPController extends Controller
 {
@@ -70,7 +71,7 @@ class transaksiSPPController extends Controller
         )
         // ->get();
         // return $spp;
-        ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah) {
+        ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah , &$test) {
             $key =$spp->no_kk.$spp->nama_lengkap;
             if (strlen($key) < 32) {
                 $key = str_pad($key, 32, 0);
@@ -80,28 +81,29 @@ class transaksiSPPController extends Controller
             }
             // ini unuk linux
             $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
-            // // ini untuk windows
+            // ini untuk windows
             // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
+            $a = new Transaksi_SPP();
+            $a->id_spp = $spp->id_spp_siswa;
+            $a->spp = $spp->nominal;
+            $a->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
+            $a->bulan=$validated["bulan"];
+            $a->semester=$validated["semester"];
+            $a->tahun_ajaran=$validated["tahun_ajar"];
+            $a->status_lunas=json_encode($encode);
+            $a->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
+            $a->nama_ketua_komite=$ketua_komite->nama_wali??null;
+            $a->id_kepala_sekolah=$kepala_sekolah->id_transaksi_jabatan_sekolah??null;
+            $a->kepala_sekolah=$kepala_sekolah->name??null;
 
-            $a = Transaksi_SPP::create([
-                "id_spp" => $spp->id_spp_siswa,
-                "spp" => $spp->nominal,
-                'potongan' => $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan,
-                'bulan'=>$validated["bulan"],
-                'semester'=>$validated["semester"],
-                'tahun_ajaran'=>$validated["tahun_ajar"],
-                'status_lunas'=>json_encode($encode),
-                'id_ketua_komite'=>$ketua_komite->id_transaksi_jabatan_wali??null,
-                'nama_ketua_komite'=>$ketua_komite->nama_wali??null,
-                'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah??null,
-                'kepala_sekolah'=>$kepala_sekolah->name??null
-            ]);
-            verifikasi_SPP::create([
-                "id_transaksi" => $a->id_transaksi,
-                "status_verifikasi" => false
-            ]);
+            DB::transaction(function() use ($a, $test) {
+                $a->save();
+                $c = new verifikasi_SPP();
+                $c->id_transaksi = $a->id_transaksi;
+                $c->status_verifikasi = 0;
+                $c->save();
+            });
         });
-
         return redirect()->route("transaksi.index")->with("success", "Anda membuat berhasil membuat transaksi");
     }
 

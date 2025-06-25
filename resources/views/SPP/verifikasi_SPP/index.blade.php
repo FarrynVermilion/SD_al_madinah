@@ -15,7 +15,6 @@
           @include('alerts.errors')
           @include('alerts.success')
           <div class="card-header">
-            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('transaksi.create') }}">Buat SPP untuk semua siswa aktif</a>
             <h4 class="card-title">Transaksi SPP</h4>
             <div class="col-12 mt-2"></div>
           </div>
@@ -40,42 +39,21 @@
                   <th>Semester</th>
                   <th>Tahun ajaran</th>
                   <th>Lunas</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                  <th>Verifikasi</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data as $siswa)
                     <tr>
-                    <td>{{$siswa->nama_lengkap}}</td>
-                    <td>{{$siswa->nisn}}</td>
-                    <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
-                    <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
-                    <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
-                    <td>{{$siswa->bulan }}</td>
-                    <td>{{$siswa->semester==0?"Ganjil": "Genap" }}</td>
-                    <td>{{$siswa->tahun_ajaran}}</td>
-                    <td>{{$siswa->status_lunas}}</td>
-                    <td class="td-actions text-left">
-                      <table>
-                        <tr>
-                          <td>
-                            <form method="GET" action="{{route('transaksi.edit',$siswa->id_transaksi)}}" onsubmit="return pembayaran()">
-                              @csrf
-                              <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Lunas</i></button>
-                            </form>
-                          </td>
-                          @if ( Auth::user()->role=='Admin')
-                            <td>
-                                <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
-                                    @csrf
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
-                                </form>
-                            </td>
-                          @endif
-                        </tr>
-                      </table>
-                    </td>
+                        <td>{{$siswa->nama_lengkap}}</td>
+                        <td>{{$siswa->nisn}}</td>
+                        <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
+                        <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
+                        <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
+                        <td>{{$siswa->bulan }}</td>
+                        <td>{{$siswa->semester==0?"Ganjil": "Genap" }}</td>
+                        <td>{{$siswa->tahun_ajaran}}</td>
+                        <td>{{$siswa->status_verifikasi==0?"Belum diverifikasi wali":"Sudah diverifikasi wali"}}</td>
                     </tr>
                 @endforeach
               </tbody>
