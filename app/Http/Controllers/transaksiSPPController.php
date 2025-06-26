@@ -12,7 +12,9 @@ use App\Models\SPP_Siswa;
 use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
 use App\Models\transaksi_jabatan_wali;
+use App\Models\User;
 use App\Models\verifikasi_SPP;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -80,7 +82,7 @@ class transaksiSPPController extends Controller
                 $key = substr($key, 0, 32);
             }
             // ini unuk linux
-            $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
+            $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d")."|".Auth::user()->name.'|"'), true)["cyphertext"];
             // ini untuk windows
             // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
             $a = new Transaksi_SPP();
@@ -123,6 +125,8 @@ class transaksiSPPController extends Controller
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP);
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->no_kk.$siswa->nama_lengkap;
+        $pembuat = User::find($transaksi_SPP->created_by)->name;
+        $pelunas = Auth::user()->name;
         if (strlen($key) < 32) {
             $key = str_pad($key, 32, 0);
         }
@@ -130,7 +134,7 @@ class transaksiSPPController extends Controller
             $key = substr($key, 0, 32);
         }
         //ini unuk linux
-        $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
+        $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d")."|".$pembuat."|".$pelunas.'"'), true)["cyphertext"];
         // // ini untuk windows
         // $encode = json_decode(shell_exec('./../kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);

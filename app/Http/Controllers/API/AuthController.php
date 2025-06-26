@@ -200,16 +200,12 @@ class AuthController extends Controller
             ->join('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
             ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
             ->join('users', 'users.id', '=', 'database_biodata_siswa.id')
-            ->leftJoin('users as pembuat','transaksi_spp.created_by','=','pembuat.id')
-            ->leftJoin('users as pelunas','transaksi_spp.updated_by','=','pelunas.id')
             ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_transaksi')
             ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
             ->select(
                 'transaksi_spp.*',
                 'database_biodata_siswa.nama_lengkap',
                 'database_biodata_siswa.id_account',
-                'pembuat.name as nama_pembuat',
-                'pelunas.name as nama_pelunas',
                 'verifikasi_spp.status_verifikasi as status_verifikasi',
                 'verifikasi_spp.id_verifikasi as id_verifikasi'
 
