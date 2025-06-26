@@ -50,63 +50,63 @@ class SiswaController extends Controller
     public function store(StoreSiswaRequest $request)
     {
         $validated = $request->validated();
-        // Create the user
-        $tanggal_lahir = explode("-",$validated["tanggal_lahir"]);
-        $res = "";
-        for ($i = count($tanggal_lahir); $i > 0; $i--) {
-            $res .= $tanggal_lahir[$i-1];
-        }
-        $user = User::create([
-            'name' => $validated["nama_lengkap"],
-            'email' => $validated["email"],
-            'password' => Hash::make("P".$res),
-            'role' => 3
-        ]);
-        // Create the Siswa record
-        $siswa = new Siswa();
-        $siswa->id_account = $user->id;
-        $siswa->nama_lengkap = $validated["nama_lengkap"] ?? null;
-        $siswa->nama_panggilan = $validated["nama_panggilan"] ?? null;
-        $siswa->jenis_kelamin = $validated["jenis_kelamin"] ?? null;
-        $siswa->tempat_lahir = $validated["tempat_lahir"] ?? null;
-        $siswa->tanggal_lahir = $validated["tanggal_lahir"] ?? null;
-        $siswa->agama = $validated["agama"] ?? null;
-        $siswa->kewarganegaraan = $validated["kewarganegaraan"] ?? null;
-        $siswa->anak_ke = $validated["anak_ke"] ?? null;
-        $siswa->jumlah_saudara_kandung = $validated["jumlah_saudara_kandung"] ?? null;
-        $siswa->jumlah_saudara_tiri = $validated["jumlah_saudara_tiri"] ?? null;
-        $siswa->jumlah_saudara_angkat = $validated["jumlah_saudara_angkat"] ?? null;
-        $siswa->status_anak = $validated["status_anak"] ?? null;
-        $siswa->bahasa_sehari_hari = $validated["bahasa_sehari_hari"] ?? null;
-        $siswa->alamat = $validated["alamat"] ?? null;
-        $siswa->no_kk = $validated["no_kk"] ?? null;
-        $siswa->kelurahan = $validated["kelurahan"] ?? null;
-        $siswa->kecamatan = $validated["kecamatan"] ?? null;
-        $siswa->kota = $validated["kota"] ?? null;
-        $siswa->kode_pos = $validated["kode_pos"] ?? null;
-        $siswa->nomor_telepon = $validated["nomor_telepon"] ?? null;
-        $siswa->tempat_alamat = $validated["tempat_alamat"] ?? null;
-        $siswa->nama_pemilik_tempat_alamat = $validated["nama_pemilik_tempat_alamat"] ?? null;
-        $siswa->jarak_ke_sekolah = $validated["jarak_ke_sekolah"] ?? null;
-        $siswa->metode_transportasi = $validated["metode_transportasi"] ?? null;
-        $siswa->golongan_darah = $validated["golongan_darah"] ?? null;
-        $siswa->riwayat_rawat = $validated["riwayat_rawat"] ?? null;
-        $siswa->riwayat_penyakit = $validated["riwayat_penyakit"] ?? null;
-        $siswa->kelainan_jasmani = $validated["kelainan_jasmani"] ?? null;
-        $siswa->tinggi_badan = $validated["tinggi_badan"] ?? null;
-        $siswa->berat_badan = $validated["berat_badan"] ?? null;
-        $siswa->nama_sekolah_asal = $validated["nama_sekolah_asal"] ?? null;
-        $siswa->tanggal_ijazah = $validated["tanggal_ijazah"] ?? null;
-        $siswa->nomor_ijazah = $validated["nomor_ijazah"] ?? null;
-        $siswa->tanggal_skhun = $validated["tanggal_skhun"] ?? null;
-        $siswa->nomor_skhun = $validated["nomor_skhun"] ?? null;
-        $siswa->lama_belajar = $validated["lama_belajar"] ?? null;
-        $siswa->nisn = $validated["nisn"] ?? null;
-        $siswa->tipe_riwayat_sekolah = $validated["tipe_riwayat_sekolah"] ?? null;
-        $siswa->nama_riwayat_sekolah = $validated["nama_riwayat_sekolah"] ?? null;
-        $siswa->tanggal_pindah = $validated["tanggal_pindah"] ?? null;
-        $siswa->alasan_pindah = $validated["alasan_pindah"] ?? null;
-        DB::transaction(function () use ($siswa) {
+
+        DB::transaction(function () use ($validated) {
+            $tanggal_lahir = explode("-",$validated["tanggal_lahir"]);
+            $res = "";
+            for ($i = count($tanggal_lahir); $i > 0; $i--) {
+                $res .= $tanggal_lahir[$i-1];
+            }
+            $user = User::create([
+                'name' => $validated["nama_lengkap"],
+                'email' => $validated["email"],
+                'password' => Hash::make("P".$res),
+                'role' => 3
+            ]);
+            // Create the Siswa record
+            $siswa = new Siswa();
+            $siswa->id_account = $user->id;
+            $siswa->nama_lengkap = $validated["nama_lengkap"] ?? null;
+            $siswa->nama_panggilan = $validated["nama_panggilan"] ?? null;
+            $siswa->jenis_kelamin = $validated["jenis_kelamin"] ?? null;
+            $siswa->tempat_lahir = $validated["tempat_lahir"] ?? null;
+            $siswa->tanggal_lahir = $validated["tanggal_lahir"] ?? null;
+            $siswa->agama = $validated["agama"] ?? null;
+            $siswa->kewarganegaraan = $validated["kewarganegaraan"] ?? null;
+            $siswa->anak_ke = $validated["anak_ke"] ?? null;
+            $siswa->jumlah_saudara_kandung = $validated["jumlah_saudara_kandung"] ?? null;
+            $siswa->jumlah_saudara_tiri = $validated["jumlah_saudara_tiri"] ?? null;
+            $siswa->jumlah_saudara_angkat = $validated["jumlah_saudara_angkat"] ?? null;
+            $siswa->status_anak = $validated["status_anak"] ?? null;
+            $siswa->bahasa_sehari_hari = $validated["bahasa_sehari_hari"] ?? null;
+            $siswa->alamat = $validated["alamat"] ?? null;
+            $siswa->no_kk = $validated["no_kk"] ?? null;
+            $siswa->kelurahan = $validated["kelurahan"] ?? null;
+            $siswa->kecamatan = $validated["kecamatan"] ?? null;
+            $siswa->kota = $validated["kota"] ?? null;
+            $siswa->kode_pos = $validated["kode_pos"] ?? null;
+            $siswa->nomor_telepon = $validated["nomor_telepon"] ?? null;
+            $siswa->tempat_alamat = $validated["tempat_alamat"] ?? null;
+            $siswa->nama_pemilik_tempat_alamat = $validated["nama_pemilik_tempat_alamat"] ?? null;
+            $siswa->jarak_ke_sekolah = $validated["jarak_ke_sekolah"] ?? null;
+            $siswa->metode_transportasi = $validated["metode_transportasi"] ?? null;
+            $siswa->golongan_darah = $validated["golongan_darah"] ?? null;
+            $siswa->riwayat_rawat = $validated["riwayat_rawat"] ?? null;
+            $siswa->riwayat_penyakit = $validated["riwayat_penyakit"] ?? null;
+            $siswa->kelainan_jasmani = $validated["kelainan_jasmani"] ?? null;
+            $siswa->tinggi_badan = $validated["tinggi_badan"] ?? null;
+            $siswa->berat_badan = $validated["berat_badan"] ?? null;
+            $siswa->nama_sekolah_asal = $validated["nama_sekolah_asal"] ?? null;
+            $siswa->tanggal_ijazah = $validated["tanggal_ijazah"] ?? null;
+            $siswa->nomor_ijazah = $validated["nomor_ijazah"] ?? null;
+            $siswa->tanggal_skhun = $validated["tanggal_skhun"] ?? null;
+            $siswa->nomor_skhun = $validated["nomor_skhun"] ?? null;
+            $siswa->lama_belajar = $validated["lama_belajar"] ?? null;
+            $siswa->nisn = $validated["nisn"] ?? null;
+            $siswa->tipe_riwayat_sekolah = $validated["tipe_riwayat_sekolah"] ?? null;
+            $siswa->nama_riwayat_sekolah = $validated["nama_riwayat_sekolah"] ?? null;
+            $siswa->tanggal_pindah = $validated["tanggal_pindah"] ?? null;
+            $siswa->alasan_pindah = $validated["alasan_pindah"] ?? null;
             $siswa->save();
 
             $wali = new Wali_Siswa();
