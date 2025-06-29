@@ -71,6 +71,7 @@ class HomeController extends Controller
                 DB::raw('count(*) as jumlah')
                 )
             ->paginate(10);
-        return view('SPP.home')->with("data", $data);
+        $tahun_ajaran = DB::table("transaksi_spp")->select("tahun_ajaran")->distinct()->get();
+        return view('SPP.home')->with(["data" => $data, "tahun_ajaran" => $tahun_ajaran]);
     }
 }

@@ -122,5 +122,13 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    // 'providers' => [
+    //     // ...
+    //     Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class
+    // ],
+    // 'aliases' => [
+    //     // ...
+    //     'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class
+    // ],
 
 ];

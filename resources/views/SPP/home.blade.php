@@ -15,10 +15,37 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="card-category">Jumlah siswa per kulan yang belum dibayar</h5>
-            <h4 class="card-title"> Jumlah</h4>
+            <table width="100%"
+              <tr>
+                <td class="text-left">
+                    <h5 class="card-category">Jumlah siswa per kulan yang belum dibayar</h5>
+                    <h4 class="card-title"> Jumlah</h4>
+                </td>
+                <td class="text-right">
+                    <div class="toolbar">
+                        <table width="100%">
+                            <form action="{{ route('cetak.laporan_keuangan') }}" method="GET">
+                                <tr->
+                                    <td>
+                                        <select name="tahun_ajaran" class="form-control">
+                                            <option value="">Pilih tahun ajaran</option>
+                                            @foreach ($tahun_ajaran as $tahun)
+                                                <option value="{{$tahun->tahun_ajaran}}">{{$tahun->tahun_ajaran}}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td >
+                                        <button type="submit" class="btn btn-primary btn-round text-white " >cetak</button>
+                                    </td>
+                                </tr>
+                            </form>
+                        </table>
+                    </div>
+                </td>
+              </tr>
           </div>
           <div class="card-body">
+
             <div class="table-responsive">
               <table class="table">
                 <thead class="text-primary">
