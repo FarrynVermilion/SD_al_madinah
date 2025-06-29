@@ -30,7 +30,7 @@
             <p> {{ __("Jabatan Management") }} </p>
             </a>
         </li>
-        <li class="@if ($activePage == 'icons') active @endif">
+        {{-- <li class="@if ($activePage == 'icons') active @endif">
           <a href="{{ route('page.index','icons') }}">
             <i class="now-ui-icons education_atom"></i>
             <p>{{ __('Icons') }}</p>
@@ -59,7 +59,7 @@
             <i class="now-ui-icons text_caps-small"></i>
             <p>{{ __('Typography') }}</p>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </div>
