@@ -14,7 +14,6 @@ use App\Http\Controllers\WaliSiswaController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\kelasController;
 use App\Http\Controllers\siswaKelasController;
-use App\Http\Controllers\siswaNISController;
 use App\Http\Controllers\verifikasiController;
 use App\Http\Controllers\printController;
 
@@ -40,11 +39,12 @@ Route::middleware(['auth','user-access:Guru|Admin'])->group( function(){
 // rute khusus Tata_Usaha
 Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get( '/pendaftaran/home', [HomeController::class,'indexPendaftaran'])->name( 'homePendaftaran');
+    Route::get("pendaftaran/siswa/cari", [SiswaController::class,'cari'])->name("pendaftaran_siswa_cari");
+    Route::POST("pendaftaran/naik_kelas", [siswaKelasController::class,'naik_kelas'])->name("naik_kelas");
     Route::resource('/pendaftaran/siswa', SiswaController::class);
     Route::resource('/pendaftaran/wali', WaliSiswaController::class);
     Route::resource('pendaftaran/kelas', kelasController::class);
     Route::resource('pendaftaran/siswa_kelas', siswaKelasController::class);
-    Route::resource('pendaftaran/NIS',siswaNISController::class);
 
     Route::get("spp/verifikasi/cari/", [verifikasiController::class,'cari'])->name("verifikasi_cari");
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');

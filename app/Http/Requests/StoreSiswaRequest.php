@@ -63,7 +63,7 @@ class StoreSiswaRequest extends FormRequest
             'tanggal_skhun' => 'nullable|date',
             'nomor_skhun' => 'nullable|string|max:100',
             'lama_belajar' => 'nullable|integer|min:0|max:20',
-            'nisn' => 'nullable|string|max:100',
+            'nisn' => 'required|string|max:100',
             'tipe_riwayat_sekolah' => 'nullable|in:0,1',
             'nama_riwayat_sekolah' => 'nullable|string|max:255',
             'tanggal_pindah' => 'nullable|date',

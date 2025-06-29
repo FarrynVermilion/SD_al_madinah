@@ -15,7 +15,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <table width="100%"
+            <table width="100%">
               <tr>
                 <td class="text-left">
                     <h5 class="card-category">Jumlah siswa per kulan yang belum dibayar</h5>
@@ -25,6 +25,7 @@
                     <div class="toolbar">
                         <table width="100%">
                             <form action="{{ route('cetak.laporan_keuangan') }}" method="GET">
+                                @csrf
                                 <tr->
                                     <td>
                                         <select name="tahun_ajaran" class="form-control">

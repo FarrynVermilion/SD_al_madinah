@@ -11,19 +11,29 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          <div class="card-header">
+            <div class="col-12 mt-2">
+                <table class="w-100">
+                    <tr>
+                        <td scope="col" class="col-5">
+                            <h4 class="card-title">Siswa belum aktif</h4>
+                        </td>
+                        <td scope="col" class="col-12 text-right w-100 m-auto pull-right">
+                            <form action="{{ route('spp.siswa.cari') }}" method="GET">
+                                @csrf
+                                <input type="text" name="cari_siswa" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
+                                <button type="submit" class="btn btn-primary btn-round text-white pull-right" style="width: 10%">Cari</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+
           @include('alerts.errors')
           @include('alerts.success')
-          <div class="card-header">
-            <h4 class="card-title">Siswa belum aktif</h4>
-          </div>
+
           <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
-                <form action="{{ route('spp.siswa.cari') }}" method="GET">
-                    <input type="text" name="cari_siswa" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
-                    <button type="submit" class="btn btn-primary btn-round text-white pull-right m-3 p-2" style="width: 10%">Cari</button>
-                </form>
-            </div>
             @csrf
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
@@ -73,16 +83,24 @@
         <!--  end card  -->
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Siswa aktif</h4>
+            <div class="col-12 mt-2">
+                <table class="w-100">
+                    <tr>
+                        <td scope="col" class="col-5">
+                            <h4 class="card-title">Siswa aktif</h4>
+                        </td>
+                        <td scope="col" class="col-12 text-right w-100 m-auto pull-right">
+                            <form action="{{ route('spp.siswa.cari') }}" method="GET">
+                                @csrf
+                                <input type="text" name="cari_siswa" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
+                                <button type="submit" class="btn btn-primary btn-round text-white pull-right " style="width: 10%">Cari</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
           </div>
           <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
-                <form action="{{ route('spp.siswa.cari') }}" method="GET">
-                    <input type="text" name="cari_siswa_aktif" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa_aktif') }}">
-                    <button type="submit" class="btn btn-primary btn-round text-white pull-right m-3 p-2" style="width: 10%">Cari</button>
-                </form>
-            </div>
             @csrf
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>

@@ -35,6 +35,26 @@ class SiswaController extends Controller
         ->orderBy('siswa.id','desc')->paginate(10);
         return view("pendaftaran.siswa.index", ["data"=> $data]);
     }
+    public function cari(Request $request)
+    {
+        $request->validate([
+            'cari' => 'required'
+        ]);
+        $cari = $request->cari;
+        $data = DB::table("database_biodata_siswa AS siswa")
+        ->select(
+            "siswa.*",
+            "wali.nama_wali",
+            'wali.nama_ayah AS nama_ayah',
+            'wali.nama_ibu AS nama_ibu',
+            'wali.nama_wali AS nama_wali',
+            'wali.nomor_telp_wali AS no_hp_wali')
+        ->join('database_biodata_wali_siswa AS wali','id_siswa','=','siswa.id')
+        ->whereNull('siswa.deleted_at')
+        ->where('siswa.nama_lengkap',"LIKE", "%".$cari."%")
+        ->orderBy('siswa.id','desc')->paginate(10);
+        return view("pendaftaran.siswa.index", ["data"=> $data]);
+    }
 
     /**
      * Show the form for creating a new resource.
