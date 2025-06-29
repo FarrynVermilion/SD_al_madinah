@@ -43,7 +43,7 @@
           </a>
         </li>
 
-        <li class="@if ($activePage == 'verifikasi SPP') active @endif">
+        <li class="@if ($activePage == 'Verifikasi_SPP') active @endif">
           <a href="{{ route('verifikasi.index') }}">
             <i class="now-ui-icons design_app"></i>
             <p>{{ __('Cerifikasi SPP') }}</p>

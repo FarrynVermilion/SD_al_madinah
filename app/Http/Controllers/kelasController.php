@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\kelas;
+use App\Models\Kelas;
 class kelasController extends Controller
 {
     /**
@@ -11,7 +11,8 @@ class kelasController extends Controller
      */
     public function index()
     {
-        return view("pendaftaran.kelas.index");
+
+        return view("pendaftaran.kelas.index")->with("data", Kelas::orderBy("nama_kelas", "asc")->paginate(10));
     }
 
     /**
@@ -19,7 +20,7 @@ class kelasController extends Controller
      */
     public function create()
     {
-        //
+        // return view("pendaftaran.kelas.create");
     }
 
     /**
@@ -27,7 +28,13 @@ class kelasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "kelas" => "required"
+        ]);
+        Kelas::create([
+            "nama_kelas" => $request->kelas
+        ]);
+        return redirect()->route("kelas.index")->with("success","Data Berhasil Ditambah");
     }
 
     /**
@@ -59,6 +66,8 @@ class kelasController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $kelas = Kelas::find($id);
+        $kelas->delete();
+        return redirect()->route("kelas.index")->with("success","Data Berhasil Dihapus");
     }
 }

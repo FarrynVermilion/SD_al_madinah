@@ -27,9 +27,25 @@ class transaksiSPPController extends Controller
     {
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
+            ->whereNotNull("NIS.id_NIS")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")
+                "database_biodata_siswa.nama_lengkap",
+                "kelas.nama_kelas",
+                "database_biodata_siswa.nisn",
+                "NIS.id_NIS"
+            )
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
             ->orderBy("transaksi_spp.tahun_ajaran", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
@@ -166,10 +182,27 @@ class transaksiSPPController extends Controller
         $cari = $request->cari_siswa;
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
+            ->whereNotNull("NIS.id_NIS")
             ->where("database_biodata_siswa.nama_lengkap", "LIKE", "%".$cari."%")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")->paginate(10);
+                "database_biodata_siswa.nama_lengkap",
+                "kelas.nama_kelas",
+                "database_biodata_siswa.nisn",
+                "NIS.id_NIS"
+            )
+            ->paginate(10);
         return view("SPP.transaksi_spp.index")->with(["data" => $data, "cari_siswa" => $cari]);
     }
 }

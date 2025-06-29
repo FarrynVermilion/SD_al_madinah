@@ -11,17 +11,24 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          <div class="card-header">
+            <div class="col-12 mt-2">
+                <table class="w-100">
+                    <tr>
+                        <td>
+                            <h4 class="card-title">SPP</h4>
+                        </td>
+                        <td class="text-right w-auto m-auto pull-right">
+                            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('nominal.create') }}">Buat SPP baru</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+
           @include('alerts.errors')
           @include('alerts.success')
-          <div class="card-header">
-            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('nominal.create') }}">Buat SPP baru</a>
-            <h4 class="card-title">SPP</h4>
-            <div class="col-12 mt-2"></div>
-          </div>
           <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
-            </div>
             @csrf
             @include('alerts.errors')
             @include('alerts.success')

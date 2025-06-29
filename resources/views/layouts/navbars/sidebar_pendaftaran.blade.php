@@ -39,12 +39,12 @@
             </a>
         </li>
 
-        <li class="@if ($activePage == 'NIS') active @endif">
+        {{-- <li class="@if ($activePage == 'NIS') active @endif">
             <a href="{{ route('NIS.index') }}">
               <i class="now-ui-icons design_app"></i>
               <p>{{ __('NIS Siswa') }}</p>
             </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </div>

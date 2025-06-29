@@ -9,6 +9,9 @@ use App\Models\Siswa;
 use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
 use Illuminate\Http\Request;
+use App\Models\Siswa_Kelas;
+use App\Models\Kelas;
+use App\Models\Siswa_NIS;
 use Illuminate\Support\Facades\DB;
 
 class SPPSiswaController extends Controller
@@ -18,49 +21,153 @@ class SPPSiswaController extends Controller
      */
     public function index()
     {
-        $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))->orderBy('nama_lengkap', 'asc')->paginate(10);
+        $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))
+        ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+        ->leftJoinSub(
+            DB::table('siswa_kelas')
+            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+            ->whereNull('siswa_kelas.deleted_at')
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            'kelas',
+            'database_biodata_siswa.id',
+            '=',
+            'kelas.id_siswa'
+        )
+        ->whereNotNull("NIS.id_NIS")
+        ->select(
+            'database_biodata_siswa.nama_lengkap',
+            'database_biodata_siswa.id',
+            'NIS.id_NIS',
+            'kelas.nama_kelas',
+            'database_biodata_siswa.nisn',
+            'database_biodata_siswa.id',
+        )
+        ->orderBy('nama_lengkap', 'asc')->paginate(10);
         $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-        ->join('nominal_spp', 'nominal_spp.id_nominal', '=', 'spp_siswa.id_nominal')
+        ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
         ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
+        ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+        ->leftJoinSub(
+            DB::table('siswa_kelas')
+            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+            ->whereNull('siswa_kelas.deleted_at')
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            'kelas',
+            'database_biodata_siswa.id',
+            '=',
+            'kelas.id_siswa'
+        )
+        ->whereNotNull("NIS.id_NIS")
         ->select('database_biodata_siswa.nama_lengkap',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
         'nominal_spp.nominal',
         'potongan_spp.nama_potongan',
         'potongan_spp.nominal_potongan',
+        'kelas.nama_kelas',
+        'NIS.id_NIS',
         'spp_siswa.*')
         ->paginate(10);
         return view("SPP.spp_siswa.index")->with(["data1" => $data1, "data2" => $data2]);
     }
     public function cari(Request $request)
     {
-        $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))->orderBy('nama_lengkap', 'asc')->paginate(10);
+        $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))
+        ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+        ->leftJoinSub(
+            DB::table('siswa_kelas')
+            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+            ->whereNull('siswa_kelas.deleted_at')
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            'kelas',
+            'database_biodata_siswa.id',
+            '=',
+            'kelas.id_siswa'
+        )
+        ->whereNotNull("NIS.id_NIS")
+        ->select(
+            'database_biodata_siswa.nama_lengkap',
+            'database_biodata_siswa.id',
+            'NIS.id_NIS',
+            'kelas.nama_kelas',
+            'database_biodata_siswa.nisn',
+            'database_biodata_siswa.id',
+        )
+        ->orderBy('nama_lengkap', 'asc')->paginate(10);
         $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-        ->join('nominal_spp', 'nominal_spp.id_nominal', '=', 'spp_siswa.id_nominal')
+        ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
         ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
+        ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+        ->leftJoinSub(
+            DB::table('siswa_kelas')
+            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+            ->whereNull('siswa_kelas.deleted_at')
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            'kelas',
+            'database_biodata_siswa.id',
+            '=',
+            'kelas.id_siswa'
+        )
+        ->whereNotNull("NIS.id_NIS")
         ->select('database_biodata_siswa.nama_lengkap',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
         'nominal_spp.nominal',
         'potongan_spp.nama_potongan',
         'potongan_spp.nominal_potongan',
+        'kelas.nama_kelas',
+        'NIS.id_NIS',
         'spp_siswa.*')
         ->paginate(10);
         if ($request->has('cari_siswa')) {
             $data1 = Siswa::whereNotIn('id', SPP_Siswa::pluck('id_siswa'))
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
+            ->whereNotNull("NIS.id_NIS")
+            ->select(
+                'database_biodata_siswa.nama_lengkap',
+                'database_biodata_siswa.id',
+                'NIS.id_NIS',
+                'kelas.nama_kelas',
+                'database_biodata_siswa.nisn',
+                'database_biodata_siswa.id',
+            )
             ->where('nama_lengkap',"LIKE", "%".$request->cari_siswa."%")
             ->orderBy('nama_lengkap', 'asc')->paginate(10);
         }
         if ($request->has('cari_siswa_aktif')) {
             $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-            ->join('nominal_spp', 'nominal_spp.id_nominal', '=', 'spp_siswa.id_nominal')
+            ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
             ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
+            ->whereNotNull("NIS.id_NIS")
             ->select('database_biodata_siswa.nama_lengkap',
             'database_biodata_siswa.id',
             'nominal_spp.nama_bayaran',
             'nominal_spp.nominal',
             'potongan_spp.nama_potongan',
             'potongan_spp.nominal_potongan',
+            'kelas.nama_kelas',
+            'NIS.id_NIS',
             'spp_siswa.*')
             ->where('database_biodata_siswa.nama_lengkap',"LIKE", "%".$request->cari_siswa_aktif."%")
             ->orderBy('database_biodata_siswa.nama_lengkap', 'asc')
