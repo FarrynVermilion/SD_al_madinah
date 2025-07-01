@@ -18,24 +18,13 @@ class verifikasiController extends Controller
         ->leftJoin("spp_siswa", "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
         ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
-        ->leftJoinSub(
-            DB::table('siswa_kelas')
-            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-            ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
-            'kelas',
-            'database_biodata_siswa.id',
-            '=',
-            'kelas.id_siswa'
-        )
         ->whereNotNull("NIS.id_NIS")
         ->select(
             "transaksi_spp.*",
             "database_biodata_siswa.nama_lengkap",
             "verifikasi_spp.status_verifikasi",
             "database_biodata_siswa.nisn",
-            "NIS.id_NIS",
-            "kelas.nama_kelas"
+            "NIS.id_NIS"
             )
         ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
         ->orderBy("transaksi_spp.tahun_ajaran", "asc")
@@ -52,16 +41,6 @@ class verifikasiController extends Controller
         ->leftJoin("spp_siswa", "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
         ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
-        ->leftJoinSub(
-            DB::table('siswa_kelas')
-            ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-            ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
-            'kelas',
-            'database_biodata_siswa.id',
-            '=',
-            'kelas.id_siswa'
-        )
         ->whereNotNull("NIS.id_NIS")
         ->where("database_biodata_siswa.nama_lengkap", "like", "%".$cari."%")
         ->select(
@@ -69,8 +48,7 @@ class verifikasiController extends Controller
             "database_biodata_siswa.nama_lengkap",
             "verifikasi_spp.status_verifikasi",
             "database_biodata_siswa.nisn",
-            "NIS.id_NIS",
-            "kelas.nama_kelas"
+            "NIS.id_NIS"
         )
         ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
         ->orderBy("transaksi_spp.tahun_ajaran", "asc")

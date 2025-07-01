@@ -198,20 +198,10 @@ class AuthController extends Controller
         }
         $transction = Transaksi_SPP::withTrashed()
             ->leftJoin('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
-            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswax', '=', 'spp_siswa.id_siswa')
+            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'spp_siswa.id_siswa')
             ->leftJoin('users', 'database_biodata_siswa.id', '=', 'users.id')
             ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_transaksi')
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
-            ->leftJoinSub(
-                DB::table('siswa_kelas')
-                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-                // ->whereNull('siswa_kelas.deleted_at')
-                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
-                'kelas',
-                'database_biodata_siswa.id',
-                '=',
-                'kelas.id_siswa'
-            )
             ->whereNotNull("NIS.id_NIS")
             ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
             ->select(
@@ -221,8 +211,7 @@ class AuthController extends Controller
                 'verifikasi_spp.status_verifikasi as status_verifikasi',
                 'verifikasi_spp.id_verifikasi as id_verifikasi',
                 'database_biodata_siswa.nisn',
-                'NIS.id_NIS',
-                'kelas.nama_kelas'
+                'NIS.id_NIS'
             )
             ->orderBy('transaksi_spp.tahun_ajaran', 'desc')
             ->orderBy('transaksi_spp.semester', 'desc')

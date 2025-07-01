@@ -61,7 +61,9 @@ return new class extends Migration
             $table->tinyInteger("bulan")->unsigned();
             $table->boolean("semester");
             $table->string("tahun_ajaran",9);
+            $table->string("nama_kelas");
             $table->string("status_lunas");
+
             $table->unsignedBigInteger("id_ketua_komite")->nullable();
             $table->string("nama_ketua_komite")->nullable();
             $table->unsignedBigInteger("id_kepala_sekolah")->nullable();

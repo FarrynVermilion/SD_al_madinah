@@ -20,6 +20,7 @@ class Transaksi_SPP extends Model
         'bulan',
         'tahun_ajaran',
         'semester',
+        'nama_kelas',
         'status_lunas',
         'id_ketua_komite',
         'nama_ketua_komite',

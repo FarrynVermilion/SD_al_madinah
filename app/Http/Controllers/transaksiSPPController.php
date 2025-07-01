@@ -28,21 +28,10 @@ class transaksiSPPController extends Controller
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
-            ->leftJoinSub(
-                DB::table('siswa_kelas')
-                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-                ->whereNull('siswa_kelas.deleted_at')
-                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
-                'kelas',
-                'database_biodata_siswa.id',
-                '=',
-                'kelas.id_siswa'
-            )
             ->whereNotNull("NIS.id_NIS")
             ->select(
                 "transaksi_spp.*",
                 "database_biodata_siswa.nama_lengkap",
-                "kelas.nama_kelas",
                 "database_biodata_siswa.nisn",
                 "NIS.id_NIS"
             )
@@ -80,12 +69,23 @@ class transaksiSPPController extends Controller
         ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
         ->join("nominal_spp", "nominal_spp.id_nominal", "=", "spp_siswa.id_nominal")
         ->leftJoin("potongan_spp", "potongan_spp.id_potongan", "=", "spp_siswa.id_potongan")
+        ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
         ->select(
             "spp_siswa.*",
             "database_biodata_siswa.no_kk",
             "database_biodata_siswa.nama_lengkap",
             "nominal_spp.nominal",
-            "potongan_spp.nominal_potongan"
+            "potongan_spp.nominal_potongan",
+            "kelas.nama_kelas"
         )
         // ->get();
         // return $spp;
@@ -108,6 +108,7 @@ class transaksiSPPController extends Controller
             $a->bulan=$validated["bulan"];
             $a->semester=$validated["semester"];
             $a->tahun_ajaran=$validated["tahun_ajar"];
+            $a->nama_kelas=$spp->nama_kelas;
             $a->status_lunas=json_encode($encode);
             $a->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
             $a->nama_ketua_komite=$ketua_komite->nama_wali??null;
@@ -183,22 +184,11 @@ class transaksiSPPController extends Controller
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
-            ->leftJoinSub(
-                DB::table('siswa_kelas')
-                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-                ->whereNull('siswa_kelas.deleted_at')
-                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
-                'kelas',
-                'database_biodata_siswa.id',
-                '=',
-                'kelas.id_siswa'
-            )
             ->whereNotNull("NIS.id_NIS")
             ->where("database_biodata_siswa.nama_lengkap", "LIKE", "%".$cari."%")
             ->select(
                 "transaksi_spp.*",
                 "database_biodata_siswa.nama_lengkap",
-                "kelas.nama_kelas",
                 "database_biodata_siswa.nisn",
                 "NIS.id_NIS"
             )
