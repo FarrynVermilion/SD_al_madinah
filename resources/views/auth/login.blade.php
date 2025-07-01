@@ -32,7 +32,7 @@
                     <div class="card card-login card-plain">
                         <div class="card-header ">
                             <div class="logo-container">
-                                <img src="{{ asset('assets/img/db-logo.png') }}" alt="">
+                                <img src="{{ asset('assets/img/smp_logo.jpg') }}" alt="">
                             </div>
                         </div>
                         <div class="card-body ">
