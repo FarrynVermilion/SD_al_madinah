@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response(['payback' => 'Account not found']);
-        } else if (!Hash::check($request->password, $user->password)) {
+        } else if (!Hash::check($request->password, (string) $user->password)) {
             return response(['payback' => 'Incorrect Credentials']);
         }
 
@@ -90,7 +90,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response(['payback' => 'Account not found']);
-        } else if (!Hash::check($request->password, $user->password)) {
+        } else if (!Hash::check($request->password, (string) $user->password)) {
             return response(['payback' => 'Incorrect Credentials']);
         }
 
@@ -205,7 +205,7 @@ class AuthController extends Controller
             ->leftJoinSub(
                 DB::table('siswa_kelas')
                 ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
-                ->whereNull('siswa_kelas.deleted_at')
+                // ->whereNull('siswa_kelas.deleted_at')
                 ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
                 'kelas',
                 'database_biodata_siswa.id',
