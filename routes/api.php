@@ -24,11 +24,12 @@ Route::middleware('cors')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/transaction', [AuthController::class, 'transaction']);
     Route::post('/cekToken', [AuthController::class, 'verify_requested_token']);
+    Route::post('/verifikasi-spp', [AuthController::class, 'verifikasi_SPP']);
 });
 
 
-Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
-Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
-Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/transaction', [AuthController::class, 'transaction']);
-Route::post('/verifikasi-spp', [AuthController::class, 'verifikasi_SPP']);
+// Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
+// Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
+// Route::post('/logout', [AuthController::class, 'logout']);
+// Route::post('/transaction', [AuthController::class, 'transaction']);
+// Route::post('/verifikasi-spp', [AuthController::class, 'verifikasi_SPP']);
