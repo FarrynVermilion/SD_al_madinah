@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi_SPP;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -55,6 +57,21 @@ class HomeController extends Controller
     }
     public function indexSPP()
     {
-        return view('SPP.home');
+        $data = Transaksi_SPP::
+            // join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
+            // ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+            // orderBy("database_biodata_siswa.nama_lengkap", "asc")
+            orderBy("transaksi_spp.tahun_ajaran", "asc")
+            ->orderBy("transaksi_spp.bulan", "asc")
+            ->groupBy("tahun_ajaran","semester", "bulan")
+            ->select(
+                "transaksi_spp.tahun_ajaran",
+                "transaksi_spp.semester",
+                "transaksi_spp.bulan",
+                DB::raw('count(*) as jumlah')
+                )
+            ->paginate(10);
+        $tahun_ajaran = DB::table("transaksi_spp")->select("tahun_ajaran")->distinct()->get();
+        return view('SPP.home')->with(["data" => $data, "tahun_ajaran" => $tahun_ajaran]);
     }
 }

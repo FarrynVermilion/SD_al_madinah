@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange">
+<div class="sidebar" data-color="dark-green">
     <!--
       Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
   -->
@@ -30,7 +30,7 @@
             <p> {{ __("Jabatan Management") }} </p>
             </a>
         </li>
-        <li class="@if ($activePage == 'icons') active @endif">
+        {{-- <li class="@if ($activePage == 'icons') active @endif">
           <a href="{{ route('page.index','icons') }}">
             <i class="now-ui-icons education_atom"></i>
             <p>{{ __('Icons') }}</p>
@@ -59,7 +59,7 @@
             <i class="now-ui-icons text_caps-small"></i>
             <p>{{ __('Typography') }}</p>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </div>

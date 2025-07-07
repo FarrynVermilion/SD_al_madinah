@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Transaksi_SPP;
+use App\Models\Verifikasi_SPP;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +40,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response(['payback' => 'Account not found']);
-        } else if (!Hash::check($request->password, $user->password)) {
+        } else if (!Hash::check($request->password, (string) $user->password)) {
             return response(['payback' => 'Incorrect Credentials']);
         }
 
@@ -89,7 +90,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response(['payback' => 'Account not found']);
-        } else if (!Hash::check($request->password, $user->password)) {
+        } else if (!Hash::check($request->password, (string) $user->password)) {
             return response(['payback' => 'Incorrect Credentials']);
         }
 
@@ -196,14 +197,21 @@ class AuthController extends Controller
             return response()->json(['message' => $access_token_user_id->message]);
         }
         $transction = Transaksi_SPP::withTrashed()
-            ->join('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
-            ->join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
-            ->join('users', 'users.id', '=', 'database_biodata_siswa.id')
+            ->leftJoin('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
+            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'spp_siswa.id_siswa')
+            ->leftJoin('users', 'database_biodata_siswa.id', '=', 'users.id')
+            ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_transaksi')
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->whereNotNull("NIS.id_NIS")
             ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
             ->select(
                 'transaksi_spp.*',
                 'database_biodata_siswa.nama_lengkap',
-                'database_biodata_siswa.id_account'
+                'database_biodata_siswa.id_account',
+                'verifikasi_spp.status_verifikasi as status_verifikasi',
+                'verifikasi_spp.id_verifikasi as id_verifikasi',
+                'database_biodata_siswa.nisn',
+                'NIS.id_NIS'
             )
             ->orderBy('transaksi_spp.tahun_ajaran', 'desc')
             ->orderBy('transaksi_spp.semester', 'desc')
@@ -213,6 +221,26 @@ class AuthController extends Controller
             'message' => 'tansaction request success',
             'data' => $transction,
         ]);
+    }
+    public function verifikasi_SPP(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'id_verifikasi' => 'required'
+        ],[
+            'token.required' => 'Token is required',
+        ]);
+        $access_token_user_id = json_decode($this->verify_token($request->token));
+        if($access_token_user_id->message != "success"){
+            return response()->json(['message' => $access_token_user_id->message]);
+        }
+        $verifikasi = Verifikasi_SPP::where('id_verifikasi', $request->id_verifikasi)->first();
+        $verifikasi->status_verifikasi = $request->status;
+        $verifikasi->save();
+        return response()->json([
+            'message' => 'verifikasi request success',
+            'data' => $verifikasi,
+        ]);
+
     }
     public function verify_token(String $token){
         $getToken = explode('.', $token);

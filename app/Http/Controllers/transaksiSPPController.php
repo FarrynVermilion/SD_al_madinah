@@ -12,7 +12,11 @@ use App\Models\SPP_Siswa;
 use App\Models\Nominal_SPP;
 use App\Models\Potongan_SPP;
 use App\Models\transaksi_jabatan_wali;
+use App\Models\User;
+use App\Models\verifikasi_SPP;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class transaksiSPPController extends Controller
 {
@@ -23,13 +27,18 @@ class transaksiSPPController extends Controller
     {
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->whereNotNull("NIS.id_NIS")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")
+                "database_biodata_siswa.nama_lengkap",
+                "database_biodata_siswa.nisn",
+                "NIS.id_NIS"
+            )
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
             ->orderBy("transaksi_spp.tahun_ajaran", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
-            ->paginate();
+            ->paginate(10);
         return view("SPP.transaksi_spp.index")->with("data", $data);
     }
     /**
@@ -60,16 +69,27 @@ class transaksiSPPController extends Controller
         ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
         ->join("nominal_spp", "nominal_spp.id_nominal", "=", "spp_siswa.id_nominal")
         ->leftJoin("potongan_spp", "potongan_spp.id_potongan", "=", "spp_siswa.id_potongan")
+        ->leftJoinSub(
+                DB::table('siswa_kelas')
+                ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                ->whereNull('siswa_kelas.deleted_at')
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                'kelas',
+                'database_biodata_siswa.id',
+                '=',
+                'kelas.id_siswa'
+            )
         ->select(
             "spp_siswa.*",
             "database_biodata_siswa.no_kk",
             "database_biodata_siswa.nama_lengkap",
             "nominal_spp.nominal",
-            "potongan_spp.nominal_potongan"
+            "potongan_spp.nominal_potongan",
+            "kelas.nama_kelas"
         )
         // ->get();
         // return $spp;
-        ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah) {
+        ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah , &$test) {
             $key =$spp->no_kk.$spp->nama_lengkap;
             if (strlen($key) < 32) {
                 $key = str_pad($key, 32, 0);
@@ -78,25 +98,31 @@ class transaksiSPPController extends Controller
                 $key = substr($key, 0, 32);
             }
             // ini unuk linux
-            // $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
-            // // ini untuk windows
+            //$encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d")."|".Auth::user()->name.'|"'), true)["cyphertext"];
+            // ini untuk windows
             $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
+            $a = new Transaksi_SPP();
+            $a->id_spp = $spp->id_spp_siswa;
+            $a->spp = $spp->nominal;
+            $a->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
+            $a->bulan=$validated["bulan"];
+            $a->semester=$validated["semester"];
+            $a->tahun_ajaran=$validated["tahun_ajar"];
+            $a->nama_kelas=$spp->nama_kelas;
+            $a->status_lunas=json_encode($encode);
+            $a->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
+            $a->nama_ketua_komite=$ketua_komite->nama_wali??null;
+            $a->id_kepala_sekolah=$kepala_sekolah->id_transaksi_jabatan_sekolah??null;
+            $a->kepala_sekolah=$kepala_sekolah->name??null;
 
-            Transaksi_SPP::create([
-                "id_spp" => $spp->id_spp_siswa,
-                "spp" => $spp->nominal,
-                'potongan' => $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan,
-                'bulan'=>$validated["bulan"],
-                'semester'=>$validated["semester"],
-                'tahun_ajaran'=>$validated["tahun_ajar"],
-                'status_lunas'=>json_encode($encode),
-                'id_ketua_komite'=>$ketua_komite->id_transaksi_jabatan_wali??null,
-                'nama_ketua_komite'=>$ketua_komite->nama_wali??null,
-                'id_kepala_sekolah'=>$kepala_sekolah->id_transaksi_jabatan_sekolah??null,
-                'kepala_sekolah'=>$kepala_sekolah->name??null
-            ]);
+            DB::transaction(function() use ($a, $test) {
+                $a->save();
+                $c = new verifikasi_SPP();
+                $c->id_transaksi = $a->id_transaksi;
+                $c->status_verifikasi = 0;
+                $c->save();
+            });
         });
-
         return redirect()->route("transaksi.index")->with("success", "Anda membuat berhasil membuat transaksi");
     }
 
@@ -116,6 +142,8 @@ class transaksiSPPController extends Controller
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP);
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->no_kk.$siswa->nama_lengkap;
+        $pembuat = User::find($transaksi_SPP->created_by)->name;
+        $pelunas = Auth::user()->name;
         if (strlen($key) < 32) {
             $key = str_pad($key, 32, 0);
         }
@@ -123,7 +151,7 @@ class transaksiSPPController extends Controller
             $key = substr($key, 0, 32);
         }
         //ini unuk linux
-        // $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
+        $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d")."|".$pembuat."|".$pelunas.'"'), true)["cyphertext"];
         // // ini untuk windows
         $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
@@ -155,10 +183,16 @@ class transaksiSPPController extends Controller
         $cari = $request->cari_siswa;
         $data = Transaksi_SPP::join("spp_siswa", "spp_siswa.id_spp_siswa", "=", "transaksi_spp.id_spp")
             ->join("database_biodata_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->whereNotNull("NIS.id_NIS")
             ->where("database_biodata_siswa.nama_lengkap", "LIKE", "%".$cari."%")
             ->select(
                 "transaksi_spp.*",
-                "database_biodata_siswa.nama_lengkap")->paginate(10);
+                "database_biodata_siswa.nama_lengkap",
+                "database_biodata_siswa.nisn",
+                "NIS.id_NIS"
+            )
+            ->paginate(10);
         return view("SPP.transaksi_spp.index")->with(["data" => $data, "cari_siswa" => $cari]);
     }
 }

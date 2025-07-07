@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreWali_SiswaRequest;
 use App\Http\Requests\UpdateWali_SiswaRequest;
 use App\Models\Wali_Siswa;
+use Illuminate\Http\Request;
 
 class WaliSiswaController extends Controller
 {
@@ -27,7 +28,7 @@ class WaliSiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWali_SiswaRequest $request)
+    public function store(Request $request)
     {
         //
     }

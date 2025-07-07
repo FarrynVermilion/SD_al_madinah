@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange">
+<div class="sidebar" data-color="dark-green">
     <!--
       Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
   -->
@@ -43,6 +43,12 @@
           </a>
         </li>
 
+        <li class="@if ($activePage == 'Verifikasi_SPP') active @endif">
+          <a href="{{ route('verifikasi.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('Cerifikasi SPP') }}</p>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

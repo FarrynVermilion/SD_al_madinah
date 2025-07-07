@@ -2,7 +2,7 @@
     'namePage' => 'Login page',
     'class' => 'login-page sidebar-mini ',
     'activePage' => 'login',
-    'backgroundImage' => asset('assets') . "/img/bg14.jpg",
+    'image' => asset('assets') . "/img/bg14.jpg",
 ])
 
 @section('content')
@@ -32,7 +32,7 @@
                     <div class="card card-login card-plain">
                         <div class="card-header ">
                             <div class="logo-container">
-                                <img src="{{ asset('assets/img/db-logo.png') }}" alt="">
+                                <img src="{{ asset('assets/img/smp_logo.jpg') }}" alt="">
                             </div>
                         </div>
                         <div class="card-body ">
@@ -65,7 +65,7 @@
                         </div>
                         <input type="hidden" name="web" value="true">
                         <div class="card-footer ">
-                            <button  type = "submit" class="btn btn-primary btn-round btn-lg btn-block mb-3">{{ __('Get Started') }}</button>
+                            <button  type = "submit" class="btn bg-dark-green btn-round btn-lg btn-block mb-3" >{{ __('Get Started') }}</button>
                             {{-- <div class="pull-right">
                                 <h6>
                                 <a href="{{ route('password.request') }}" class="link footer-link">{{ __('Forgot Password?') }}</a>

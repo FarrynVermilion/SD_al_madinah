@@ -20,6 +20,7 @@ class Transaksi_SPP extends Model
         'bulan',
         'tahun_ajaran',
         'semester',
+        'nama_kelas',
         'status_lunas',
         'id_ketua_komite',
         'nama_ketua_komite',
@@ -30,12 +31,6 @@ class Transaksi_SPP extends Model
     protected $primaryKey = 'id_transaksi';
     public $timestamps = true;
 
-    public function getBulan(): Attribute
-    {
-        return new Attribute(
-            fn($value)=>['Null','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][$value]
-        );
-    }
     public function getSemester(): Attribute
     {
         return new Attribute(
@@ -50,9 +45,6 @@ class Transaksi_SPP extends Model
         static::creating(function ($model) {
             if (!$model->isDirty('created_by')) {
                 $model->created_by = Auth::user()->id;
-            }
-            if (!$model->isDirty('updated_by')) {
-                $model->updated_by = Auth::user()->id;
             }
         });
 

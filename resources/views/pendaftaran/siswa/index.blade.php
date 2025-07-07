@@ -11,17 +11,32 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+
+          <div class="card-header">
+            <div class="col-12 mt-2">
+                <table class="w-100">
+                    <tr>
+                        <td scope="col" class="col-2">
+                            <h4 class="card-title">Siswa</h4>
+                        </td>
+                        <td scope="col" class="col-13 text-right w-100 m-auto pull-right">
+                            <form action="{{ route('pendaftaran_siswa_cari') }}" method="GET">
+                                @csrf
+                                <input type="text" name="cari" placeholder="Masukan nama siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari') }}">
+                                <button type="submit" class="btn btn-primary btn-round text-white pull-left" >cari</button>
+                            </form>
+                        </td>
+                        <td scope="col" class="col-2">
+                             <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('siswa.create') }}">Daftar siswa</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+
           @include('alerts.errors')
           @include('alerts.success')
-          <div class="card-header">
-            <a class="btn btn-primary btn-round text-white pull-right" href="{{ route('siswa.create') }}">Daftar siswa</a>
-            <h4 class="card-title">Siswa</h4>
-            <div class="col-12 mt-2"></div>
-          </div>
           <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
-            </div>
             @csrf
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
@@ -52,7 +67,7 @@
                   <td>{{ $siswa->nama_ibu }}</td>
                   <td>
                     <table>
-                        <tr>
+                        {{-- <tr>
                             <td class="td-actions text-left">
                                 <a href="{{ route('siswa.edit', $siswa->id) }}">
                                     <i class="material-icons">edit siswa</i>
@@ -67,7 +82,7 @@
                                 <a href="{{ route('wali.edit', $siswa->id) }}">
                                     <i class="material-icons">show</i>
                                 </a>
-                            </td>
+                            </td> --}}
                             <td class="td-actions text-left">
                                 <form method="POST" action="{{route('siswa.destroy',$siswa->id)}}" onsubmit="return hapus()">
                                     @csrf

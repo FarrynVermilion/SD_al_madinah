@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange">
+<div class="sidebar" data-color="dark-green">
     <!--
       Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
   -->
@@ -24,6 +24,27 @@
               <p>{{ __('Pendaftaran Siswa') }}</p>
             </a>
         </li>
+
+        <li class="@if ($activePage == 'kelas') active @endif">
+            <a href="{{ route('kelas.index') }}">
+              <i class="now-ui-icons design_app"></i>
+              <p>{{ __('Kelas') }}</p>
+            </a>
+        </li>
+
+        <li class="@if ($activePage == 'siswa kelas') active @endif">
+            <a href="{{ route('siswa_kelas.index') }}">
+              <i class="now-ui-icons design_app"></i>
+              <p>{{ __('Siswa Kelas') }}</p>
+            </a>
+        </li>
+
+        {{-- <li class="@if ($activePage == 'NIS') active @endif">
+            <a href="{{ route('NIS.index') }}">
+              <i class="now-ui-icons design_app"></i>
+              <p>{{ __('NIS Siswa') }}</p>
+            </a>
+        </li> --}}
       </ul>
     </div>
   </div>

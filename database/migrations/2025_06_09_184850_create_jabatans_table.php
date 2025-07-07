@@ -17,9 +17,9 @@ return new class extends Migration
             $table->boolean("jenis_jabatan");
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('transaksi_jabatan_sekolah', function (Blueprint $table) {
             $table->id("id_transaksi_jabatan_sekolah");
@@ -27,9 +27,9 @@ return new class extends Migration
             $table->unsignedBigInteger("id_account");
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('transaksi_jabatan_wali', function (Blueprint $table) {
             $table->id("id_transaksi_jabatan_wali");
@@ -37,9 +37,9 @@ return new class extends Migration
             $table->string("nama_wali",50);
             $table->timestamps();
             $table->softDeletes()->nullable();
-            $table->string("created_by",255);
-            $table->string("updated_by",255);
-            $table->string("deleted_by",255)->nullable();
+            $table->unsignedBigInteger("created_by");
+            $table->unsignedBigInteger("updated_by");
+            $table->unsignedBigInteger("deleted_by")->nullable();
         });
     }
 
