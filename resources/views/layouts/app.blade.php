@@ -20,6 +20,12 @@
   {{-- <!-- CSS Just for demo purpose, don't include it in your project --> --}}
   {{-- <link href="{{ asset('assets') }}/demo/demo.css" rel="stylesheet" /> --}}
   @vite('resources/css/app.css')
+  <style>
+    ::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+  </style>
 </head>
 
 <body class="{{ $class ?? '' }}">

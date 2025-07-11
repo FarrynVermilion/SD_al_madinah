@@ -58,59 +58,76 @@
                             <td>
                                 Sekolah
                             </td>
-                            <td style=" white-space: nowrap; width:1%; " >
-                                <table class="table-borderless" cellspacing="0"  >
-                                    <tbody class="text-right align-middle" >
+                            <td class="text-center">
+                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi</button>
+                            </td>
+                            <div popover id="popover_{{$jabatan->id_jabatan}}">
+                                <div style="width: 50em; height: 25em;" >
+                                    <div class="container w-100 h-100 align-items-center align-content-center justify-content-center bg-secondary">
                                         <form method="post" action="{{route('jabatan_insert',$jabatan->id_jabatan)}}" >
                                         @csrf
-                                            <tr id="{{ "isi_jabatan_sekolah_".$jabatan->id_jabatan }}" style="display: none;">
-                                                <td >
-                                                    <select style="width: 150px" name="nama" class=" form-control">
-                                                        @foreach ($users as $user)
-                                                            <option value="{{$user->id}}">{{$user->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <button type="submit" class="btn btn-primary">Save</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-primary" onclick="show_isi_jabatan_sekolah({{$jabatan->id_jabatan}})">Isi</button>
-                                                </td>
-                                            </tr>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Tambah jabatan wali : {{$jabatan->nama_jabatan}}</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label>Nama</label>
+                                                            <select class="form-control" name="nama" class=" form-control">
+                                                                @foreach ($users as $user)
+                                                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
-                                    </tbody>
-                                </table>
-                            </td>
+                                    </div>
+                                </div>
+                            </div>
 
                         @elseif ($jabatan->jenis_jabatan==1)
                             <td>
                                 Wali
                             </td>
-                            <td style=" white-space: nowrap; width:1%; " >
-                                <table class="table-borderless" cellspacing="0"  >
-                                    <tbody class="text-right align-middle" >
+                            <td class="text-center">
+                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi</button>
+                            </td>
+                            <div popover id="popover_{{$jabatan->id_jabatan}}">
+                                <div style="width: 50em; height: 25em;" >
+                                    <div class="container w-100 h-100 align-items-center align-content-center justify-content-center bg-secondary">
                                         <form method="post" action="{{route('jabatan_insert',$jabatan->id_jabatan)}}" >
                                         @csrf
-                                            <tr id="{{ "isi_jabatan_sekolah_".$jabatan->id_jabatan }}" style="display: none;">
-                                                <td >
-                                                    <input style="width: 150px"  type="text" placeholder="Masukan nama wali" name="nama" class="form-control" >
-                                                </td>
-                                                <td>
-                                                    <button type="submit" class="btn btn-primary">Save</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-primary" onclick="show_isi_jabatan_sekolah({{$jabatan->id_jabatan}})">Isi</button>
-                                                </td>
-                                            </tr>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Tambah jabatan wali : {{$jabatan->nama_jabatan}}</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label>Nama</label>
+                                                            <input type="text" placeholder="Masukan nama wali" name="nama" class="form-control" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
-                                    </tbody>
-                                </table>
-                            </td>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
 
                         <td>
@@ -254,10 +271,13 @@
     }
     function show_isi_jabatan_sekolah(id_jabatan){
         let table = document.getElementById("isi_jabatan_sekolah_"+id_jabatan);
+        let btn = document.getElementById("btn_"+id_jabatan);
         if (table.style.display === "block") {
             table.style.display = "none";
+            btn.innerHTML = "Isi";
         }else if (table.style.display === "none") {
             table.style.display = "block";
+            btn.innerHTML = "Tutup";
         }
     }
 </script>
