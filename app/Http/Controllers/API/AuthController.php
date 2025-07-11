@@ -160,7 +160,7 @@ class AuthController extends Controller
         $response = [
             'token'=>$token,
             // 'header'=>$headers,
-            // 'payload'=>$payloads,
+            'payload'=>$payloads,
             // 'signature'=>$signraw,
             'decryption_key'=>base64_encode($decryption_key),
             'valid'=>hash_equals($hashed, hash('sha256', $signraw)),
@@ -243,6 +243,79 @@ class AuthController extends Controller
 
     }
     public function verify_token(String $token){
+        $getToken = explode('.', $token);
+        $header = json_decode(base64_decode($getToken[0]));
+        if ($header->typ == "JWT") {
+            $payload = json_decode(base64_decode($getToken[1]));
+            $signraw = $getToken[2];
+            if(DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->exists() == false){
+                return json_encode([
+                    'message' => 'token not found in DB'
+                ]);
+            }
+            $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
+            $valid = hash_equals($hashed, hash('sha256', $signraw));
+
+            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->no_kk;
+            $nama=Siswa::where('id_account', $payload->user->id)->get()[0]->nama_lengkap;
+            $decryption_key = $kk.$nama;
+            if(strlen($decryption_key) > 32){
+                $decryption_key = substr($decryption_key, 0, 32);
+            }
+            if(strlen($decryption_key) < 32){
+                $decryption_key = str_pad($decryption_key, 32, 0);
+            }
+
+            $tempered = hash_equals(
+                $signraw,
+                base64_encode(
+                    hash_hmac(
+                        'sha256',
+                        json_encode($header) . "." . json_encode($payload),
+                        $decryption_key,
+                        true
+                    )
+                )
+            );
+            if($valid && $tempered){
+                if (User::where('id', $payload->user->id)->get()[0]->role != 'Siswa') {
+                    return json_encode([
+                        'message' => 'unauthorized user role'
+                    ]);
+                }
+                return json_encode([
+                    "message"=>"success",
+                    "id"=>$payload->user->id
+                ]);
+            }
+            return json_encode([
+                'message' => 'invalid token'
+            ]);
+        }
+        if ($header->typ == "SANCTUM") {
+            $sanctum = explode('|', $getToken[1]);
+            $id = $sanctum[0];
+            $token = $sanctum[1];
+            $record = DB::table('personal_access_tokens')->where('id', $id)->get()[0];
+            if(hash_equals($record->token, hash('sha256', $token))){
+                if (User::where('id', $record->tokenable_id)->get()[0]->role != 'Siswa') {
+                    return json_encode([
+                        'message' => 'unauthorized user role'
+                    ]);
+                }
+                return json_encode([
+                    "message"=>"success",
+                    "id"=>$record->tokenable_id
+                ]);
+            }
+            return json_encode([
+                'message' => 'invalid token'
+            ]);
+        }
+    }
+
+    public function verify_requested_token(Request $request){
+        $token = $request->token;
         $getToken = explode('.', $token);
         $header = json_decode(base64_decode($getToken[0]));
         if ($header->typ == "JWT") {
