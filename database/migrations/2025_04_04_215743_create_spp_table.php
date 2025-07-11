@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger("id_siswa");
             $table->unsignedBigInteger("id_nominal");
             $table->unsignedBigInteger("id_potongan")->nullable();
+            $table->string("bukti_potongan",255)->nullable();
             // $table->foreign("id_siswa")->references("id")->on("users")->noActionOnDelete()->noActionOnUpdate();
             // $table->foreign("id_nominal")->references("id_nominal")->on("nominal_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->boolean("status_siswa")->default(true);
@@ -58,6 +59,7 @@ return new class extends Migration
             // $table->foreign("id_potongan")->references("id_potongan")->on("potongan_spp")->noActionOnDelete()->noActionOnUpdate();
             $table->decimal("spp",9,2)->unsigned();
             $table->decimal("potongan",9,2)->unsigned();
+            $table->string("bukti_potongan",255)->nullable();
             $table->tinyInteger("bulan")->unsigned();
             $table->boolean("semester");
             $table->string("tahun_ajaran",9);

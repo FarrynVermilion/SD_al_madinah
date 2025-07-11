@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
+
 class StoreSPP_SiswaRequest extends FormRequest
 {
     /**
@@ -26,6 +27,7 @@ class StoreSPP_SiswaRequest extends FormRequest
             "id_siswa" => ["required", "exists:database_biodata_siswa,id", "unique:spp_siswa,id_siswa"],
             "Nominal_SPP" => "required",
             "Potongan_SPP" => "required",
+            "Bukti_Potongan"=>["mimetypes:application/pdf", "file","max:2048", "nullable"]
         ];
     }
 }

@@ -25,9 +25,6 @@
                 </table>
             </div>
           </div>
-
-          @include('alerts.errors')
-          @include('alerts.success')
           <div class="card-body">
             @csrf
             @include('alerts.errors')

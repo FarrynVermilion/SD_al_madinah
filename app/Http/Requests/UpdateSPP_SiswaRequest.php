@@ -26,6 +26,7 @@ class UpdateSPP_SiswaRequest extends FormRequest
             // "id_siswa" => ["required", "exists:database_biodata_siswa,id", "unique:spp_siswa,id_siswa"],
             "Nominal_SPP" => "required",
             "Potongan_SPP" => "required",
+            "bukti_potongan"=>["mimetypes:application/pdf", "max:2048", "nullable"],
         ];
     }
 }

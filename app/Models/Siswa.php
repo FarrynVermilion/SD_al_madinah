@@ -31,7 +31,7 @@ class Siswa extends Model
         'status_anak',
         'bahasa_sehari_hari',
         'alamat',
-        'no_kk',
+        'NO_KK',
         'kelurahan',
         'kecamatan',
         'kota',

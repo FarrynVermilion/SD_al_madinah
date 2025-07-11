@@ -61,7 +61,9 @@ class transaksiSPPController extends Controller
         ->join("users", "users.id", "=", "transaksi_jabatan_sekolah.id_account")
         ->first();
         $val = Transaksi_SPP::withTrashed()->where("bulan", $validated["bulan"])
-        ->where("tahun_ajaran", $validated["tahun_ajar"])->exists();
+        ->where("semester", $validated["semester"])
+        ->where("tahun_ajaran", $validated["tahun_ajar"])
+        ->exists();
         if($val==true){
             return redirect()->route("transaksi.index")->with("errors", "Data sudah ada");
         }
@@ -105,6 +107,7 @@ class transaksiSPPController extends Controller
             $a->id_spp = $spp->id_spp_siswa;
             $a->spp = $spp->nominal;
             $a->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
+            $a->bukti_potongan = $spp->bukti_potongan;
             $a->bulan=$validated["bulan"];
             $a->semester=$validated["semester"];
             $a->tahun_ajaran=$validated["tahun_ajar"];

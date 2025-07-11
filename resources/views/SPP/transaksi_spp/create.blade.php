@@ -25,42 +25,42 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Bulan")}}</label>
-                            <select name="bulan" class="form-control {{ $errors->has('bulan') ? ' is-invalid' : '' }}">
+                            <select id="bulan" name="bulan" class="form-control {{ $errors->has('bulan') ? ' is-invalid' : '' }}">
                                 <option value="1"
                                     @if ( old('bulan')=='1')
                                         selected
                                     @endif>
-                                    1
+                                    Juli
                                 </option>
                                 <option value="2"
                                     @if ( old('bulan')=='2')
                                         selected
                                     @endif>
-                                    2
+                                    Agustus
                                 </option>
                                 <option value="3"
                                     @if ( old('bulan')=='3')
                                         selected
                                     @endif>
-                                    3
+                                    September
                                 </option>
                                 <option value="4"
                                     @if ( old('bulan')=='4')
                                         selected
                                     @endif>
-                                    4
+                                    Oktober
                                 </option>
                                 <option value="5"
                                     @if ( old('bulan')=='5')
                                         selected
                                     @endif>
-                                    5
+                                    November
                                 </option>
                                 <option value="6"
                                     @if ( old('bulan')=='6')
                                         selected
                                     @endif>
-                                    6
+                                    Desember
                                 </option>
                             </select>
                             @include('alerts.feedback', ['field' => 'bulan'])
@@ -71,7 +71,7 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Semester")}}</label>
-                            <select name="semester" class="form-control {{ $errors->has('semester') ? ' is-invalid' : '' }}">
+                            <select id="semester" name="semester" class="form-control {{ $errors->has('semester') ? ' is-invalid' : '' }}">
                                 <option value="0"
                                     @if ( old('semester')=='0')
                                         selected
@@ -124,6 +124,53 @@
 
 @push('js')
 <script>
+    const semester = document.getElementById('semester');
+    const bulan = document.getElementById('bulan');
 
+    semester.addEventListener('change', function() {
+        if (this.value == 0) {
+            for (let i = 0; i < bulan.options.length; i++) {
+                if (bulan.options[i].value == 1) {
+                    bulan.options[i].text = 'Juli';
+                }
+                if (bulan.options[i].value == 2) {
+                    bulan.options[i].text = 'Agustus';
+                }
+                if (bulan.options[i].value == 3) {
+                    bulan.options[i].text = 'September';
+                }
+                if (bulan.options[i].value == 4) {
+                    bulan.options[i].text = 'Oktober';
+                }
+                if (bulan.options[i].value == 5) {
+                    bulan.options[i].text = 'November';
+                }
+                if (bulan.options[i].value == 6) {
+                    bulan.options[i].text = 'Desember';
+                }
+            }
+        }else if (this.value == 1) {
+            for (let i = 0; i < bulan.options.length; i++) {
+                if (bulan.options[i].value == 1) {
+                    bulan.options[i].text = 'Januari';
+                }
+                if (bulan.options[i].value == 2) {
+                    bulan.options[i].text = 'Februari';
+                }
+                if (bulan.options[i].value == 3) {
+                    bulan.options[i].text = 'Maret';
+                }
+                if (bulan.options[i].value == 4) {
+                    bulan.options[i].text = 'April';
+                }
+                if (bulan.options[i].value == 5) {
+                    bulan.options[i].text = 'Mei';
+                }
+                if (bulan.options[i].value == 6) {
+                    bulan.options[i].text = 'Juni';
+                }
+            }
+        }
+    });
 </script>
 @endpush

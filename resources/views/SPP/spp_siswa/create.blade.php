@@ -26,7 +26,7 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Nominal SPP")}}</label>
-                            <select name="Nominal_SPP" class="form-control {{ $errors->has('Nominal_SPP') ? ' is-invalid' : '' }}">
+                            <select name="Nominal_SPP" class="form-control {{ $errors->has('Nominal_SPP') ? ' is-invalid' : '' }}" required>
                                 @foreach ($nominal_spp as $as )
                                     <option value="{{$as->id_nominal}}"
                                         @if ( old('Nominal_SPP')==$as->id_nominal)
@@ -44,7 +44,7 @@
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Potongan SPP")}}</label>
-                            <select name="Potongan_SPP" class="form-control {{ $errors->has('Potongan_SPP') ? ' is-invalid' : '' }}">
+                            <select name="Potongan_SPP" class="form-control {{ $errors->has('Potongan_SPP') ? ' is-invalid' : '' }}" onclick="bukti_potongan()" required>
                                 <option value="-1"
                                 @if ( old('Potongan_SPP')=='-1')
                                     selected
@@ -62,6 +62,20 @@
                         </div>
                     </div>
                 </div>
+                <div id="bukti_potongan" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-7 pr-1">
+                            <div class="form-group">
+                                <label>{{__("Bukti Potongan")}}</label>
+                                <div class="custom-file">
+                                    <input type="file" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}" required  >
+                                    <label id="customFile" class="custom-file-label" for="customFile">Pilih file pdf</label>
+                                </div>
+                                @include('alerts.feedback', ['field' => 'Bukti_Potongan'])
+                            </div>
+                        </div>
+                    </div>
+                </div>
               <div class="card-footer ">
                 <button type="submit" class="btn btn-primary btn-round">{{__('Save')}}</button>
               </div>
@@ -75,6 +89,24 @@
 
 @push('js')
 <script>
+    function bukti_potongan(){
+        if (document.getElementsByName("Potongan_SPP")[0].value === "-1") {
+            document.getElementById("bukti_potongan").style.display = "none";
+        }else{
+            document.getElementById("bukti_potongan").style.display = "block";
+        }
+    }
+    const fileInput = document.getElementsByName('Bukti_Potongan')[0];
+    const fileNameDisplay = document.getElementById('customFile');
 
+    fileInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            const fileName = files[0].name;
+            fileNameDisplay.textContent = `File pdf yang dipilih: ${fileName}`;
+        } else {
+            fileNameDisplay.textContent = 'Pilih file pdf.';
+        }
+    });
 </script>
 @endpush

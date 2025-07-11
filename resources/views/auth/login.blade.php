@@ -64,8 +64,8 @@
                             @endif
                         </div>
                         <input type="hidden" name="web" value="true">
-                        <div class="card-footer ">
-                            <button  type = "submit" class="btn bg-dark-green btn-round btn-lg btn-block mb-3" >{{ __('Get Started') }}</button>
+                        <div class="card-footer text-center">
+                            <button  type = "submit" class="btn btn-primary btn-round btn-lg btn-block mb-3" >{{ __('Get Started') }}</button>
                             {{-- <div class="pull-right">
                                 <h6>
                                 <a href="{{ route('password.request') }}" class="link footer-link">{{ __('Forgot Password?') }}</a>

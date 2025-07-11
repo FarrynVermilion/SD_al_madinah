@@ -38,10 +38,10 @@
                 </table>
             </div>
           </div>
-          @include('alerts.errors')
-          @include('alerts.success')
           <div class="card-body">
             @csrf
+            @include('alerts.errors')
+            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -50,6 +50,7 @@
                   <th>Nama siswa</th>
                   <th>NIS</th>
                   <th>Kelas</th>
+                  <th>Tahun ajaran</th>
                   <th class="disabled-sorting text-left">Penerimaan Siswa</th>
                 </tr>
               </thead>
@@ -61,22 +62,38 @@
                   <td>{{ $siswa->nama_lengkap }}</td>
                   <form action="{{ route('siswa_kelas.store') }}" method="post">
                     @csrf
-                  <td>
-                    <input type="text" class="form-control" placeholder="Masukan NIS" name="nis" value="{{ $siswa->nis }}">
-                  </td>
-                  <td>
-                    <select name="id_kelas" class="form-control">
-                      @foreach ($kelas as $kls)
-                        <option value="{{ $kls->id_kelas }}">{{ $kls->nama_kelas }}</option>
-                      @endforeach
-                    </select>
-                  </td>
-                  <td class="text-right">
-                    <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
-                    <button type="submit" class="btn btn-primary">
-                      Penerimaan Siswa
-                    </button>
-                  </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="Masukan NIS" name="nis" value="{{ $siswa->nis }}">
+                    </td>
+                    <td>
+                        <select name="id_kelas" class="form-control">
+                        @foreach ($kelas as $kls)
+                            <option value="{{ $kls->id_kelas }}">{{ $kls->nama_kelas }}</option>
+                        @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <select name="tahun_ajaran" class="form-control {{ $errors->has('tahun_ajar') ? ' is-invalid' : '' }}">
+                            <option value="{{ (date('Y')-1) . '/' . date('Y') }}"
+                                @if ( old('tahun_ajar') == ( (date('Y')-1) . '/' . date('Y') ) )
+                                    selected
+                                @endif>
+                                {{ (date('Y')-1) . '/' . date('Y') }}
+                            </option>
+                            <option value="{{ date('Y') . '/' . (date('Y')+1) }}"
+                                @if ( old('tahun_ajar') == ( date('Y') . '/' . (date('Y')+1) ) )
+                                    selected
+                                @endif>
+                                {{ date('Y') . '/' . (date('Y')+1) }}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="text-right">
+                        <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
+                        <button type="submit" class="btn btn-primary">
+                            Penerimaan Siswa
+                        </button>
+                    </td>
                   </form>
                 </tr>
 
@@ -108,6 +125,20 @@
                                             <option value="{{ $kls->id_kelas }}">{{ $kls->nama_kelas }}</option>
                                         @endforeach
                                     </select>
+                                    <select name="tahun_ajaran" class="form-control {{ $errors->has('tahun_ajar') ? ' is-invalid' : '' }}">
+                                        <option value="{{ (date('Y')-1) . '/' . date('Y') }}"
+                                            @if ( old('tahun_ajar') == ( (date('Y')-1) . '/' . date('Y') ) )
+                                                selected
+                                            @endif>
+                                            {{ (date('Y')-1) . '/' . date('Y') }}
+                                        </option>
+                                        <option value="{{ date('Y') . '/' . (date('Y')+1) }}"
+                                            @if ( old('tahun_ajar') == ( date('Y') . '/' . (date('Y')+1) ) )
+                                                selected
+                                            @endif>
+                                            {{ date('Y') . '/' . (date('Y')+1) }}
+                                        </option>
+                                    </select>
                                 </div>
                             </td>
                             <td class="col-md-4">
@@ -130,6 +161,7 @@
                   <th>Nama siswa</th>
                   <th>NIS</th>
                   <th>Kelas</th>
+                  <th>Tahun ajaran</th>
                   <th class="disabled-sorting text-left">Pilih</th>
                 </tr>
               </thead>
@@ -143,6 +175,7 @@
                         <td>{{ $siswa->nama_lengkap }}</td>
                         <td>{{ $siswa->id_NIS }}</td>
                         <td>{{ $siswa->nama_kelas }}</td>
+                        <td>{{ $siswa->tahun_ajaran }}</td>
                         <td class="">
                             <div>
                                 <input type="checkbox" name="id_siswa[]" value="{{ $siswa->id }}">

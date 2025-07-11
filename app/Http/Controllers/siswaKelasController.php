@@ -28,6 +28,7 @@ class siswaKelasController extends Controller
             'database_biodata_siswa.nisn',
             'database_biodata_siswa.nama_lengkap',
             'kelas.nama_kelas',
+            'siswa_kelas.tahun_ajaran',
             "NIS.id_NIS"
         )->get();
         $kelas = Kelas::all();
@@ -55,16 +56,19 @@ class siswaKelasController extends Controller
                 function ($attribute, $value, $fail) use ($request) {
                     if (Siswa_Kelas::withTrashed()->where('id_kelas', $value)
                         ->where('id_siswa', $request->id_siswa)
+                        ->where('tahun_ajaran', $request->tahun_ajaran)
                         ->exists()) {
                         $fail('The selected class is already assigned to this student.');
                     }
                 }],
+            'tahun_ajaran' => 'required',
             "nis" => "required|unique:NIS,id_NIS|min:7|max:7"
         ]);
         DB::transaction(function () use ($validate) {
             Siswa_Kelas::create([
                 "id_siswa" => $validate['id_siswa'],
-                "id_kelas" => $validate['id_kelas']
+                "id_kelas" => $validate['id_kelas'],
+                "tahun_ajaran" => $validate['tahun_ajaran']
             ]);
             Siswa_NIS::create([
                 "id_NIS" => $validate['nis'],
@@ -110,6 +114,7 @@ class siswaKelasController extends Controller
         $validate = $request->validate([
             "id_siswa" => "required",
             "id_kelas" => ["required", "exists:kelas,id_kelas"],
+            "tahun_ajaran" => "required"
         ]);
         DB::beginTransaction();
         try {
@@ -117,13 +122,15 @@ class siswaKelasController extends Controller
                 if (Siswa_Kelas::withTrashed()
                     ->where('id_kelas', $validate['id_kelas'])
                     ->where('id_siswa', $id)
+                    ->where('tahun_ajaran', $validate['tahun_ajaran'])
                     ->exists()) {
                     throw new \Exception();
                 }
                 Siswa_Kelas::where('id_siswa', $id)->delete();
                 Siswa_Kelas::create([
                     "id_siswa" => $id,
-                    "id_kelas" => $validate['id_kelas']
+                    "id_kelas" => $validate['id_kelas'],
+                    "tahun_ajaran" => $validate['tahun_ajaran']
                 ]);
             }
 

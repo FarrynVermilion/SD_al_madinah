@@ -29,7 +29,7 @@ return new class extends Migration
             $table->char('status_anak',1)->nullable();
             $table->string('bahasa_sehari_hari',100);
             $table->text('alamat');
-            $table->string('no_kk',20);
+            $table->string('NO_KK',16);
             $table->string('kelurahan',100);
             $table->string('kecamatan',100);
             $table->string('kota',100);
@@ -51,7 +51,7 @@ return new class extends Migration
             $table->date('tanggal_skhun')->nullable();
             $table->string('nomor_skhun',100)->nullable();
             $table->tinyInteger('lama_belajar')->nullable();
-            $table->string('nisn',100)->nullable();
+            $table->string('nisn',10)->nullable();
             $table->char('tipe_riwayat_sekolah',1)->nullable();
             $table->string('nama_riwayat_sekolah',255)->nullable();
             $table->date('tanggal_pindah')->nullable();
@@ -63,8 +63,7 @@ return new class extends Migration
             $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('database_biodata_wali_siswa', function (Blueprint $table) {
-            $table->id()->primary();
-            $table->integer('id_siswa');
+            $table->string('NO_KK',16)->primary();
             $table->string('nama_ayah',100);
             $table->string('nama_ibu',100);
             $table->string('tempat_lahir_ayah',50);
@@ -79,8 +78,8 @@ return new class extends Migration
             $table->string('kewarganegaraan_ibu',50);
             $table->string('pendidikan_ayah',100);
             $table->string('pendidikan_ibu',100);
-            $table->string('ijazah_ayah',100);
-            $table->string('ijazah_ibu',100);
+            $table->string('ijazah_ayah',100)->nullable();
+            $table->string('ijazah_ibu',100)->nullable();
             $table->string('pekerjaan_ayah',100)->nullable();
             $table->string('pekerjaan_ibu',100)->nullable();
             $table->string('alamat_kerja_ayah',200)->nullable();

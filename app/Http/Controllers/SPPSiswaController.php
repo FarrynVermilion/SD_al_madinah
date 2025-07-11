@@ -13,6 +13,9 @@ use App\Models\Siswa_Kelas;
 use App\Models\Kelas;
 use App\Models\Siswa_NIS;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Foundation\Http\FormRequest;
 
 class SPPSiswaController extends Controller
 {
@@ -195,18 +198,34 @@ class SPPSiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSPP_SiswaRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
-        if ($validated["Potongan_SPP"]==-1) {
+        $validated = $request->validate([
+            "id_siswa" => ["required", "exists:database_biodata_siswa,id", "unique:spp_siswa,id_siswa"],
+            "Nominal_SPP" => "required",
+            "Potongan_SPP" => "required",
+            "Bukti_Potongan"=>["mimetypes:application/pdf", "file","max:2048", "nullable"]
+        ]);
+        if (isset($validated["Potongan_SPP"]) && $validated["Potongan_SPP"]==-1) {
             $validated["Potongan_SPP"] = null;
         }
+        $fileNameToStore = null;
+        if ($request->hasFile('Bukti_Potongan')) {
+            $filenameWithExt = $request->file('Bukti_Potongan')->getClientOriginalName();
+            $filename = preg_replace('/[^A-Za-z0-9\-]/', '',        str_replace(' ', '-', pathinfo($filenameWithExt, PATHINFO_FILENAME)));
+            $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
+            Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);
+        }
+
         SPP_Siswa::create([
             "id_siswa" => $validated["id_siswa"],
             "id_nominal" => $validated["Nominal_SPP"],
             "id_potongan" => $validated["Potongan_SPP"],
+            "bukti_potongan" => $fileNameToStore,
             "status_siswa" => 1,
         ]);
+
         return redirect()->route("SPPsiswa.index")->with("success_create", "SPP Siswa berhasil ditambahkan");
     }
 

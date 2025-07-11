@@ -34,9 +34,10 @@
             </div>
           </div>
 
-          @include('alerts.errors')
-          @include('alerts.success')
           <div class="card-body">
+            @csrf
+            @include('alerts.errors')
+            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>

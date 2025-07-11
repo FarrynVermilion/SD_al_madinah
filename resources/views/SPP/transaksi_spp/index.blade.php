@@ -33,10 +33,11 @@
             </div>
           </div>
 
-          @include('alerts.errors')
-          @include('alerts.success')
+
           <div class="card-body">
             @csrf
+            @include('alerts.errors')
+            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -46,10 +47,11 @@
                   <th>Kelas</th>
                   <th>SPP</th>
                   <th>Potongan</th>
+                  <th>Bukti Potongan</th>
                   <th>Tagihan</th>
-                  <th>Bulan</th>
-                  <th>Semester</th>
                   <th>Tahun ajaran</th>
+                  <th>Semester</th>
+                  <th>Bulan</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
@@ -62,10 +64,67 @@
                     <td>{{$siswa->nama_kelas}}</td>
                     <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
                     <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
+                    <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
                     <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
-                    <td>{{$siswa->bulan }}</td>
-                    <td>{{$siswa->semester==0?"Ganjil": "Genap" }}</td>
                     <td>{{$siswa->tahun_ajaran}}</td>
+                    @if ($siswa->semester==0)
+                        <td>Ganjil</td>
+                        <td>
+                            @switch($siswa->bulan)
+                                @case(1)
+                                    Juli
+                                    @break
+                                @case(2)
+                                    Agustus
+                                    @break
+                                @case(3)
+                                    September
+                                    @break
+                                @break
+                                @case(4)
+                                    Oktober
+                                    @break
+                                @break
+                                @case(5)
+                                    November
+                                    @break
+                                @break
+                                @case(6)
+                                    Desember
+                                    @break
+                                @break
+                                @default
+                            @endswitch
+                        </td>
+                    @else
+                        <td>Genap</td>
+                        <td>
+                            @switch($siswa->bulan)
+                                @case(1)
+                                    Januari
+                                    @break
+                                @case(2)
+                                    Februari
+                                    @break
+                                @case(3)
+                                    Maret
+                                    @break
+                                @break
+                                @case(4)
+                                    April
+                                    @break
+                                @break
+                                @case(5)
+                                    Mei
+                                    @break
+                                @break
+                                @case(6)
+                                    Juni
+                                    @break
+                                @default
+                            @endswitch
+                        </td>
+                    @endif
                     <td class="td-actions text-left">
                       <table>
                         <tr>

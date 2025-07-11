@@ -21,8 +21,8 @@
                     <h5 class="card-category">Jumlah siswa per kulan yang belum dibayar</h5>
                     <h4 class="card-title"> Jumlah</h4>
                 </td>
-                <td class="text-right">
-                    <div class="toolbar">
+                <td class="text-right col-md-3">
+                    <div class="toolbar ">
                         <table width="100%">
                             <form action="{{ route('cetak.laporan_keuangan') }}" method="GET">
                                 @csrf
@@ -33,6 +33,11 @@
                                             @foreach ($tahun_ajaran as $tahun)
                                                 <option value="{{$tahun->tahun_ajaran}}">{{$tahun->tahun_ajaran}}</option>
                                             @endforeach
+                                        </select>
+                                        <select name="jenis" class="form-control">
+                                            <option value="">Pilih Laporan</option>
+                                            <option value="1">Laporan Pemasukan</option>
+                                            <option value="2">Laporan Siswa Belum Bayar</option>
                                         </select>
                                     </td>
                                     <td >

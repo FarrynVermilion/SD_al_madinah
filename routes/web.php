@@ -57,6 +57,7 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::get("spp/SPPsiswa/create_spp/{siswa}", [SPPSiswaController::class,'create_spp'])->name("spp.SPPsiswa.createSPP");
     Route::get("spp/transakis/cari/", [transaksiSPPController::class,'cari'])->name("transaksi.cari");
     Route::get("cetak/laporan/keuangan", [printController::class,'laporan_keuangan'])->name("cetak.laporan_keuangan");
+    Route::get("download/{file}",[printController::class,'download'])->name("DownloadFile");
 });
 
 // // rute Siswa

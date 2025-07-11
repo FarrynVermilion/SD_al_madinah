@@ -15,7 +15,6 @@ class Wali_Siswa extends Model
     use SoftDeletes, Prunable, HasFactory;
     protected $table = "database_biodata_wali_siswa";
     protected $fillable =  [
-        'id_siswa',
         'nama_ayah',
         'nama_ibu',
         'tempat_lahir_ayah',
@@ -56,7 +55,7 @@ class Wali_Siswa extends Model
         'created_by', 'updated_by', 'deleted_by',
         'created_at', 'updated_at', 'deleted_at'
     ];
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'NO_KK';
     public $timestamps = true;
     public $hidden = [  ];
     protected static function boot()

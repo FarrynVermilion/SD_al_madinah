@@ -25,7 +25,8 @@ class Transaksi_SPP extends Model
         'id_ketua_komite',
         'nama_ketua_komite',
         'id_kepala_sekolah',
-        'kepala_sekolah'
+        'kepala_sekolah',
+        'bukti_potongan'
     ];
 
     protected $primaryKey = 'id_transaksi';

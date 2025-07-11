@@ -30,11 +30,10 @@
             </div>
           </div>
 
-          @include('alerts.errors')
-          @include('alerts.success')
-
           <div class="card-body">
             @csrf
+            @include('alerts.errors')
+            @include('alerts.success')
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -113,6 +112,8 @@
                   <th>Kelas</th>
                   <th>SPP</th>
                   <th>Potongan</th>
+                  <th>Bukti Poptongan</th>
+                  <th>Tagihan</th>
                   <th>Aktif</th>
                   <th>Diubah oleh</th>
                   <th>Terakhir diubah</th>
@@ -128,8 +129,17 @@
                   <td>{{ $siswa->id_NIS }}</td>
                   <td>{{ $siswa->nama_kelas }}</td>
                   <td>{{ $siswa->nama_bayaran}}<br>RP. {{ number_format($siswa->nominal,2,',','.') }}</td>
-                  <td>{!! ($siswa->id_potongan==null) ? "Tidak ada potongan":
-                  nl2br(e($siswa->nama_potongan."\nRP. ".number_format($siswa->nominal_potongan,2,',','.'))) !!}</td>
+                  @if ($siswa->id_potongan==null)
+                        <td colspan="2">Tidak ada potongan</td>
+                  @else
+                        <td>{{ $siswa->nama_potongan}}<br>RP. {{number_format($siswa->nominal_potongan,2,',','.') }}</td>
+                        <td>
+                            <a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a>
+                        </td>
+                  @endif
+
+                  <td>RP. {{ number_format($siswa->nominal-$siswa->nominal_potongan,2,',','.') }}</td>
+
                   <td>{{ $siswa->status_siswa }}</td>
                   <td>{{ $siswa->updated_by }}</td>
                   <td>{{ $siswa->updated_at }}</td>

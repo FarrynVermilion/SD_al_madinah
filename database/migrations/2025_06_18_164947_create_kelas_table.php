@@ -21,17 +21,18 @@ return new class extends Migration
             $table->unsignedBigInteger("deleted_by")->nullable();
         });
         Schema::create('siswa_kelas', function (Blueprint $table) {
-            $table->id("id_siswa_kelas")->primary();
             $table->unsignedBigInteger("id_siswa");
             $table->unsignedBigInteger("id_kelas");
+            $table->string("tahun_ajaran",10);
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->unsignedBigInteger("created_by");
             $table->unsignedBigInteger("updated_by");
             $table->unsignedBigInteger("deleted_by")->nullable();
+            $table->primary(['id_siswa', 'id_kelas']);
         });
         Schema::create('NIS', function (Blueprint $table) {
-            $table->char("id_NIS",7)->primary();
+            $table->char("id_NIS",10)->primary();
             $table->unsignedBigInteger("id_siswa");
             $table->timestamps();
             $table->softDeletes()->nullable();

@@ -8,8 +8,6 @@
 <div class="panel-header panel-header-sm">
 </div>
 <div class="content">
-@include('alerts.errors')
-@include('alerts.success')
     <form method="post" action="{{ route('siswa.store') }}" autocomplete="off" enctype="multipart/form-data">
         @csrf
         <div class="row">
@@ -18,6 +16,10 @@
                     <div class="card-header">
                         <h5 class="title">{{__(" Daftar siswa")}}</h5>
                     </div>
+
+                    @csrf
+                    @include('alerts.errors')
+                    @include('alerts.success')
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
@@ -174,15 +176,6 @@
                                         <label>{{__(" Alamat")}}</label>
                                         <input type="Text"  name="alamat" class="form-control {{ $errors->has('alamat') ? ' is-invalid' : '' }}" placeholder="Alamat" value="{{ old('alamat') }}">
                                         @include('alerts.feedback', ['field' => 'alamat'])
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{__(" No kk")}}</label>
-                                        <input type="text"  name="no_kk" class="form-control {{ $errors->has('no_kk') ? ' is-invalid' : '' }}" placeholder="No kk" value="{{ old('no_kk') }}">
-                                        @include('alerts.feedback', ['field' => 'no_kk'])
                                     </div>
                                 </div>
                             </div>
@@ -519,400 +512,444 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="title">{{__(" Data Orang Tua")}}</h5>
+                        <h5 class="title">{{__(" Data KK")}}</h5>
                     </div>
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-10 pr-1">
+                                <div class="col-md-12 pr-1">
                                     <div class="form-group">
-                                        <label>{{ __("Nama Ayah") }}</label>
-                                        <input type="text" name="nama_ayah" class="form-control {{ $errors->has('nama_ayah') ? ' is-invalid' : '' }}" placeholder="Nama Ayah" value="{{ old('nama_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'nama_ayah'])
+                                        <label>{{__(" Pilih data kk")}}</label>
+                                        <select id ="pilih_data_kk" name="pilih_data_kk" onclick="show_kk()" class="form-control {{ $errors->has('pilih_data_kk') ? ' is-invalid' : '' }}">
+                                            <option value="0"
+                                            @if ( old('pilih_data_kk')=='0')
+                                                selected
+                                            @endif>Buat Baru</option>
+                                            @foreach ($kk as $no_kk )
+                                                <option value="{{$no_kk}}"
+                                                @if ( old('pilih_data_kk')==$no_kk)
+                                                    selected
+                                                @endif>{{$no_kk}}</option>
+                                            @endforeach
+                                        </select>
+                                        @include('alerts.feedback', ['field' => 'tipe_riwayat_sekolah'])
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
+                            <div class="row" id="kk">
+                                <div class="col-md-12 pr-1">
                                     <div class="form-group">
-                                        <label>{{ __("Nama Ibu") }}</label>
-                                        <input type="text" name="nama_ibu" class="form-control {{ $errors->has('nama_ibu') ? ' is-invalid' : '' }}" placeholder="Nama Ibu" value="{{ old('nama_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'nama_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Tempat Lahir Ayah") }}</label>
-                                        <input type="text" name="tempat_lahir_ayah" class="form-control {{ $errors->has('tempat_lahir_ayah') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Ayah" value="{{ old('tempat_lahir_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'tempat_lahir_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Tempat Lahir Ibu") }}</label>
-                                        <input type="text" name="tempat_lahir_ibu" class="form-control {{ $errors->has('tempat_lahir_ibu') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Ibu" value="{{ old('tempat_lahir_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'tempat_lahir_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{__(" Tanggal Lahir Ayah")}}</label>
-                                        <input type="date"  name="tanggal_lahir_ayah" class="form-control {{ $errors->has('tanggal_lahir_ayah') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Ayah" value="{{ old('tanggal_lahir_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'tanggal_lahir_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{__(" Tanggal Lahir Ibu")}}</label>
-                                        <input type="date"  name="tanggal_lahir_ibu" class="form-control {{ $errors->has('tanggal_lahir_ibu') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Ibu" value="{{ old('tanggal_lahir_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'tanggal_lahir_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Kewarganegaraan Ayah") }}</label>
-                                        <input type="text" name="kewarganegaraan_ayah" onfocusout="kwn_ayah()" class="form-control {{ $errors->has('kewarganegaraan_ayah') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Ayah" value="{{ old('kewarganegaraan_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'kewarganegaraan_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Kewarganegaraan Ibu") }}</label>
-                                        <input type="text" name="kewarganegaraan_ibu" onfocusout="kwn_ibu()" class="form-control {{ $errors->has('kewarganegaraan_ibu') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Ibu" value="{{ old('kewarganegaraan_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'kewarganegaraan_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="nik_ayah" style="display: block">
-                                <div class="row">
-                                    <div class="col-md-10 pr-1">
-                                        <div class="form-group">
-                                            <label>{{ __("NIK Ayah") }}</label>
-                                            <input type="text" name="nik_ayah" class="form-control {{ $errors->has('nik_ayah') ? ' is-invalid' : '' }}" placeholder="NIK Ayah" value="{{ old('nik_ayah') }}">
-                                            @include('alerts.feedback', ['field' => 'nik_ayah'])
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="nik_ibu" style="display: block">
-                                <div class="row">
-                                    <div class="col-md-10 pr-1">
-                                        <div class="form-group">
-                                            <label>{{ __("NIK Ibu") }}</label>
-                                            <input type="text" name="nik_ibu" class="form-control {{ $errors->has('nik_ibu') ? ' is-invalid' : '' }}" placeholder="NIK Ibu" value="{{ old('nik_ibu') }}">
-                                            @include('alerts.feedback', ['field' => 'nik_ibu'])
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Agama Ayah") }}</label>
-                                        <input type="text" name="agama_ayah" class="form-control {{ $errors->has('agama_ayah') ? ' is-invalid' : '' }}" placeholder="Agama Ayah" value="{{ old('agama_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'agama_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Agama Ibu") }}</label>
-                                        <input type="text" name="agama_ibu" class="form-control {{ $errors->has('agama_ibu') ? ' is-invalid' : '' }}" placeholder="Agama Ibu" value="{{ old('agama_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'agama_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Pendidikan Ayah") }}</label>
-                                        <input type="text" name="pendidikan_ayah" class="form-control {{ $errors->has('pendidikan_ayah') ? ' is-invalid' : '' }}" placeholder="Pendidikan Ayah" value="{{ old('pendidikan_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'pendidikan_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Pendidikan Ibu") }}</label>
-                                        <input type="text" name="pendidikan_ibu" class="form-control {{ $errors->has('pendidikan_ibu') ? ' is-invalid' : '' }}" placeholder="Pendidikan Ibu" value="{{ old('pendidikan_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'pendidikan_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Ijazah Ayah") }}</label>
-                                        <input type="text" name="ijazah_ayah" class="form-control {{ $errors->has('ijazah_ayah') ? ' is-invalid' : '' }}" placeholder="Ijazah Ayah" value="{{ old('ijazah_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'ijazah_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Ijazah Ibu") }}</label>
-                                        <input type="text" name="ijazah_ibu" class="form-control {{ $errors->has('ijazah_ibu') ? ' is-invalid' : '' }}" placeholder="Ijazah Ibu" value="{{ old('ijazah_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'ijazah_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Pekerjaan Ayah") }}</label>
-                                        <input type="text" name="pekerjaan_ayah" class="form-control {{ $errors->has('pekerjaan_ayah') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Ayah" value="{{ old('pekerjaan_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'pekerjaan_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Pekerjaan Ibu") }}</label>
-                                        <input type="text" name="pekerjaan_ibu" class="form-control {{ $errors->has('pekerjaan_ibu') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Ibu" value="{{ old('pekerjaan_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'pekerjaan_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Penghasilan Ayah") }}</label>
-                                        <input type="number" name="penghasilan_ayah" class="form-control {{ $errors->has('penghasilan_ayah') ? ' is-invalid' : '' }}" placeholder="Penghasilan Ayah" value="{{ old('penghasilan_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'penghasilan_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Penghasilan Ibu") }}</label>
-                                        <input type="number" name="penghasilan_ibu" class="form-control {{ $errors->has('penghasilan_ibu') ? ' is-invalid' : '' }}" placeholder="Penghasilan Ibu" value="{{ old('penghasilan_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'penghasilan_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Alamat Kerja Ayah") }}</label>
-                                        <input type="text" name="alamat_kerja_ayah" class="form-control {{ $errors->has('alamat_kerja_ayah') ? ' is-invalid' : '' }}" placeholder="Alamat Kerja Ayah" value="{{ old('alamat_kerja_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'alamat_kerja_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Alamat Kerja Ibu") }}</label>
-                                        <input type="text" name="alamat_kerja_ibu" class="form-control {{ $errors->has('alamat_kerja_ibu') ? ' is-invalid' : '' }}" placeholder="Alamat Kerja Ibu" value="{{ old('alamat_kerja_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'alamat_kerja_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Alamat Rumah Ayah") }}</label>
-                                        <input type="text" name="alamat_rumah_ayah" class="form-control {{ $errors->has('alamat_rumah_ayah') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Ayah" value="{{ old('alamat_rumah_ayah') }}">
-                                        @include('alerts.feedback', ['field' => 'alamat_rumah_ayah'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Alamat Rumah Ibu") }}</label>
-                                        <input type="text" name="alamat_rumah_ibu" class="form-control {{ $errors->has('alamat_rumah_ibu') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Ibu" value="{{ old('alamat_rumah_ibu') }}">
-                                        @include('alerts.feedback', ['field' => 'alamat_rumah_ibu'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Status Hidup") }}</label>
-                                        <input type="text" name="status_hidup" class="form-control {{ $errors->has('status_hidup') ? ' is-invalid' : '' }}" placeholder="Status Hidup" value="{{ old('status_hidup') }}">
-                                        @include('alerts.feedback', ['field' => 'status_hidup'])
+                                        <label>{{__(" No kk")}}</label>
+                                        <input type="text" id="no_kk" name="no_kk" class="form-control {{ $errors->has('no_kk') ? ' is-invalid' : '' }}" placeholder="No kk" value="{{ old('no_kk') }}">
+                                        @include('alerts.feedback', ['field' => 'no_kk'])
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="title">{{__(" Data Wali")}}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Nama Wali") }}</label>
-                                        <input type="text" name="nama_wali" class="form-control {{ $errors->has('nama_wali') ? ' is-invalid' : '' }}" placeholder="Nama Wali" value="{{ old('nama_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'nama_wali'])
-                                    </div>
+                <div id="data_kk_baru" style="display: block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="title">{{__(" Data orang tua")}}</h5>
                                 </div>
-                            </div>
+                                <div class="card-body">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Nama Ayah") }}</label>
+                                                    <input type="text" name="nama_ayah" class="form-control {{ $errors->has('nama_ayah') ? ' is-invalid' : '' }}" placeholder="Nama Ayah" value="{{ old('nama_ayah') }}" required>
+                                                    @include('alerts.feedback', ['field' => 'nama_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Tempat Lahir Wali") }}</label>
-                                        <input type="text" name="tempat_lahir_wali" class="form-control {{ $errors->has('tempat_lahir_wali') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Wali" value="{{ old('tempat_lahir_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'tempat_lahir_wali'])
-                                    </div>
-                                </div>
-                            </div>
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Nama Ibu") }}</label>
+                                                    <input type="text" name="nama_ibu" class="form-control {{ $errors->has('nama_ibu') ? ' is-invalid' : '' }}" placeholder="Nama Ibu" value="{{ old('nama_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'nama_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{__(" Tanggal Lahir Wali")}}</label>
-                                        <input type="date"  name="tanggal_lahir_wali" class="form-control {{ $errors->has('tanggal_lahir_wali') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Wali" value="{{ old('tanggal_lahir_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'tanggal_lahir_wali'])
-                                    </div>
-                                </div>
-                            </div>
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Tempat Lahir Ayah") }}</label>
+                                                    <input type="text" name="tempat_lahir_ayah" class="form-control {{ $errors->has('tempat_lahir_ayah') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Ayah" value="{{ old('tempat_lahir_ayah') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'tempat_lahir_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Kewarganegaraan Wali") }}</label>
-                                        <input type="text" name="kewarganegaraan_wali" onfocusout="kwn_wali()" class="form-control {{ $errors->has('kewarganegaraan_wali') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Wali" value="{{ old('kewarganegaraan_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'kewarganegaraan_wali'])
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="nik_wali" style="display: block">
-                                <div class="row">
-                                    <div class="col-md-10 pr-1">
-                                        <div class="form-group">
-                                            <label>{{ __("NIK Wali") }}</label>
-                                            <input type="text" name="nik_wali" class="form-control {{ $errors->has('nik_wali') ? ' is-invalid' : '' }}" placeholder="NIK Wali" value="{{ old('nik_wali') }}">
-                                            @include('alerts.feedback', ['field' => 'nik_wali'])
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Tempat Lahir Ibu") }}</label>
+                                                    <input type="text" name="tempat_lahir_ibu" class="form-control {{ $errors->has('tempat_lahir_ibu') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Ibu" value="{{ old('tempat_lahir_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'tempat_lahir_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{__(" Tanggal Lahir Ayah")}}</label>
+                                                    <input type="date"  name="tanggal_lahir_ayah" class="form-control {{ $errors->has('tanggal_lahir_ayah') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Ayah" value="{{ old('tanggal_lahir_ayah') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'tanggal_lahir_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{__(" Tanggal Lahir Ibu")}}</label>
+                                                    <input type="date"  name="tanggal_lahir_ibu" class="form-control {{ $errors->has('tanggal_lahir_ibu') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Ibu" value="{{ old('tanggal_lahir_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'tanggal_lahir_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Kewarganegaraan Ayah") }}</label>
+                                                    <input type="text" name="kewarganegaraan_ayah" onfocusout="kwn_ayah()" class="form-control {{ $errors->has('kewarganegaraan_ayah') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Ayah" value="{{ old('kewarganegaraan_ayah') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'kewarganegaraan_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Kewarganegaraan Ibu") }}</label>
+                                                    <input type="text" name="kewarganegaraan_ibu" onfocusout="kwn_ibu()" class="form-control {{ $errors->has('kewarganegaraan_ibu') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Ibu" value="{{ old('kewarganegaraan_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'kewarganegaraan_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="nik_ayah" style="display: block">
+                                            <div class="row">
+                                                <div class="col-md-10 pr-1">
+                                                    <div class="form-group">
+                                                        <label>{{ __("NIK Ayah") }}</label>
+                                                        <input type="text" name="nik_ayah" class="form-control {{ $errors->has('nik_ayah') ? ' is-invalid' : '' }}" placeholder="NIK Ayah" value="{{ old('nik_ayah') }} "required>
+                                                        @include('alerts.feedback', ['field' => 'nik_ayah'])
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="nik_ibu" style="display: block">
+                                            <div class="row">
+                                                <div class="col-md-10 pr-1">
+                                                    <div class="form-group">
+                                                        <label>{{ __("NIK Ibu") }}</label>
+                                                        <input type="text" name="nik_ibu" class="form-control {{ $errors->has('nik_ibu') ? ' is-invalid' : '' }}" placeholder="NIK Ibu" value="{{ old('nik_ibu') }}"required>
+                                                        @include('alerts.feedback', ['field' => 'nik_ibu'])
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Agama Ayah") }}</label>
+                                                    <input type="text" name="agama_ayah" class="form-control {{ $errors->has('agama_ayah') ? ' is-invalid' : '' }}" placeholder="Agama Ayah" value="{{ old('agama_ayah') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'agama_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Agama Ibu") }}</label>
+                                                    <input type="text" name="agama_ibu" class="form-control {{ $errors->has('agama_ibu') ? ' is-invalid' : '' }}" placeholder="Agama Ibu" value="{{ old('agama_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'agama_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Pendidikan Ayah") }}</label>
+                                                    <input type="text" name="pendidikan_ayah" class="form-control {{ $errors->has('pendidikan_ayah') ? ' is-invalid' : '' }}" placeholder="Pendidikan Ayah" value="{{ old('pendidikan_ayah') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'pendidikan_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Pendidikan Ibu") }}</label>
+                                                    <input type="text" name="pendidikan_ibu" class="form-control {{ $errors->has('pendidikan_ibu') ? ' is-invalid' : '' }}" placeholder="Pendidikan Ibu" value="{{ old('pendidikan_ibu') }}"required>
+                                                    @include('alerts.feedback', ['field' => 'pendidikan_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Ijazah Ayah") }}</label>
+                                                    <input type="text" name="ijazah_ayah" class="form-control {{ $errors->has('ijazah_ayah') ? ' is-invalid' : '' }}" placeholder="Ijazah Ayah" value="{{ old('ijazah_ayah') }}">
+                                                    @include('alerts.feedback', ['field' => 'ijazah_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Ijazah Ibu") }}</label>
+                                                    <input type="text" name="ijazah_ibu" class="form-control {{ $errors->has('ijazah_ibu') ? ' is-invalid' : '' }}" placeholder="Ijazah Ibu" value="{{ old('ijazah_ibu') }}">
+                                                    @include('alerts.feedback', ['field' => 'ijazah_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Pekerjaan Ayah") }}</label>
+                                                    <input type="text" name="pekerjaan_ayah" class="form-control {{ $errors->has('pekerjaan_ayah') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Ayah" value="{{ old('pekerjaan_ayah') }}">
+                                                    @include('alerts.feedback', ['field' => 'pekerjaan_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Pekerjaan Ibu") }}</label>
+                                                    <input type="text" name="pekerjaan_ibu" class="form-control {{ $errors->has('pekerjaan_ibu') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Ibu" value="{{ old('pekerjaan_ibu') }}">
+                                                    @include('alerts.feedback', ['field' => 'pekerjaan_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Penghasilan Ayah") }}</label>
+                                                    <input type="number" name="penghasilan_ayah" class="form-control {{ $errors->has('penghasilan_ayah') ? ' is-invalid' : '' }}" placeholder="Penghasilan Ayah" value="{{ old('penghasilan_ayah') }}">
+                                                    @include('alerts.feedback', ['field' => 'penghasilan_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Penghasilan Ibu") }}</label>
+                                                    <input type="number" name="penghasilan_ibu" class="form-control {{ $errors->has('penghasilan_ibu') ? ' is-invalid' : '' }}" placeholder="Penghasilan Ibu" value="{{ old('penghasilan_ibu') }}">
+                                                    @include('alerts.feedback', ['field' => 'penghasilan_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Alamat Kerja Ayah") }}</label>
+                                                    <input type="text" name="alamat_kerja_ayah" class="form-control {{ $errors->has('alamat_kerja_ayah') ? ' is-invalid' : '' }}" placeholder="Alamat Kerja Ayah" value="{{ old('alamat_kerja_ayah') }}">
+                                                    @include('alerts.feedback', ['field' => 'alamat_kerja_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Alamat Kerja Ibu") }}</label>
+                                                    <input type="text" name="alamat_kerja_ibu" class="form-control {{ $errors->has('alamat_kerja_ibu') ? ' is-invalid' : '' }}" placeholder="Alamat Kerja Ibu" value="{{ old('alamat_kerja_ibu') }}">
+                                                    @include('alerts.feedback', ['field' => 'alamat_kerja_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Alamat Rumah Ayah") }}</label>
+                                                    <input type="text" name="alamat_rumah_ayah" class="form-control {{ $errors->has('alamat_rumah_ayah') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Ayah" value="{{ old('alamat_rumah_ayah') }}">
+                                                    @include('alerts.feedback', ['field' => 'alamat_rumah_ayah'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Alamat Rumah Ibu") }}</label>
+                                                    <input type="text" name="alamat_rumah_ibu" class="form-control {{ $errors->has('alamat_rumah_ibu') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Ibu" value="{{ old('alamat_rumah_ibu') }}">
+                                                    @include('alerts.feedback', ['field' => 'alamat_rumah_ibu'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Status Hidup") }}</label>
+                                                    <input type="text" name="status_hidup" class="form-control {{ $errors->has('status_hidup') ? ' is-invalid' : '' }}" placeholder="Status Hidup" value="{{ old('status_hidup') }}" required>
+                                                    @include('alerts.feedback', ['field' => 'status_hidup'])
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="title">{{__(" Data wali")}}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Nama Wali") }}</label>
+                                                    <input type="text" name="nama_wali" class="form-control {{ $errors->has('nama_wali') ? ' is-invalid' : '' }}" placeholder="Nama Wali" value="{{ old('nama_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'nama_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Agama Wali") }}</label>
-                                        <input type="text" name="agama_wali" class="form-control {{ $errors->has('agama_wali') ? ' is-invalid' : '' }}" placeholder="Agama Wali" value="{{ old('agama_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'agama_wali'])
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Tempat Lahir Wali") }}</label>
+                                                    <input type="text" name="tempat_lahir_wali" class="form-control {{ $errors->has('tempat_lahir_wali') ? ' is-invalid' : '' }}" placeholder="Tempat Lahir Wali" value="{{ old('tempat_lahir_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'tempat_lahir_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{__(" Tanggal Lahir Wali")}}</label>
+                                                    <input type="date"  name="tanggal_lahir_wali" class="form-control {{ $errors->has('tanggal_lahir_wali') ? ' is-invalid' : '' }}" placeholder="Tanggal Lahir Wali" value="{{ old('tanggal_lahir_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'tanggal_lahir_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Kewarganegaraan Wali") }}</label>
+                                                    <input type="text" name="kewarganegaraan_wali" onfocusout="kwn_wali()" class="form-control {{ $errors->has('kewarganegaraan_wali') ? ' is-invalid' : '' }}" placeholder="Kewarganegaraan Wali" value="{{ old('kewarganegaraan_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'kewarganegaraan_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="nik_wali" style="display: block">
+                                            <div class="row">
+                                                <div class="col-md-10 pr-1">
+                                                    <div class="form-group">
+                                                        <label>{{ __("NIK Wali") }}</label>
+                                                        <input type="text" name="nik_wali" class="form-control {{ $errors->has('nik_wali') ? ' is-invalid' : '' }}" placeholder="NIK Wali" value="{{ old('nik_wali') }}">
+                                                        @include('alerts.feedback', ['field' => 'nik_wali'])
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Agama Wali") }}</label>
+                                                    <input type="text" name="agama_wali" class="form-control {{ $errors->has('agama_wali') ? ' is-invalid' : '' }}" placeholder="Agama Wali" value="{{ old('agama_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'agama_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Hubungan Keluarga") }}</label>
+                                                    <input type="text" name="hubungan_keluarga" class="form-control {{ $errors->has('hubungan_keluarga') ? ' is-invalid' : '' }}" placeholder="Hubungan Keluarga" value="{{ old('hubungan_keluarga') }}">
+                                                    @include('alerts.feedback', ['field' => 'hubungan_keluarga'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Ijazah Wali") }}</label>
+                                                    <input type="text" name="ijazah_wali" class="form-control {{ $errors->has('ijazah_wali') ? ' is-invalid' : '' }}" placeholder="Ijazah Wali" value="{{ old('ijazah_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'ijazah_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Pekerjaan Wali") }}</label>
+                                                    <input type="text" name="pekerjaan_wali" class="form-control {{ $errors->has('pekerjaan_wali') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Wali" value="{{ old('pekerjaan_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'pekerjaan_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Penghasilan Wali") }}</label>
+                                                    <input type="number" name="penghasilan_wali" class="form-control {{ $errors->has('penghasilan_wali') ? ' is-invalid' : '' }}" placeholder="Penghasilan Wali" value="{{ old('penghasilan_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'penghasilan_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Alamat Rumah Wali") }}</label>
+                                                    <input type="text" name="alamat_rumah_wali" class="form-control {{ $errors->has('alamat_rumah_wali') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Wali" value="{{ old('alamat_rumah_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'alamat_rumah_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-10 pr-1">
+                                                <div class="form-group">
+                                                    <label>{{ __("Nomor Telp Wali") }}</label>
+                                                    <input type="text" name="nomor_telp_wali" class="form-control {{ $errors->has('nomor_telp_wali') ? ' is-invalid' : '' }}" placeholder="Nomor Telp Wali" value="{{ old('nomor_telp_wali') }}">
+                                                    @include('alerts.feedback', ['field' => 'nomor_telp_wali'])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="card-footer ">
+                                        <button type="submit" class="btn btn-primary btn-round">{{__('Save')}}</button>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Hubungan Keluarga") }}</label>
-                                        <input type="text" name="hubungan_keluarga" class="form-control {{ $errors->has('hubungan_keluarga') ? ' is-invalid' : '' }}" placeholder="Hubungan Keluarga" value="{{ old('hubungan_keluarga') }}">
-                                        @include('alerts.feedback', ['field' => 'hubungan_keluarga'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Ijazah Wali") }}</label>
-                                        <input type="text" name="ijazah_wali" class="form-control {{ $errors->has('ijazah_wali') ? ' is-invalid' : '' }}" placeholder="Ijazah Wali" value="{{ old('ijazah_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'ijazah_wali'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Pekerjaan Wali") }}</label>
-                                        <input type="text" name="pekerjaan_wali" class="form-control {{ $errors->has('pekerjaan_wali') ? ' is-invalid' : '' }}" placeholder="Pekerjaan Wali" value="{{ old('pekerjaan_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'pekerjaan_wali'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Penghasilan Wali") }}</label>
-                                        <input type="number" name="penghasilan_wali" class="form-control {{ $errors->has('penghasilan_wali') ? ' is-invalid' : '' }}" placeholder="Penghasilan Wali" value="{{ old('penghasilan_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'penghasilan_wali'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Alamat Rumah Wali") }}</label>
-                                        <input type="text" name="alamat_rumah_wali" class="form-control {{ $errors->has('alamat_rumah_wali') ? ' is-invalid' : '' }}" placeholder="Alamat Rumah Wali" value="{{ old('alamat_rumah_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'alamat_rumah_wali'])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 pr-1">
-                                    <div class="form-group">
-                                        <label>{{ __("Nomor Telp Wali") }}</label>
-                                        <input type="text" name="nomor_telp_wali" class="form-control {{ $errors->has('nomor_telp_wali') ? ' is-invalid' : '' }}" placeholder="Nomor Telp Wali" value="{{ old('nomor_telp_wali') }}">
-                                        @include('alerts.feedback', ['field' => 'nomor_telp_wali'])
-                                    </div>
-                                </div>
-                            </div>
-                        <div class="card-footer ">
-                            <button type="submit" class="btn btn-primary btn-round">{{__('Save')}}</button>
                         </div>
                     </div>
                 </div>
@@ -957,6 +994,17 @@
             document.getElementsByName("nik_ayah")[0].value="";
         }else{
             document.getElementById("nik_ayah").style.display = "none";
+        }
+    }
+    function show_kk(){
+        if (document.getElementsByName("pilih_data_kk")[0].value.toLowerCase() === "0"){
+            document.getElementById("data_kk_baru").style.display = "block";
+            document.getElementById("no_kk").value="";
+            document.getElementById("kk").style.display = "block";
+        }else{
+            document.getElementById("data_kk_baru").style.display = "none";
+            document.getElementById("no_kk").value=document.getElementsByName("pilih_data_kk")[0].value;
+            document.getElementById("kk").style.display = "none";
         }
     }
 </script>
