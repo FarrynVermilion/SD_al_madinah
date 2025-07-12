@@ -27,6 +27,7 @@ class UpdateSPP_SiswaRequest extends FormRequest
             "Nominal_SPP" => "required",
             "Potongan_SPP" => "required",
             "bukti_potongan"=>["mimetypes:application/pdf", "max:2048", "nullable"],
+            'file_name' => ['nullable', 'string', 'max:255', 'unique:spp_siswa,bukti_potongan'],
         ];
     }
 }
