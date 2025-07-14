@@ -261,18 +261,20 @@ class SPPSiswaController extends Controller
             "Bukti_Potongan"=>["mimetypes:application/pdf", "file","max:2048", "nullable"],
             'file_name' => ['nullable', 'string', 'max:255', 'unique:spp_siswa,bukti_potongan'],
         ]);
+
+        $fileNameToStore = null;
         if (isset($validated["Potongan_SPP"]) && $validated["Potongan_SPP"]==-1) {
             $validated["Potongan_SPP"] = null;
             $validated["Bukti_Potongan"] = null;
-        }
-        $fileNameToStore = null;
-        if ($request->hasFile('Bukti_Potongan')) {
-            $filenameWithExt = $request->file('Bukti_Potongan')->getClientOriginalName();
-            $filename = preg_replace('/[^A-Za-z0-9\-]/', '',        str_replace(' ', '-', pathinfo($filenameWithExt, PATHINFO_FILENAME)));
-            $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
-            Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);
-            $validated["Bukti_Potongan"] = $fileNameToStore;
+        }else{
+            if ($request->hasFile('Bukti_Potongan')) {
+                $filenameWithExt = $request->file('Bukti_Potongan')->getClientOriginalName();
+                $filename = preg_replace('/[^A-Za-z0-9\-]/', '',        str_replace(' ', '-', pathinfo($filenameWithExt, PATHINFO_FILENAME)));
+                $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
+                $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
+                Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);
+                $validated["Bukti_Potongan"] = $fileNameToStore;
+            }
         }
         $SPP_Siswa->update([
             "id_nominal" => $validated["Nominal_SPP"],

@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label>{{__("Bukti Potongan")}}</label>
                             <div class="custom-file">
-                                <input type="file" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}"  required  >
+                                <input type="file" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}"    >
                                 <label id="customFile" class="custom-file-label" for="customFile">{{ old('Bukti_Potongan', $SPP_Siswa->bukti_potongan) }}</label>
                                 <input id="file_name" type="hidden" name="file_name" value="{{ old('file_name', $SPP_Siswa->bukti_potongan) }}">
                             </div>
@@ -92,6 +92,7 @@
     function bukti_potongan(){
         if (document.getElementsByName("Potongan_SPP")[0].value === "-1") {
             document.getElementById("bukti_potongan").style.display = "none";
+            document.getElementById("file_name").value="";
         }else{
             document.getElementById("bukti_potongan").style.display = "block";
         }

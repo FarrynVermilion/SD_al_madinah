@@ -41,7 +41,6 @@ class StoreSiswaRequest extends FormRequest
             'status_anak' => 'nullable|in:0,1,2',
             'bahasa_sehari_hari' => 'required|string|max:100',
             'alamat' => 'required|string',
-            'no_kk' => 'required|string|size:16',
             'kelurahan' => 'required|string|max:100',
             'kecamatan' => 'required|string|max:100',
             'kota' => 'required|string|max:100',
@@ -71,6 +70,8 @@ class StoreSiswaRequest extends FormRequest
 
             // contoller
             'pilih_data_kk' => 'required',
+            'no_kk' => 'required|string|size:16',
+            'status_hidup' => ['nullable', 'string', 'max:100'],
 
             // Orang Tua
             'nama_ayah' => ['nullable', 'string', 'max:100'],
@@ -97,7 +98,6 @@ class StoreSiswaRequest extends FormRequest
             'penghasilan_ibu' => ['nullable', 'string', 'max:50'],
             'alamat_rumah_ayah' => ['nullable', 'string', 'max:200'],
             'alamat_rumah_ibu' => ['nullable', 'string', 'max:200'],
-            'status_hidup' => ['nullable', 'string', 'max:100'],
 
             // Wali opsional
             'nama_wali' => ['nullable', 'string', 'max:100'],

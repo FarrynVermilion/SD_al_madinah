@@ -62,13 +62,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="bukti_potongan" style="display: none;">
+                <div id="view_bukti_potongan" style="display: none;">
                     <div class="row">
                         <div class="col-md-7 pr-1">
                             <div class="form-group">
                                 <label>{{__("Bukti Potongan")}}</label>
                                 <div class="custom-file">
-                                    <input type="file" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}" required  >
+                                    <input type="file" id="Bukti_Potongan" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}"   >
                                     <label id="customFile" class="custom-file-label" for="customFile">Pilih file pdf</label>
                                 </div>
                                 @include('alerts.feedback', ['field' => 'Bukti_Potongan'])
@@ -89,15 +89,21 @@
 
 @push('js')
 <script>
+
+    const fileInput = document.getElementById('Bukti_Potongan');
+    const fileNameDisplay = document.getElementById('customFile');
+
     function bukti_potongan(){
         if (document.getElementsByName("Potongan_SPP")[0].value === "-1") {
-            document.getElementById("bukti_potongan").style.display = "none";
+            document.getElementById("view_bukti_potongan").style.display = "none";
+            fileInput.removeAttribute("required");
+            fileInput.setAttribute("value", "");
         }else{
-            document.getElementById("bukti_potongan").style.display = "block";
+            document.getElementById("view_bukti_potongan").style.display = "block";
+            fileInput.setAttribute("required", "");
+            fileInput.setAttribute("value", "");
         }
     }
-    const fileInput = document.getElementsByName('Bukti_Potongan')[0];
-    const fileNameDisplay = document.getElementById('customFile');
 
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
