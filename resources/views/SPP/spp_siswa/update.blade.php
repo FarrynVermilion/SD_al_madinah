@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label>{{__("Bukti Potongan")}}</label>
                             <div class="custom-file">
-                                <input type="file" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}"    >
+                                <input type="file" id="Bukti_Potongan" name="Bukti_Potongan" class="form-control {{ $errors->has('Bukti_Potongan') ? ' is-invalid' : '' }}"    >
                                 <label id="customFile" class="custom-file-label" for="customFile">{{ old('Bukti_Potongan', $SPP_Siswa->bukti_potongan) }}</label>
                                 <input id="file_name" type="hidden" name="file_name" value="{{ old('file_name', $SPP_Siswa->bukti_potongan) }}">
                             </div>
@@ -89,16 +89,20 @@
 @endsection
 @push('js')
 <script>
+    const fileInput = document.getElementById('Bukti_Potongan');
+    const fileNameDisplay = document.getElementById('customFile');
+
     function bukti_potongan(){
         if (document.getElementsByName("Potongan_SPP")[0].value === "-1") {
-            document.getElementById("bukti_potongan").style.display = "none";
-            document.getElementById("file_name").value="";
+            document.getElementById("view_bukti_potongan").style.display = "none";
+            fileInput.removeAttribute("required");
+            fileInput.setAttribute("value", "");
         }else{
-            document.getElementById("bukti_potongan").style.display = "block";
+            document.getElementById("view_bukti_potongan").style.display = "block";
+            fileInput.setAttribute("required", "");
+            fileInput.setAttribute("value", "");
         }
     }
-    const fileInput = document.getElementsByName('Bukti_Potongan')[0];
-    const fileNameDisplay = document.getElementById('customFile');
     const file_name = document.getElementById('file_name');
 
     fileInput.addEventListener('change', (event) => {
