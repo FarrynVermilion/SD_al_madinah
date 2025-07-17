@@ -64,12 +64,14 @@ return new class extends Migration
             $table->boolean("semester");
             $table->string("tahun_ajaran",9);
             $table->string("nama_kelas");
+            $table->string("bukti_pembayaran")->nullable();
             $table->string("status_lunas");
 
             $table->unsignedBigInteger("id_ketua_komite")->nullable();
             $table->string("nama_ketua_komite")->nullable();
             $table->unsignedBigInteger("id_kepala_sekolah")->nullable();
             $table->string("kepala_sekolah")->nullable();
+
             $table->timestamps();
             $table->softDeletes()->nullable();
             $table->unsignedBigInteger("created_by");

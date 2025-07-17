@@ -129,6 +129,6 @@ class printController extends Controller
 
     }
     public function download($file){
-        return Storage::download($file);
+        return Storage::download("bukti_potongan/".$file);
     }
 }

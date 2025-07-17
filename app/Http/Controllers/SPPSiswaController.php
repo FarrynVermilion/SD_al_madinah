@@ -61,6 +61,7 @@ class SPPSiswaController extends Controller
             'kelas.id_siswa'
         )
         ->whereNotNull("NIS.id_NIS")
+        ->leftJoin("users as penanggung_jawab","spp_siswa.updated_by", "=", "penanggung_jawab.id")
         ->select('database_biodata_siswa.nama_lengkap',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
@@ -69,6 +70,7 @@ class SPPSiswaController extends Controller
         'potongan_spp.nominal_potongan',
         'kelas.nama_kelas',
         'NIS.id_NIS',
+        'penanggung_jawab.name as penanggung_jawab',
         'spp_siswa.*')
         ->paginate(10);
         return view("SPP.spp_siswa.index")->with(["data1" => $data1, "data2" => $data2]);
@@ -112,6 +114,7 @@ class SPPSiswaController extends Controller
             'kelas.id_siswa'
         )
         ->whereNotNull("NIS.id_NIS")
+        ->leftJoin("users as penanggung_jawab","spp_siswa.updated_by", "=", "penanggung_jawab.id")
         ->select('database_biodata_siswa.nama_lengkap',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
@@ -120,6 +123,7 @@ class SPPSiswaController extends Controller
         'potongan_spp.nominal_potongan',
         'kelas.nama_kelas',
         'NIS.id_NIS',
+        'penanggung_jawab.name as penanggung_jawab',
         'spp_siswa.*')
         ->paginate(10);
         if ($request->has('cari_siswa')) {
@@ -163,6 +167,7 @@ class SPPSiswaController extends Controller
                 'kelas.id_siswa'
             )
             ->whereNotNull("NIS.id_NIS")
+            ->leftJoin("users as penanggung_jawab","spp_siswa.updated_by", "=", "penanggung_jawab.id")
             ->select('database_biodata_siswa.nama_lengkap',
             'database_biodata_siswa.id',
             'nominal_spp.nama_bayaran',
@@ -171,6 +176,7 @@ class SPPSiswaController extends Controller
             'potongan_spp.nominal_potongan',
             'kelas.nama_kelas',
             'NIS.id_NIS',
+            'penanggung_jawab.name as penanggung_jawab',
             'spp_siswa.*')
             ->where('database_biodata_siswa.nama_lengkap',"LIKE", "%".$request->cari_siswa_aktif."%")
             ->orderBy('database_biodata_siswa.nama_lengkap', 'asc')
@@ -211,11 +217,10 @@ class SPPSiswaController extends Controller
         }
         $fileNameToStore = null;
         if ($request->hasFile('Bukti_Potongan')) {
-            $filenameWithExt = $request->file('Bukti_Potongan')->getClientOriginalName();
-            $filename = preg_replace('/[^A-Za-z0-9\-]/', '',        str_replace(' ', '-', pathinfo($filenameWithExt, PATHINFO_FILENAME)));
+            $filename = $validated["id_siswa"];
             $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
-            Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);
+            Storage::putFileAs('',$request->file('Bukti_Potongan'),"bukti_potongan/".$fileNameToStore);
         }
 
         SPP_Siswa::create([
@@ -268,8 +273,7 @@ class SPPSiswaController extends Controller
             $validated["Bukti_Potongan"] = null;
         }else{
             if ($request->hasFile('Bukti_Potongan')) {
-                $filenameWithExt = $request->file('Bukti_Potongan')->getClientOriginalName();
-                $filename = preg_replace('/[^A-Za-z0-9\-]/', '',        str_replace(' ', '-', pathinfo($filenameWithExt, PATHINFO_FILENAME)));
+                $filename = $SPP_Siswa->id_siswa;
                 $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
                 $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
                 Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);

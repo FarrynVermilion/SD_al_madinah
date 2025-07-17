@@ -16,6 +16,7 @@ use App\Http\Controllers\kelasController;
 use App\Http\Controllers\siswaKelasController;
 use App\Http\Controllers\verifikasiController;
 use App\Http\Controllers\printController;
+use App\Http\Controllers\ParafController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -45,6 +46,7 @@ Route::middleware(['auth','user-access:Tata_Usaha|Admin'])->group( function(){
     Route::resource('/pendaftaran/wali', WaliSiswaController::class);
     Route::resource('pendaftaran/kelas', kelasController::class);
     Route::resource('pendaftaran/siswa_kelas', siswaKelasController::class);
+    Route::resource("paraf", ParafController::class);
 
     Route::get("spp/verifikasi/cari/", [verifikasiController::class,'cari'])->name("verifikasi_cari");
     Route::get( '/SPP/home', [HomeController::class,'indexSPP'])->name( 'homeSPP');

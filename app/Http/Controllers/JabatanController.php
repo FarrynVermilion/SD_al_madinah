@@ -99,7 +99,7 @@ class JabatanController extends Controller
      */
     public function destroy(jabatan $jabatan)
     {
-        if($jabatan->id_jabatan == 1||$jabatan->id_jabatan == 3){
+        if($jabatan->id_jabatan == 1||$jabatan->id_jabatan == 2||$jabatan->id_jabatan == 3||$jabatan->id_jabatan == 4){
             return redirect()->back()->with("error", "Jabatan tidak boleh dihapus");
         }
         $jabatan->delete();

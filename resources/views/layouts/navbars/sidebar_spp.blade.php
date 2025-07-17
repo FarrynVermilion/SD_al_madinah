@@ -49,6 +49,12 @@
             <p>{{ __('Cerifikasi SPP') }}</p>
           </a>
         </li>
+        <li class="@if ($activePage == 'Paraf') active @endif">
+          <a href="{{ route('paraf.index') }}">
+            <i class="now-ui-icons design_app"></i>
+            <p>{{ __('Paraf Tata Usaha') }}</p>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

@@ -59,7 +59,7 @@
                                 Sekolah
                             </td>
                             <td class="text-center">
-                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi</button>
+                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary btn-round pull-right" >Isi</button>
                             </td>
                             <div popover id="popover_{{$jabatan->id_jabatan}}">
                                 <div style="width: 50em; height: 25em;" >
@@ -83,7 +83,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12 text-center">
-                                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                                            <button type="submit" class="btn btn-primary btn-round pull-right">Simpan</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 text-center">
 
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                            <button type="submit" class="btn btn-primary btn-round pull-right">Save</button>
                                                         </div>
                                                     </div>
                                                 </div>

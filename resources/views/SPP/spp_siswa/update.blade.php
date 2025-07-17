@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="bukti_potongan" style="display: {{ $SPP_Siswa->id_potongan == null ? 'none' : 'block' }}">
+                <div class="row" id="view_bukti_potongan" style="display: {{ $SPP_Siswa->id_potongan == null ? 'none' : 'block' }}">
                     <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Bukti Potongan")}}</label>

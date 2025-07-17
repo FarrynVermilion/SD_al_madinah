@@ -115,7 +115,7 @@
                   <th>Bukti Poptongan</th>
                   <th>Tagihan</th>
                   <th>Aktif</th>
-                  <th>Diubah oleh</th>
+                  <th>Penanggung jawab</th>
                   <th>Terakhir diubah</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
@@ -141,7 +141,7 @@
                   <td>RP. {{ number_format($siswa->nominal-$siswa->nominal_potongan,2,',','.') }}</td>
 
                   <td>{{ $siswa->status_siswa }}</td>
-                  <td>{{ $siswa->updated_by }}</td>
+                  <td>{{ $siswa->penanggung_jawab }}</td>
                   <td>{{ $siswa->updated_at }}</td>
                   <td class="td-actions text-left">
                     <table>
