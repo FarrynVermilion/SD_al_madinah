@@ -14,7 +14,7 @@ class verifikasiController extends Controller
     public function index()
     {
         $verifikasi_spp = verifikasi_SPP::where("status_verifikasi", 0)
-        ->leftJoin("transaksi_spp", "verifikasi_spp.id_transaksi", "=", "transaksi_spp.id_transaksi")
+        ->leftJoin("transaksi_spp", "verifikasi_spp.id_verifikasi", "=", "transaksi_spp.id_transaksi")
         ->leftJoin("spp_siswa", "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
         ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -37,7 +37,7 @@ class verifikasiController extends Controller
     {
         $cari = $request->cari_siswa;
         $verifikasi_spp = verifikasi_SPP::where("status_verifikasi", 0)
-        ->leftJoin("transaksi_spp", "verifikasi_spp.id_transaksi", "=", "transaksi_spp.id_transaksi")
+        ->leftJoin("transaksi_spp", "verifikasi_spp.id_verifikasi", "=", "transaksi_spp.id_transaksi")
         ->leftJoin("spp_siswa", "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
         ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -50,9 +50,11 @@ class verifikasiController extends Controller
             "database_biodata_siswa.nisn",
             "NIS.id_NIS"
         )
-        ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
         ->orderBy("transaksi_spp.tahun_ajaran", "asc")
+        ->orderBy("transaksi_spp.semester", "asc")
         ->orderBy("transaksi_spp.bulan", "asc")
+        ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
+
         ->paginate(10);
         return view("SPP.verifikasi_SPP.index")->with(["data" => $verifikasi_spp]);
     }

@@ -30,7 +30,7 @@ class SPPSiswaController extends Controller
             DB::table('siswa_kelas')
             ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
             ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
             'kelas',
             'database_biodata_siswa.id',
             '=',
@@ -39,14 +39,15 @@ class SPPSiswaController extends Controller
         ->whereNotNull("NIS.id_NIS")
         ->select(
             'database_biodata_siswa.nama_lengkap',
-            'database_biodata_siswa.id',
+            'database_biodata_siswa.nisn',            'database_biodata_siswa.id',
             'NIS.id_NIS',
             'kelas.nama_kelas',
+            'kelas.tahun_ajaran',
             'database_biodata_siswa.nisn',
             'database_biodata_siswa.id',
         )
         ->orderBy('nama_lengkap', 'asc')->paginate(10);
-        $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+        $data2 = SPP_Siswa::leftJoin('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
         ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
         ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -54,7 +55,7 @@ class SPPSiswaController extends Controller
             DB::table('siswa_kelas')
             ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
             ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
             'kelas',
             'database_biodata_siswa.id',
             '=',
@@ -63,12 +64,14 @@ class SPPSiswaController extends Controller
         ->whereNotNull("NIS.id_NIS")
         ->leftJoin("users as penanggung_jawab","spp_siswa.updated_by", "=", "penanggung_jawab.id")
         ->select('database_biodata_siswa.nama_lengkap',
+        'database_biodata_siswa.nisn',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
         'nominal_spp.nominal',
         'potongan_spp.nama_potongan',
         'potongan_spp.nominal_potongan',
         'kelas.nama_kelas',
+        'kelas.tahun_ajaran',
         'NIS.id_NIS',
         'penanggung_jawab.name as penanggung_jawab',
         'spp_siswa.*')
@@ -83,7 +86,7 @@ class SPPSiswaController extends Controller
             DB::table('siswa_kelas')
             ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
             ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
             'kelas',
             'database_biodata_siswa.id',
             '=',
@@ -92,14 +95,16 @@ class SPPSiswaController extends Controller
         ->whereNotNull("NIS.id_NIS")
         ->select(
             'database_biodata_siswa.nama_lengkap',
+            'database_biodata_siswa.nisn',
             'database_biodata_siswa.id',
             'NIS.id_NIS',
             'kelas.nama_kelas',
+            'kelas.tahun_ajaran',
             'database_biodata_siswa.nisn',
             'database_biodata_siswa.id',
         )
         ->orderBy('nama_lengkap', 'asc')->paginate(10);
-        $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+        $data2 = SPP_Siswa::leftJoin('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
         ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
         ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
         ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -107,7 +112,7 @@ class SPPSiswaController extends Controller
             DB::table('siswa_kelas')
             ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
             ->whereNull('siswa_kelas.deleted_at')
-            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+            ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
             'kelas',
             'database_biodata_siswa.id',
             '=',
@@ -116,12 +121,14 @@ class SPPSiswaController extends Controller
         ->whereNotNull("NIS.id_NIS")
         ->leftJoin("users as penanggung_jawab","spp_siswa.updated_by", "=", "penanggung_jawab.id")
         ->select('database_biodata_siswa.nama_lengkap',
+        'database_biodata_siswa.nisn',
         'database_biodata_siswa.id',
         'nominal_spp.nama_bayaran',
         'nominal_spp.nominal',
         'potongan_spp.nama_potongan',
         'potongan_spp.nominal_potongan',
         'kelas.nama_kelas',
+        'kelas.tahun_ajaran',
         'NIS.id_NIS',
         'penanggung_jawab.name as penanggung_jawab',
         'spp_siswa.*')
@@ -133,7 +140,7 @@ class SPPSiswaController extends Controller
                 DB::table('siswa_kelas')
                 ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
                 ->whereNull('siswa_kelas.deleted_at')
-                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran'),
                 'kelas',
                 'database_biodata_siswa.id',
                 '=',
@@ -143,6 +150,7 @@ class SPPSiswaController extends Controller
             ->select(
                 'database_biodata_siswa.nama_lengkap',
                 'database_biodata_siswa.id',
+                'kelas.tahun_ajaran',
                 'NIS.id_NIS',
                 'kelas.nama_kelas',
                 'database_biodata_siswa.nisn',
@@ -152,7 +160,7 @@ class SPPSiswaController extends Controller
             ->orderBy('nama_lengkap', 'asc')->paginate(10);
         }
         if ($request->has('cari_siswa_aktif')) {
-            $data2 = SPP_Siswa::join('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
+            $data2 = SPP_Siswa::leftJoin('database_biodata_siswa', 'database_biodata_siswa.id', '=', 'spp_siswa.id_siswa')
             ->leftJoin('nominal_spp', 'spp_siswa.id_nominal', '=', 'nominal_spp.id_nominal')
             ->leftJoin('potongan_spp', 'potongan_spp.id_potongan', '=', 'spp_siswa.id_potongan')
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -160,7 +168,7 @@ class SPPSiswaController extends Controller
                 DB::table('siswa_kelas')
                 ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
                 ->whereNull('siswa_kelas.deleted_at')
-                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas'),
+                ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
                 'kelas',
                 'database_biodata_siswa.id',
                 '=',
@@ -175,6 +183,7 @@ class SPPSiswaController extends Controller
             'potongan_spp.nama_potongan',
             'potongan_spp.nominal_potongan',
             'kelas.nama_kelas',
+            'kelas.tahun_ajaran',
             'NIS.id_NIS',
             'penanggung_jawab.name as penanggung_jawab',
             'spp_siswa.*')
@@ -217,10 +226,10 @@ class SPPSiswaController extends Controller
         }
         $fileNameToStore = null;
         if ($request->hasFile('Bukti_Potongan')) {
-            $filename = $validated["id_siswa"];
-            $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
+            $filename = "bukti_potongan_".$validated["id_siswa"];
+            $fileExtension = $request->file('bukti_potongan')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
-            Storage::putFileAs('',$request->file('Bukti_Potongan'),"bukti_potongan/".$fileNameToStore);
+            Storage::putFileAs('bukti_potongan',$request->file('Bukti_Potongan'),$fileNameToStore);
         }
 
         SPP_Siswa::create([
@@ -273,7 +282,7 @@ class SPPSiswaController extends Controller
             $validated["Bukti_Potongan"] = null;
         }else{
             if ($request->hasFile('Bukti_Potongan')) {
-                $filename = $SPP_Siswa->id_siswa;
+                $filename = "Bukti_Potongan_".$SPP_Siswa->id_siswa;
                 $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
                 $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
                 Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);

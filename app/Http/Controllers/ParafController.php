@@ -39,10 +39,10 @@ class ParafController extends Controller
         }
         $fileNameToStore = null;
         if ($request->hasFile('paraf')) {
-            $filename = Auth::user()->id;
+            $filename = "paraf_".Auth::user()->id;
             $fileExtension = $request->file('paraf')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
-            Storage::putFileAs('',$request->file('paraf'),"paraf/".$fileNameToStore);
+            Storage::putFileAs('paraf',$request->file('paraf'),$fileNameToStore);
         }
 
         $paraf = new paraf;
@@ -80,7 +80,7 @@ class ParafController extends Controller
      */
     public function destroy(string $id)
     {
-        $paraf = paraf::find($id);
+        $paraf = paraf::find($id)->first();
         $paraf->delete();
         return redirect()->route("paraf.index")->with("success", "Paraf berhasil dihapus");
     }

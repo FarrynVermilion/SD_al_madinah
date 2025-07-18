@@ -18,13 +18,15 @@
                         <td scope="col" class="col-5">
                             <h4 class="card-title">Siswa belum aktif</h4>
                         </td>
-                        <td scope="col" class="col-12 text-right w-100 m-auto pull-right">
-                            <form action="{{ route('spp.siswa.cari') }}" method="GET">
-                                @csrf
-                                <input type="text" name="cari_siswa" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
-                                <button type="submit" class="btn btn-primary btn-round text-white pull-right" style="width: 10%">Cari</button>
-                            </form>
-                        </td>
+                        <form action="{{ route('spp.siswa.cari') }}" method="GET">
+                            @csrf
+                            <td scope="col" class="col-12 text-right m-auto pull-right">
+                                <input type="text" name="cari_siswa" placeholder="Cari Siswa" class="form-control m-3 p-2" value="{{ request('cari_siswa') }}">
+                            </td>
+                            <td scope="col" class="col-2">
+                                <button type="submit" class="btn btn-primary btn-round text-white pull-right" >Cari</button>
+                            </td>
+                        </form>
                     </tr>
                 </table>
             </div>
@@ -42,6 +44,7 @@
                   <th>NISN</th>
                   <th>NIS</th>
                   <th>Kelas</th>
+                  <th>Tahun ajaran</th>
                   <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
@@ -53,6 +56,7 @@
                   <td>{{ $siswa->nisn }}</td>
                   <td>{{ $siswa->id_NIS }}</td>
                   <td>{{ $siswa->nama_kelas }}</td>
+                  <td>{{ $siswa->tahun_ajaran }}</td>
                   <td class="td-actions text-left">
                     <table>
                       <tr>
@@ -89,13 +93,15 @@
                         <td scope="col" class="col-5">
                             <h4 class="card-title">Siswa aktif</h4>
                         </td>
-                        <td scope="col" class="col-12 text-right w-100 m-auto pull-right">
-                            <form action="{{ route('spp.siswa.cari') }}" method="GET">
-                                @csrf
-                                <input type="text" name="cari_siswa_aktif" placeholder="Cari Siswa" style="width: 80%; float: left;"class="form-control m-3 p-2" value="{{ request('cari_siswa_aktif') }}">
-                                <button type="submit" class="btn btn-primary btn-round text-white pull-right " style="width: 10%">Cari</button>
-                            </form>
-                        </td>
+                        <form action="{{ route('spp.siswa.cari') }}" method="GET">
+                            @csrf
+                            <td scope="col" class="col-12 text-right m-auto pull-right">
+                        <input type="text" name="cari_siswa_aktif" placeholder="Cari Siswa" class="form-control m-3 p-2" value="{{ request('cari_siswa_aktif') }}">
+                            </td>
+                            <td scope="col" class="col-2">
+                                <button type="submit" class="btn btn-primary btn-round text-white pull-right ">Cari</button>
+                            </td>
+                        </form>
                     </tr>
                 </table>
             </div>
@@ -110,6 +116,7 @@
                   <th>NISN</th>
                   <th>NIS</th>
                   <th>Kelas</th>
+                  <th>Tahun ajaran</th>
                   <th>SPP</th>
                   <th>Potongan</th>
                   <th>Bukti Poptongan</th>
@@ -128,6 +135,7 @@
                   <td>{{ $siswa->nisn }}</td>
                   <td>{{ $siswa->id_NIS }}</td>
                   <td>{{ $siswa->nama_kelas }}</td>
+                  <td>{{ $siswa->tahun_ajaran }}</td>
                   <td>{{ $siswa->nama_bayaran}}<br>RP. {{ number_format($siswa->nominal,2,',','.') }}</td>
                   @if ($siswa->id_potongan==null)
                         <td colspan="2">Tidak ada potongan</td>

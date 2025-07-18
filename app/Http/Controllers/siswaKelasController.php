@@ -54,11 +54,12 @@ class siswaKelasController extends Controller
                 "required",
                 "exists:kelas,id_kelas",
                 function ($attribute, $value, $fail) use ($request) {
-                    if (Siswa_Kelas::withTrashed()->where('id_kelas', $value)
+                    if (Siswa_Kelas::withTrashed()
+                        ->where('id_kelas', $value)
                         ->where('id_siswa', $request->id_siswa)
                         ->where('tahun_ajaran', $request->tahun_ajaran)
                         ->exists()) {
-                        $fail('The selected class is already assigned to this student.');
+                        $fail('Data Sisea Sudah Ada');
                     }
                 }],
             'tahun_ajaran' => 'required',

@@ -68,20 +68,20 @@
               <tbody>
                 @foreach ($data as $paraf)
                 <tr>
-                  <td>{{ $paraf->id_paraf }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>
                         <button><a href="{{route('paraf.show', $paraf->id_paraf)}}"><i class="btn btn-primary">Lihat paraf</i></a></button>
                     </td>
 
-                  <td class="text-right">
-                    <form action="{{ route('kelas.destroy', $paraf->id_paraf) }}" method="POST" onsubmit="return hapus()">
-                      @csrf
-                      <input name="_method" type="hidden" value="DELETE">
-                      <button type="submit" class="btn btn-danger">
+                    <td class="text-right">
+                        <form action="{{ route('paraf.destroy', $paraf->id_paraf) }}" method="POST" onsubmit="return hapus()">
+                        @csrf
+                        <input name="_method" type="hidden" value="DELETE">
+                        <button type="submit" class="btn btn-danger">
                             Hapus
-                      </button>
-                    </form>
-                  </td>
+                        </button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
               </tbody>

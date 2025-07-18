@@ -14,6 +14,7 @@ use App\Models\Verifikasi_SPP;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 
 class AuthController extends Controller
@@ -240,6 +241,39 @@ class AuthController extends Controller
             'message' => 'verifikasi request success',
             'data' => $verifikasi,
         ]);
+    }
+    public function upload_bukti_pembayaran(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'id_transaksi' => ['required','exists:transaksi_spp,id_transaksi'],
+            'bukti_pembayaran' => ['required', 'mimetypes:application/pdf,image/jpg,image/jpeg,image/png','file', 'max:2048'],
+        ],[
+            'token.required' => 'Token diwajibkan diisi',
+            'bukti_pembayaran.required' => 'Bukti pembayaran diwajibkan diisi',
+            'bukti_pembayaran.file' => 'Bukti pembayaran diwajibkan berupa file',
+            'bukti_pembayaran.mimetypes' => 'Bukti pembayaran bukan format pdf,jpg,jpeg,png',
+        ]);
+        $access_token_user_id = json_decode($this->verify_token($request->token));
+        if($access_token_user_id->message != "success"){
+            return response()->json(['message' => $access_token_user_id->message]);
+        }
+
+        $fileNameToStore = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $filename = "bukti_pembayaran_".$request->id_transaksi;
+            $fileExtension = $request->file('bukti_pembayaran')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
+            FacadesStorage::putFileAs('bukti_pembayaran',$request->file('bukti_pembayaran'),$fileNameToStore);
+        }
+        $transaksi = DB::table('transaksi_spp')
+        ->where('id_transaksi', $request->id_transaksi)
+        ->update(['bukti_pembayaran' => $fileNameToStore]);
+        return response()->json([
+            'message' => 'Bukti pembayaran upload success',
+            'data' => $transaksi
+        ]);
+    }
+    public function download_struk(Request $request){
 
     }
     public function verify_token(String $token){

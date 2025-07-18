@@ -9,12 +9,48 @@
 </div>
   <div class="content">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="title">{{__(" Buat Transaksi SPP siswa")}}</h5>
+            <h5 class="title">Pastikan data sudah benar karena tidak akan dapat diubah setelah dibuat</h5>
           </div>
           <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th scope="col">ID Siswa</th>
+                    <th scope="col">Nama Siswa</th>
+                    <th scope="col">NISN</th>
+                    <th scope="col">NIS</th>
+                    <th scope="col">Kelas</th>
+                    <th scope="col">Tahun Ajaran</th>
+                    <th scope="col">SPP</th>
+                    <th scope="col">Potongan</th>
+                    <th scope="col">Bukti Potongan</th>
+                    <th scope="col">Tagihan</th>
+                </thead>
+                <tbody>
+                    @foreach ($data as $siswa )
+                        <tr>
+                            <td>{{ $siswa->id }}</td>
+                            <td>{{ $siswa->nama_lengkap }}</td>
+                            <td>{{ $siswa->nisn }}</td>
+                            <td>{{ $siswa->id_NIS }}</td>
+                            <td>{{ $siswa->nama_kelas }}</td>
+                            <td>{{ $siswa->tahun_ajaran }}</td>
+                            <td>RP. {{ number_format($siswa->nominal,2,',','.') }}</td>
+                            @if ($siswa->nominal_potongan==0)
+                                <td colspan="2">Tidak ada potongan</td>
+                            @else
+                                <td>RP. {{ number_format($siswa->nominal_potongan,2,',','.') }}</td>
+                                <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
+                            @endif
+                            <td>RP. {{ number_format($siswa->nominal-$siswa->nominal_potongan,2,',','.') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">{{ $data->links() }}</div>
+
             <form method="post" action="{{ route('transaksi.store') }}" autocomplete="off" enctype="multipart/form-data">
               @csrf
               @include('alerts.errors')
@@ -22,7 +58,7 @@
               <div class="row">
               </div>
                 <div class="row">
-                    <div class="col-md-7 pr-1">
+                    <div class="col-md-5 pr-1">
                         <div class="form-group">
                             <label>{{__("Bulan")}}</label>
                             <select id="bulan" name="bulan" class="form-control {{ $errors->has('bulan') ? ' is-invalid' : '' }}">
@@ -65,10 +101,6 @@
                             </select>
                             @include('alerts.feedback', ['field' => 'bulan'])
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7 pr-1">
                         <div class="form-group">
                             <label>{{__("Semester")}}</label>
                             <select id="semester" name="semester" class="form-control {{ $errors->has('semester') ? ' is-invalid' : '' }}">
@@ -87,11 +119,7 @@
                             </select>
                             @include('alerts.feedback', ['field' => 'semester'])
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7 pr-1">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>{{__("Tahun ajaran")}}</label>
                             <select name="tahun_ajar" class="form-control {{ $errors->has('tahun_ajar') ? ' is-invalid' : '' }}">
                                 <option value="{{ (date('Y')-1) . '/' . date('Y') }}"
@@ -108,7 +136,7 @@
                                 </option>
                             </select>
                             @include('alerts.feedback', ['field' => 'Semester'])
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
               <div class="card-footer ">

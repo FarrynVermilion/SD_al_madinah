@@ -59,10 +59,6 @@
                         <td>{{$siswa->nisn}}</td>
                         <td>{{$siswa->id_NIS}}</td>
                         <td>{{$siswa->nama_kelas}}</td>
-                        <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
-                        <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
-                        <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
-                        <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
                         <td>{{$siswa->tahun_ajaran}}</td>
                         @if ($siswa->semester==0)
                             <td>Ganjil</td>
@@ -122,6 +118,15 @@
                                 @endswitch
                             </td>
                         @endif
+                        <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
+                        @if ($siswa->potongan==0)
+                            <td colspan="2">Tidak ada potongan</td>
+                        @else
+                            <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
+                            <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
+                        @endif
+                        <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
+
                         <td>{{$siswa->status_verifikasi==0?"Belum diverifikasi wali":"Sudah diverifikasi wali"}}</td>
                     </tr>
                 @endforeach

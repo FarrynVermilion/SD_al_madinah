@@ -80,7 +80,6 @@ return new class extends Migration
         });
         Schema::create('verifikasi_spp', function (Blueprint $table) {
             $table->id("id_verifikasi")->primary();
-            $table->unsignedBigInteger("id_transaksi");
             $table->boolean("status_verifikasi");
             $table->timestamps();
             $table->softDeletes()->nullable();

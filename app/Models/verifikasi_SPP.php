@@ -12,11 +12,10 @@ class verifikasi_SPP extends Model
     protected $table = 'verifikasi_spp';
     protected $primaryKey = 'id_verifikasi';
     protected $fillable =  [
-        "id_transaksi",
+        "id_verifikasi",
         "status_verifikasi"
     ];
     public $timestamps = true;
-    public $incrementing = true;
 
     // public function transaksi()
     // {

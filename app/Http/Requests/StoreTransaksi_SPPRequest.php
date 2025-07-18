@@ -24,7 +24,6 @@ class StoreTransaksi_SPPRequest extends FormRequest
     {
         return [
             "bulan" => ["required", "in:1,2,3,4,5,6"],
-            "tahun_ajar" => ["required","in:".date("Y")."/".(date("Y")+1).",".(date("Y")-1)."/".date("Y")],
             "semester" => ["required", "in:0,1"],
         ];
     }
