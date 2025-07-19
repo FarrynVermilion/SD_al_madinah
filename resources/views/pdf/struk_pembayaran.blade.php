@@ -140,10 +140,6 @@
                                 Tahun ajaran:{{ $tahun_ajaran }}
                             </p>
                         </td>
-
-                        <td rowspan="3">
-                            <img style="width: 50px;" src="assets/img/smp_logo.jpg">
-                        </td>
                     </tr>
                 </table>
             </div>
