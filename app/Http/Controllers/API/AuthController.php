@@ -258,14 +258,21 @@ class AuthController extends Controller
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
-        if(Transaksi_SPP::where('id_transaksi', $request->id_transaksi)
+        $transksi = Transaksi_SPP::where('id_transaksi', $request->id_transaksi)
             ->leftJoin( 'spp_siswa','transaksi_spp.id_spp', '=', 'spp_siswa.id_spp_siswa' )
             ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'database_biodata_siswa.id')
-            ->first()->id_account != $access_token_user_id->id){
+            ->first();
+        if($transksi->id_account != $access_token_user_id->id){
             return response()->json([
                 'message' => 'Anda tidak memiliki akses untuk upload bukti pembayaran transaksi ini'
             ]);
         }
+        // //kalo mau berkali kali upload bukti pembayaran
+        // if($transksi->bukti_pembayaran != null){
+        //     return response()->json([
+        //         'message' => 'Bukti pembayaran sudah diupload'
+        //     ]);
+        // }
 
         $fileNameToStore = null;
         if ($request->hasFile('bukti_pembayaran')) {
