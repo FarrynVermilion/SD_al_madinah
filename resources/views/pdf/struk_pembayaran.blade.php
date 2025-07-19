@@ -79,17 +79,22 @@
     .page_break {
         page-break-after: always;
     }
-
-    table, th, td ,tr {
+    .center {
         margin-left: auto;
         margin-right: auto;
         text-align: center;
     }
-    p{
+    /* table, th, td ,tr {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    } */
+    /* p{
         text-align: center;
         margin: 0;
-    }
+    } */
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
@@ -132,13 +137,13 @@
     <htmlpagefooter name="page-footer" >
         <div class="footer">
             <hr>
-            <p>
-                Tagihan dibuat oleh : {{$pembuat}} | Tagihan dilunaskan oleh : {{$pelunas}} | {PAGENO} dari {nbpg}
+            <p style="text-align: right">
+                Tagihan dibuat oleh : {{$pembuat}} | {PAGENO} dari {nbpg}
             </p>
         </div>
     </htmlpagefooter>
     <div class="content">
-        <table>
+        <table class="table">
             <tr>
                 <td>Nama Siswa</td>
                 <td>:</td>
@@ -161,81 +166,104 @@
             </tr>
         </table>
         <br>
-        <table class="table" border="1">
-            <thead>
-                <tr>
-                    <th>No Tagihan</th>
-                    <th>Tahun ajaran</th>
-                    <th>Semester</th>
-                    <th>Bulan</th>
-                    <th>Jumlah SPP</th>
-                    <th>Jumlah potongan</th>
-                    <th>Total Tagihan</th>
+        <table class="table table-bordered table-striped border border-dark" >
+            <thead class="thead-dark">
+                <tr class="row border border-dark table-dark">
+                    <th class="col">No Tagihan</th>
+                    <th class="col">Tahun ajaran</th>
+                    <th class="col">Semester</th>
+                    <th class="col">Bulan</th>
+                    <th class="col">Jumlah SPP</th>
+                    <th class="col">Jumlah potongan</th>
+                    <th class="col">Total Tagihan</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>
+            <tbody >
+                <tr class="row border border-dark">
+                    <td class="col">
                         1
                     </td>
-                    <td>
+                    <td class="col">
                         {{ $transaksi->tahun_ajaran }}
-                    </td>
+                    </td class="col">
                     @if ($transaksi->semester == 0)
-                        <td>Gasal</td>
+                        <td  class="col">Gasal</td>
                         @switch($transaksi->bulan)
                             @case(1)
-                                <td>Juli</td>
+                                <td  class="col">Juli</td>
                                 @break
                             @case(2)
-                                <td>Agustus</td>
+                                <td  class="col">Agustus</td>
                                 @break
                             @case(3)
-                                <td>September</td>
+                                <td  class="col">September</td>
                                 @break
                             @case(4)
-                                <td>Oktober</td>
+                                <td  class="col">Oktober</td>
                                 @break
                             @case(5)
-                                <td>November</td>
+                                <td  class="col">November</td>
                                 @break
                             @case(6)
-                                <td>Desember</td>
+                                <td  class="col">Desember</td>
                                 @break
                             @default
                                 @break
                         @endswitch
                     @else
-                        <td>Genap</td>
+                        <td  class="col">Genap</td>
                         @switch($transaksi->bulan)
                             @case(1)
-                                <td>Januari</td>
+                                <td class="col">Januari</td>
                                 @break
                             @case(2)
-                                <td>Februari</td>
+                                <td class="col">Februari</td>
                                 @break
                             @case(3)
-                                <td>Maret</td>
+                                <td class="col">Maret</td>
                                 @break
                             @case(4)
-                                <td>April</td>
+                                <td class="col">April</td>
                                 @break
                             @case(5)
-                                <td>Mei</td>
+                                <td class="col">Mei</td>
                                 @break
                             @case(6)
-                                <td>Juni</td>
+                                <td class="col">Juni</td>
                                 @break
                             @default
                                 @break
                         @endswitch
                     @endif
-                    <td>RP. {{ number_format($transaksi->spp,2,',','.') }}</td>
-                    <td>RP. {{ number_format($transaksi->potongan,2,',','.') }}</td>
-                    <td>RP. {{ number_format($transaksi->spp-$transaksi->potongan,2,',','.') }}</td>
+                    <td class="col">RP. {{ number_format($transaksi->spp,2,',','.') }}</td>
+                    <td class="col">RP. {{ number_format($transaksi->potongan,2,',','.') }}</td>
+                    <td class="col">RP. {{ number_format($transaksi->spp-$transaksi->potongan,2,',','.') }}</td>
                 </tr>
             </tbody>
         </table>
+        <div style="width: 100% ; text-align: right; justify-content: right; justify-items: right;">
+            <table style="width: 20%; text-align: right; justify-content: right; justify-items: right; justify-self: right; " >
+                <thead>
+                    <tr>
+                        <th style="text-align: center; ">Tata usaha SMP AL-MADINAH</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center; ">Menyetujui</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img style="width: 200px;" src="../storage/app/private/paraf/{{ $paraf }}" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">{{ $pelunas }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

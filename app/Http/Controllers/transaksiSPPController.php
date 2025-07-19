@@ -14,6 +14,7 @@ use App\Models\Potongan_SPP;
 use App\Models\transaksi_jabatan_wali;
 use App\Models\User;
 use App\Models\verifikasi_SPP;
+use App\Models\paraf;
 use Illuminate\Container\Attributes\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -321,7 +322,9 @@ class transaksiSPPController extends Controller
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP)->first();
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->no_kk.$siswa->nama_lengkap;
-        $pembuat = User::find($transaksi_SPP->created_by)->name;
+        $user_pelunas = User::find($transaksi_SPP->created_by);
+        $paraf = Paraf::where("created_by", $user_pelunas->id)->first()->image_paraf_path;
+        $pembuat = $user_pelunas->name;
         $pelunas = Auth::user()->name;
         if (strlen($key) < 32) {
             $key = str_pad($key, 32, 0);
@@ -334,7 +337,7 @@ class transaksiSPPController extends Controller
         // // ini untuk windows
         // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
-
+        $transaksi_SPP->save();
         $data_siswa = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
             ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -361,16 +364,18 @@ class transaksiSPPController extends Controller
             "transaksi" => $transaksi_SPP,
             "pembuat" => $pembuat,
             "pelunas" => $pelunas,
-            "siswa" => $data_siswa
+            "siswa" => $data_siswa,
+            "paraf" => $paraf
         ];
         $pdf = PDF::loadView('pdf.struk_pembayaran', $data, [], [
             'format'=> 'A4',
             'default_font_size'=> '10',
             'margin_top'=> 25,
-        ])->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
-        $transaksi_SPP->save();
-        $transaksi_SPP->delete();
-        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
+        ]);
+        return $pdf->stream("struk_pembayaran.pdf");
+        // ->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
+        // $transaksi_SPP->delete();
+        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
 
     }
 
