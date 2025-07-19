@@ -370,7 +370,7 @@ class transaksiSPPController extends Controller
         $pdf = PDF::loadView('pdf.struk_pembayaran', $data, [], [
             'format'=> 'A4',
             'default_font_size'=> '10',
-            'margin_top'=> 25,
+            'margin_top'=> 40,
         ]);
         return $pdf->stream("struk_pembayaran.pdf");
         // ->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");

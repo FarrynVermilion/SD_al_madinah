@@ -45,45 +45,56 @@
 
 <body>
     <htmlpageheader name="page-header">
-        <div class="header">
-            <p>DATA SISWA BELUM BAYAR SMP AL-MADINAH</p>
-            <p>
-                Dokumen dibuat pertanggal
-                @switch(date('w'))
-                    @case(0)
-                        Minggu
-                        @break
-                    @case(1)
-                        Senin
-                        @break
-                    @case(2)
-                        Selasa
-                        @break
-                    @case(3)
-                        Rabu
-                        @break
-                    @case(4)
-                        Kamis
-                        @break
-                    @case(5)
-                        Jumat
-                        @break
-                    @case(6)
-                        Sabtu
-                        @break
-                    @default
-                @endswitch
-                {{date('d-m-Y')}}
-                <br>
-                Tahun ajaran:{{ $tahun_ajaran }}
-                <hr>
-            </p>
-        </div>
+        <header class="header">
+            <div style="width: 50px; position: absolute; top: 0; left: 0; ">
+                <img src="assets/img/smp_logo.jpg">
+            </div>
+            <div style="text-align: center ; position: absolute; top: 0; ">
+                <table>
+                    <tr>
+                        <td>
+                            <p>DATA SISWA BELUM BAYAR SMP AL-MADINAH</p>
+                            <p>
+                                Dokumen dibuat pertanggal
+                                @switch(date('w'))
+                                    @case(0)
+                                        Minggu
+                                        @break
+                                    @case(1)
+                                        Senin
+                                        @break
+                                    @case(2)
+                                        Selasa
+                                        @break
+                                    @case(3)
+                                        Rabu
+                                        @break
+                                    @case(4)
+                                        Kamis
+                                        @break
+                                    @case(5)
+                                        Jumat
+                                        @break
+                                    @case(6)
+                                        Sabtu
+                                        @break
+                                    @default
+                                @endswitch
+                                {{date('d-m-Y')}}
+                                <br>
+                                Tahun ajaran:{{ $tahun_ajaran }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+        </header>
     </htmlpageheader>
     <htmlpagefooter name="page-footer" >
         <div class="footer">
             <hr>
-            <p>
+            <p style="text-align: right">
                 Dibuat oleh | ID : {{Auth::user()->id}} | nama : {{Auth::user()->name}} | {PAGENO} dari {nbpg}
             </p>
         </div>

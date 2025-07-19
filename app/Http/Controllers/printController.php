@@ -72,7 +72,7 @@ class printController extends Controller
             $pdf = PDF::loadView('pdf.laporan_keuangan', $data, [], [
                 'format'=> 'A4',
                 'default_font_size'=> '10',
-                'margin_top'=> 25,
+                'margin_top'=> 40,
             ]);
 
             return $pdf->stream('laporan_keuangan'.$request->tahun_ajaran.'.pdf');
@@ -121,7 +121,7 @@ class printController extends Controller
             $pdf = PDF::loadView('pdf.laporan_belum_bayar', $data, [], [
                 'format'=> 'A4',
                 'default_font_size'=> '10',
-                'margin_top'=> 25,
+                'margin_top'=> 40,
             ]);
             return $pdf->stream('laporan_belum_bayar'.$request->tahun_ajaran.'.pdf');
         }
