@@ -64,7 +64,7 @@
                     <td>{{$siswa->nama_kelas}}</td>
                     <td>{{$siswa->tahun_ajaran}}</td>
                     @if ($siswa->semester==0)
-                        <td>Ganjil</td>
+                        <td>Gasal</td>
                         <td>
                             @switch($siswa->bulan)
                                 @case(1)
@@ -196,7 +196,7 @@
                     <td>{{$siswa->nama_kelas}}</td>
                     <td>{{$siswa->tahun_ajaran}}</td>
                     @if ($siswa->semester==0)
-                        <td>Ganjil</td>
+                        <td>Gasal</td>
                         <td>
                             @switch($siswa->bulan)
                                 @case(1)

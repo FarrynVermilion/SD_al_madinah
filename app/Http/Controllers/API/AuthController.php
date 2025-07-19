@@ -11,11 +11,12 @@ use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Transaksi_SPP;
 use App\Models\Verifikasi_SPP;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
-
+use Mpdf\Tag\Tr;
 
 class AuthController extends Controller
 {
@@ -257,6 +258,14 @@ class AuthController extends Controller
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
+        if(Transaksi_SPP::where('id_transaksi', $request->id_transaksi)
+            ->leftJoin( 'spp_siswa','transaksi_spp.id_spp', '=', 'spp_siswa.id_spp_siswa' )
+            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'database_biodata_siswa.id')
+            ->first()->id_account != $access_token_user_id->id){
+            return response()->json([
+                'message' => 'Anda tidak memiliki akses untuk upload bukti pembayaran transaksi ini'
+            ]);
+        }
 
         $fileNameToStore = null;
         if ($request->hasFile('bukti_pembayaran')) {
@@ -270,11 +279,28 @@ class AuthController extends Controller
         ->update(['bukti_pembayaran' => $fileNameToStore]);
         return response()->json([
             'message' => 'Bukti pembayaran upload success',
-            'data' => $transaksi
+            'user'=> $access_token_user_id->id
         ]);
     }
     public function download_struk(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'id_transaksi' => ['required','exists:transaksi_spp,id_transaksi'],
+        ]);
+        $access_token_user_id = json_decode($this->verify_token($request->token));
+        if($access_token_user_id->message != "success"){
+            return response()->json(['message' => $access_token_user_id->message]);
+        }
 
+        if(Transaksi_SPP::withTrashed()->where('id_transaksi', $request->id_transaksi)
+            ->leftJoin( 'spp_siswa','transaksi_spp.id_spp', '=', 'spp_siswa.id_spp_siswa' )
+            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'database_biodata_siswa.id')
+            ->first()->id_account != $access_token_user_id->id){
+            return response()->json([
+                'message' => 'Anda tidak memiliki akses untuk upload bukti pembayaran transaksi ini'
+            ]);
+        }
+        return FacadesStorage::download("struk/struk_".$request->id_transaksi.".pdf");
     }
     public function verify_token(String $token){
         $getToken = explode('.', $token);

@@ -108,7 +108,7 @@
                                     @if ( old('semester')=='0')
                                         selected
                                     @endif>
-                                    Ganjil
+                                    Gasal
                                 </option>
                                 <option value="1"
                                     @if ( old('semester')=='1')

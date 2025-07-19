@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
+    <title>laporan belum bayar {{$tahun_ajaran}}</title>
     <style>
     @page {
         header: page-header;
@@ -17,28 +17,28 @@
         padding-top: 0.2em;
         padding-bottom: 0em;
     }
-    p {
-        margin: 0;
-    }
     .footer{
         width: 100%;
         text-align: right;
         margin: auto;
         padding-bottom: 0.2em;
     }
-    table, th, td ,tr {
-        margin-left: auto;
-        margin-right: auto;
-        border: 1px solid !important;
-        text-align: center;
+    .page_break {
+        page-break-after: always;
     }
     .detail{
         margin-left: auto;
         margin-right: auto;
         text-align: center;
     }
-    .page_break {
-        page-break-after: always;
+    table, th, td ,tr {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    p{
+        text-align: center;
+        margin: 0;
     }
     </style>
 </head>
@@ -74,12 +74,10 @@
                     @default
                 @endswitch
                 {{date('d-m-Y')}}
-            <br>
-            Tahun ajaran:{{ $tahun_ajaran }}
-            <br>
-            <hr>
+                <br>
+                Tahun ajaran:{{ $tahun_ajaran }}
+                <hr>
             </p>
-
         </div>
     </htmlpageheader>
     <htmlpagefooter name="page-footer" >
@@ -91,7 +89,7 @@
         </div>
     </htmlpagefooter>
     <div class="content">
-        <table class="table table-bordered table-striped table-hover table-sm" border="1">
+        <table border="1">
             <thead>
                 <tr>
                     <th>No</th>
@@ -113,12 +111,55 @@
                     <td>
                         {{ $tr->tahun_ajaran }}
                     </td>
-                    <td>
-                        {{ $tr->semester==0?"Ganjil": "Genap" }}
-                    </td>
-                    <td>
-                        {{ $tr->bulan }}
-                    </td>
+                    @if ($tr->semester==0)
+                        <td>Gasal</td>
+                        @switch( $tr->bulan )
+                            @case(1)
+                                <td>Juli</td>
+                                @break
+                            @case(2)
+                                <td>Agustus</td>
+                                @break
+                            @case(3)
+                                <td>September</td>
+                                @break
+                            @case(4)
+                                <td>Oktober</td>
+                                @break
+                            @case(5)
+                                <td>November</td>
+                                @break
+                            @case(6)
+                                <td>Desember</td>
+                                @break
+                            @default
+                                @break
+                        @endswitch
+                    @else
+                        <td>Genap</td>
+                        @switch( $tr->bulan )
+                            @case(1)
+                                <td>Januari</td>
+                                @break
+                            @case(2)
+                                <td>Februari</td>
+                                @break
+                            @case(3)
+                                <td>Maret</td>
+                                @break
+                            @case(4)
+                                <td>April</td>
+                                @break
+                            @case(5)
+                                <td>Mei</td>
+                                @break
+                            @case(6)
+                                <td>Juni</td>
+                                @break
+                            @default
+                                @break
+                        @endswitch
+                    @endif
                     <td>
                         {{ $tr->jumlah }}
                     </td>
@@ -131,7 +172,6 @@
         </table>
         <div>
             <br>
-            <br>
             <table>
                 <tr>
                     <td>Total Belum Bayar Tahun Ajaran {{ $tahun_ajaran }} : RP. {{ number_format($total_spp-$total_potongan,2,',','.') }}</td>
@@ -143,7 +183,7 @@
             <div class="detail">
                 <h>Detail Siswa Belum Bayar</h>
             </div>
-            <table class="table table-bordered table-striped table-hover table-sm" border="1">
+            <table border="1">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -165,12 +205,55 @@
                         <td>
                             {{ $br->tahun_ajaran }}
                         </td>
-                        <td>
-                            {{ $br->semester==0?"Ganjil": "Genap" }}
-                        </td>
-                        <td>
-                            {{ $br->bulan }}
-                        </td>
+                        @if ($br->semester==0)
+                            <td>Gasal</td>
+                            @switch( $br->bulan )
+                                @case(1)
+                                    <td>Juli</td>
+                                    @break
+                                @case(2)
+                                    <td>Agustus</td>
+                                    @break
+                                @case(3)
+                                    <td>September</td>
+                                    @break
+                                @case(4)
+                                    <td>Oktober</td>
+                                    @break
+                                @case(5)
+                                    <td>November</td>
+                                    @break
+                                @case(6)
+                                    <td>Desember</td>
+                                    @break
+                                @default
+                                    @break
+                            @endswitch
+                        @else
+                            <td>Genap</td>
+                            @switch( $br->bulan )
+                                @case(1)
+                                    <td>Januari</td>
+                                    @break
+                                @case(2)
+                                    <td>Februari</td>
+                                    @break
+                                @case(3)
+                                    <td>Maret</td>
+                                    @break
+                                @case(4)
+                                    <td>April</td>
+                                    @break
+                                @case(5)
+                                    <td>Mei</td>
+                                    @break
+                                @case(6)
+                                    <td>Juni</td>
+                                    @break
+                                @default
+                                    @break
+                            @endswitch
+                        @endif
                         <td>
                             {{ $br->nama_lengkap }}
                         </td>

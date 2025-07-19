@@ -36,7 +36,7 @@ class Transaksi_SPP extends Model
     public function getSemester(): Attribute
     {
         return new Attribute(
-            fn($value)=>['Ganjil','Genap'][$value]
+            fn($value)=>['Gasal','Genap'][$value]
         );
     }
     protected static function boot()

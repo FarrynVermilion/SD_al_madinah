@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Exception;
+use PDF;
 
 class transaksiSPPController extends Controller
 {
@@ -277,27 +278,26 @@ class transaksiSPPController extends Controller
                     ->exists()){
                     // DB::rollBack();
                     return;
-
                 }
-                $a = new Transaksi_SPP();
-                $a->id_spp = $spp->id_spp_siswa;
-                $a->spp = $spp->nominal;
-                $a->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
-                $a->bukti_potongan = $spp->bukti_potongan;
-                $a->bulan=$validated["bulan"];
-                $a->semester=$validated["semester"];
-                $a->tahun_ajaran=$spp->tahun_ajaran;
-                $a->nama_kelas=$spp->nama_kelas;
-                $a->status_lunas=json_encode($encode);
-                $a->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
-                $a->nama_ketua_komite=$ketua_komite->nama_wali??null;
-                $a->id_kepala_sekolah=$kepala_sekolah->id_transaksi_jabatan_sekolah??null;
-                $a->kepala_sekolah=$kepala_sekolah->name??null;
-                $a->save();
-                $c = new verifikasi_SPP();
-                $c->id_verifikasi = $a->id_transaksi;
-                $c->status_verifikasi = 0;
-                $c->save();
+                $transaksi = new Transaksi_SPP();
+                $transaksi->id_spp = $spp->id_spp_siswa;
+                $transaksi->spp = $spp->nominal;
+                $transaksi->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
+                $transaksi->bukti_potongan = $spp->bukti_potongan;
+                $transaksi->bulan=$validated["bulan"];
+                $transaksi->semester=$validated["semester"];
+                $transaksi->tahun_ajaran=$spp->tahun_ajaran;
+                $transaksi->nama_kelas=$spp->nama_kelas;
+                $transaksi->status_lunas=json_encode($encode);
+                $transaksi->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
+                $transaksi->nama_ketua_komite=$ketua_komite->nama_wali??null;
+                $transaksi->id_kepala_sekolah=$kepala_sekolah->id_transaksi_jabatan_sekolah??null;
+                $transaksi->kepala_sekolah=$kepala_sekolah->name??null;
+                $transaksi->save();
+                $verifikasi = new verifikasi_SPP();
+                $verifikasi->id_verifikasi = $transaksi->getKey();
+                $verifikasi->status_verifikasi = 0;
+                $verifikasi->save();
             });
         });
 
@@ -316,9 +316,9 @@ class transaksiSPPController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($transaksi_SPP)
+    public function edit(string $transaksi_SPP)
     {
-        $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP);
+        $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP)->first();
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->no_kk.$siswa->nama_lengkap;
         $pembuat = User::find($transaksi_SPP->created_by)->name;
@@ -334,6 +334,40 @@ class transaksiSPPController extends Controller
         // // ini untuk windows
         // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
+
+        $data_siswa = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
+            ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->leftJoinSub(
+                    DB::table('siswa_kelas')
+                    ->leftJoin('kelas', 'siswa_kelas.id_kelas', '=', 'kelas.id_kelas')
+                    ->whereNull('siswa_kelas.deleted_at')
+                    ->select('siswa_kelas.id_kelas', 'siswa_kelas.id_siswa', 'kelas.nama_kelas as nama_kelas', 'siswa_kelas.tahun_ajaran as tahun_ajaran' ),
+                    'kelas',
+                    'database_biodata_siswa.id',
+                    '=',
+                    'kelas.id_siswa'
+                )
+            ->whereNotNull("NIS.id_NIS")
+            ->where("transaksi_spp.id_transaksi", $transaksi_SPP->getKey())
+            ->select(
+                "database_biodata_siswa.nama_lengkap",
+                "database_biodata_siswa.nisn",
+                "NIS.id_NIS",
+                "kelas.nama_kelas",
+                "kelas.tahun_ajaran"
+            )->first();
+        $data = [
+            "transaksi" => $transaksi_SPP,
+            "pembuat" => $pembuat,
+            "pelunas" => $pelunas,
+            "siswa" => $data_siswa
+        ];
+        $pdf = PDF::loadView('pdf.struk_pembayaran', $data, [], [
+            'format'=> 'A4',
+            'default_font_size'=> '10',
+            'margin_top'=> 25,
+        ])->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
         return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
@@ -351,7 +385,7 @@ class transaksiSPPController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($transaksi_SPP)
+    public function destroy(string $transaksi_SPP)
     {
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP);
         $transaksi_SPP->forceDelete();

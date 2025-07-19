@@ -273,10 +273,10 @@ class SPPSiswaController extends Controller
             "Nominal_SPP" => "required",
             "Potongan_SPP" => "nullable",
             "Bukti_Potongan"=>["mimetypes:application/pdf", "file","max:2048", "nullable"],
-            'file_name' => ['nullable', 'string', 'max:255', 'unique:spp_siswa,bukti_potongan'],
+            'file_name' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $fileNameToStore = null;
+        $fileNameToStore = "";
         if (isset($validated["Potongan_SPP"]) && $validated["Potongan_SPP"]==-1) {
             $validated["Potongan_SPP"] = null;
             $validated["Bukti_Potongan"] = null;
@@ -285,7 +285,7 @@ class SPPSiswaController extends Controller
                 $filename = "Bukti_Potongan_".$SPP_Siswa->id_siswa;
                 $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
                 $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
-                Storage::putFileAs('',$request->file('Bukti_Potongan'),$fileNameToStore);
+                Storage::putFileAs('bukti_potongan',$request->file('Bukti_Potongan'),$fileNameToStore);
                 $validated["Bukti_Potongan"] = $fileNameToStore;
             }
         }

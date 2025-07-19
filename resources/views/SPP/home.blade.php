@@ -72,7 +72,7 @@
                     @foreach ($data as $nunggak)
                     <tr>
                         <td>{{$nunggak->tahun_ajaran}}</td>
-                        <td>{{$nunggak->semester==0?"Ganjil": "Genap" }}</td>
+                        <td>{{$nunggak->semester==0?"Gasal": "Genap" }}</td>
                         <td>{{$nunggak->bulan }}</td>
                         <td class="text-right">
                             {{$nunggak->jumlah}}

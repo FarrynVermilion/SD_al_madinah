@@ -3,7 +3,59 @@
 <html lang="en">
 
 <head>
-    <title>laporan keuangan {{$tahun_ajaran}}</title>
+    <meta charset="utf-8" />
+    <title>struk pembayaran {{$siswa->id_NIS}}
+        {{$transaksi->tahun_ajaran}}
+        @if ($transaksi->semester == 0)
+            Gasal
+            @switch($transaksi->bulan)
+                @case(1)
+                    Juli
+                    @break
+                @case(2)
+                    Agustus
+                    @break
+                @case(3)
+                    September
+                    @break
+                @case(4)
+                    Oktober
+                    @break
+                @case(5)
+                    November
+                    @break
+                @case(6)
+                    Desember
+                    @break
+                @default
+                    @break
+            @endswitch
+        @else
+            Genap
+            @switch($transaksi->bulan)
+                @case(1)
+                    Januari
+                    @break
+                @case(2)
+                    Februari
+                    @break
+                @case(3)
+                    Maret
+                    @break
+                @case(4)
+                    April
+                    @break
+                @case(5)
+                    Mei
+                    @break
+                @case(6)
+                    Juni
+                    @break
+                @default
+                    @break
+            @endswitch
+        @endif
+    </title>
     <style>
     @page {
         header: page-header;
@@ -27,6 +79,7 @@
     .page_break {
         page-break-after: always;
     }
+
     table, th, td ,tr {
         margin-left: auto;
         margin-right: auto;
@@ -42,7 +95,7 @@
 <body>
     <htmlpageheader name="page-header">
         <div class="header">
-            <p>DATA KEUANGAN SMP AL-MADINAH</p>
+            <p>STRUK PEMBAYARAN SMP AL-MADINAH</p>
             <p>
                 Dokumen dibuat pertanggal
                 @switch(date('w'))
@@ -70,10 +123,8 @@
                     @default
                 @endswitch
                 {{date('d-m-Y')}}
-            <br>
-            Tahun ajaran:{{ $tahun_ajaran }}
-            <br>
-            <hr>
+                <br>
+                <hr>
             </p>
 
         </div>
@@ -82,36 +133,57 @@
         <div class="footer">
             <hr>
             <p>
-                Dibuat oleh | ID : {{Auth::user()->id}} | nama : {{Auth::user()->name}} | {PAGENO} dari {nbpg}
+                Tagihan dibuat oleh : {{$pembuat}} | Tagihan dilunaskan oleh : {{$pelunas}} | {PAGENO} dari {nbpg}
             </p>
         </div>
     </htmlpagefooter>
-    <div>
-        <table border="1">
+    <div class="content">
+        <table>
+            <tr>
+                <td>Nama Siswa</td>
+                <td>:</td>
+                <td>{{ $siswa->nama_lengkap }}</td>
+            </tr>
+            <tr>
+                <td>Kelas</td>
+                <td>:</td>
+                <td>{{ $siswa->nama_kelas }}</td>
+            </tr>
+            <tr>
+                <td>NISN</td>
+                <td>:</td>
+                <td>{{ $siswa->nisn }}</td>
+            </tr>
+            <tr>
+                <td>NIS</td>
+                <td>:</td>
+                <td>{{ $siswa->id_NIS }}
+            </tr>
+        </table>
+        <br>
+        <table class="table" border="1">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>No Tagihan</th>
                     <th>Tahun ajaran</th>
                     <th>Semester</th>
                     <th>Bulan</th>
-                    <th>Jumlah siswa</th>
-                    <th>Total SPP</th>
-                    <th>Total potongan</th>
-                    <th>Total Pendapatan</th>
+                    <th>Jumlah SPP</th>
+                    <th>Jumlah potongan</th>
+                    <th>Total Tagihan</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach ($transaksi as $tr)
                 <tr>
                     <td>
-                        {{ $loop->iteration }}
+                        1
                     </td>
                     <td>
-                        {{ $tr->tahun_ajaran }}
+                        {{ $transaksi->tahun_ajaran }}
                     </td>
-                    @if ($tr->semester==0)
+                    @if ($transaksi->semester == 0)
                         <td>Gasal</td>
-                        @switch( $tr->bulan )
+                        @switch($transaksi->bulan)
                             @case(1)
                                 <td>Juli</td>
                                 @break
@@ -135,7 +207,7 @@
                         @endswitch
                     @else
                         <td>Genap</td>
-                        @switch( $tr->bulan )
+                        @switch($transaksi->bulan)
                             @case(1)
                                 <td>Januari</td>
                                 @break
@@ -158,26 +230,12 @@
                                 @break
                         @endswitch
                     @endif
-                    <td>
-                        {{ $tr->jumlah }}
-                    </td>
-                    <td>RP. {{ number_format($tr->total_spp,2,',','.') }}</td>
-                    <td>RP. {{ number_format($tr->total_potongan,2,',','.') }}</td>
-                    <td>RP. {{ number_format($tr->total_spp-$tr->total_potongan,2,',','.') }}</td>
+                    <td>RP. {{ number_format($transaksi->spp,2,',','.') }}</td>
+                    <td>RP. {{ number_format($transaksi->potongan,2,',','.') }}</td>
+                    <td>RP. {{ number_format($transaksi->spp-$transaksi->potongan,2,',','.') }}</td>
                 </tr>
-            @endforeach
             </tbody>
         </table>
-        <div>
-            <br>
-            <br>
-            <table>
-                <tr>
-                    <td>Total Pemasukan Tahun Ajaran {{ $tahun_ajaran }} : RP. {{ number_format($total_spp-$total_potongan,2,',','.') }}</td>
-                </tr>
-            </table>
-        </div>
     </div>
-
 </body>
 </html>

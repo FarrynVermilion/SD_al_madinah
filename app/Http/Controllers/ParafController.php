@@ -34,12 +34,12 @@ class ParafController extends Controller
         $validated = $request->validate([
             "paraf" => ["required", "mimetypes:image/jpeg,image/png,image/jpg,image/svg", "file","max:2048"]
         ]);
-        if(paraf::where("created_by", Auth::user()->id)->exists()){
+        if(paraf::where("created_by", Auth::id())->exists()){
             return redirect()->route("paraf.index")->with("error", "Paraf sudah ada hapus paraf senelumnya terlebih dahulu");
         }
         $fileNameToStore = null;
         if ($request->hasFile('paraf')) {
-            $filename = "paraf_".Auth::user()->id;
+            $filename = "paraf_".Auth::id();
             $fileExtension = $request->file('paraf')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
             Storage::putFileAs('paraf',$request->file('paraf'),$fileNameToStore);

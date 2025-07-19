@@ -70,8 +70,8 @@ class printController extends Controller
                     // return $data;
             // Assign your data here, e.g., $data = Model::all();
             $pdf = PDF::loadView('pdf.laporan_keuangan', $data, [], [
-                'format'=> 'A4-L',
-                'default_font_size'=> '12',
+                'format'=> 'A4',
+                'default_font_size'=> '10',
                 'margin_top'=> 25,
             ]);
 
@@ -119,14 +119,12 @@ class printController extends Controller
                 'breakdown'=>$breakdown
             ];
             $pdf = PDF::loadView('pdf.laporan_belum_bayar', $data, [], [
-                'format'=> 'A4-L',
-                'default_font_size'=> '12',
+                'format'=> 'A4',
+                'default_font_size'=> '10',
                 'margin_top'=> 25,
             ]);
             return $pdf->stream('laporan_belum_bayar'.$request->tahun_ajaran.'.pdf');
         }
-
-
     }
     public function download($file){
         return Storage::download("bukti_potongan/".$file);
