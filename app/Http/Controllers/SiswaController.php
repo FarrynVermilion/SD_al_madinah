@@ -25,13 +25,7 @@ class SiswaController extends Controller
         $data = DB::table("database_biodata_siswa AS siswa")
         ->leftJoin('database_biodata_wali_siswa AS wali','siswa.NO_KK','=','wali.NO_KK')
         ->whereNull('siswa.deleted_at')
-        ->select(
-            "siswa.*",
-            "wali.nama_wali",
-            'wali.nama_ayah AS nama_ayah',
-            'wali.nama_ibu AS nama_ibu',
-            'wali.nama_wali AS nama_wali',
-            'wali.nomor_telp_wali AS no_hp_wali')
+        ->select("siswa.*","wali.*")
         ->orderBy('siswa.id','desc')->paginate(10);
         return view("pendaftaran.siswa.index", ["data"=> $data]);
     }
@@ -44,13 +38,7 @@ class SiswaController extends Controller
         $data = DB::table("database_biodata_siswa AS siswa")
         ->leftJoin('database_biodata_wali_siswa AS wali','siswa.NO_KK','=','wali.NO_KK')
         ->whereNull('siswa.deleted_at')
-        ->select(
-            "siswa.*",
-            "wali.nama_wali",
-            'wali.nama_ayah AS nama_ayah',
-            'wali.nama_ibu AS nama_ibu',
-            'wali.nama_wali AS nama_wali',
-            'wali.nomor_telp_wali AS no_hp_wali')
+        ->select("siswa.*","wali.*")
         ->where('siswa.nama_lengkap',"LIKE", "%".$cari."%")
         ->orderBy('siswa.id','desc')->paginate(10);
         return view("pendaftaran.siswa.index", ["data"=> $data]);

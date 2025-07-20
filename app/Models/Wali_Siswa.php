@@ -42,7 +42,7 @@ class Wali_Siswa extends Model
         'status_hidup',
         'nama_wali',
         'tempat_lahir_wali',
-        'tanggal_lahit_wali',
+        'tanggal_lahir_wali',
         'nik_wali',
         'agama_wali',
         'kewarganegaraan_wali',
