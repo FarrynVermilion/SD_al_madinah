@@ -374,8 +374,8 @@ class transaksiSPPController extends Controller
         ])->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
-        return ["before" => $before, "after"=> json_encode($encode), "key" => $key];
-        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
+        // return ["before" => $before, "after"=> json_encode($encode), "key" => $key];
+        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
     }
 
     /**
