@@ -320,8 +320,9 @@ class transaksiSPPController extends Controller
     public function edit(string $transaksi_SPP)
     {
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP)->first();
+        $before = $transaksi_SPP->status_lunas;
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
-        $key = $siswa->no_kk.$siswa->nama_lengkap;
+        $key = $siswa->NO_KK.$siswa->nama_lengkap;
         $user_pelunas = User::find($transaksi_SPP->created_by);
         $paraf = Paraf::where("created_by", $user_pelunas->id)->first()->image_paraf_path;
         $pembuat = $user_pelunas->name;
@@ -373,8 +374,8 @@ class transaksiSPPController extends Controller
         ])->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
-        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
-
+        return ["before" => $before, "after"=> json_encode($encode), "key" => $key];
+        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
     }
 
     /**
