@@ -51,7 +51,7 @@ class AuthController extends Controller
         }
 
 
-        $kk=Siswa::where('id_account', $user->id)->get()[0]->no_kk;
+        $kk=Siswa::where('id_account', $user->id)->get()[0]->NO_KK;
         $nama=Siswa::where('id_account', $user->id)->get()[0]->nama_lengkap;
         $decryption_key = $kk . $nama;
 
@@ -100,7 +100,7 @@ class AuthController extends Controller
             DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
         }
 
-        $kk=Siswa::where('id_account', $user->id)->get()[0]->no_kk;
+        $kk=Siswa::where('id_account', $user->id)->get()[0]->NO_KK;
         $nama=Siswa::where('id_account', $user->id)->get()[0]->nama_lengkap;
         $decryption_key = $kk . $nama;
         if(strlen($decryption_key) > 32){
