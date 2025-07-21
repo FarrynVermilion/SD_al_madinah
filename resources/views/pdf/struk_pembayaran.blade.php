@@ -137,7 +137,7 @@
                                 @endswitch
                                 {{date('d-m-Y')}}
                                 <br>
-                                Tahun ajaran:{{ $tahun_ajaran }}
+                                Tahun ajaran:{{ $siswa->tahun_ajaran }}
                             </p>
                         </td>
                     </tr>

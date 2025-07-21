@@ -337,7 +337,6 @@ class transaksiSPPController extends Controller
         // // ini untuk windows
         // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
-        $transaksi_SPP->save();
         $data_siswa = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
             ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
@@ -371,11 +370,10 @@ class transaksiSPPController extends Controller
             'format'=> 'A4',
             'default_font_size'=> '10',
             'margin_top'=> 40,
-        ]);
-        return $pdf->stream("struk_pembayaran.pdf");
-        // ->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
-        // $transaksi_SPP->delete();
-        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
+        ])->save("../storage/app/private/struk/struk_".$transaksi_SPP->getKey().".pdf");
+        $transaksi_SPP->save();
+        $transaksi_SPP->delete();
+        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
 
     }
 
