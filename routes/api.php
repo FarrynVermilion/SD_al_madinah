@@ -15,10 +15,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Route::group(['prefix' => 'auth'], function ($router) {
-//     Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
-//     Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
-// });
+Route::group(['prefix' => 'auth'], function ($router) {
+    Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
+    Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
+});
 
 // Route::middleware('cors')->group(function(){
 //     Route::post('/logout', [AuthController::class, 'logout']);
@@ -29,10 +29,11 @@ Route::get('/user', function (Request $request) {
 // });
 
 
-Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
-Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
+// Route::post('/request/sanctum', [AuthController::class, 'request_sanctum_token']);
+// Route::post('/request/jwt', [AuthController::class, 'request_jwt_token']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/transaction', [AuthController::class, 'transaction']);
+Route::post('/cekToken', [AuthController::class, 'verify_requested_token']);
 Route::post('/verifikasi-spp', [AuthController::class, 'verifikasi_SPP']);
 Route::post("/upload_bukti_pembayaran", [AuthController::class, 'upload_bukti_pembayaran']);
 Route::post("/download_struk", [AuthController::class, 'download_struk']);
