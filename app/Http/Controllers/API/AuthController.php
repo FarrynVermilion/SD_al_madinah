@@ -323,7 +323,7 @@ class AuthController extends Controller
             $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
             $valid = hash_equals($hashed, hash('sha256', $signraw));
 
-            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->no_kk;
+            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->NO_KK;
             $nama=Siswa::where('id_account', $payload->user->id)->get()[0]->nama_lengkap;
             $decryption_key = $kk.$nama;
             if(strlen($decryption_key) > 32){
@@ -396,7 +396,7 @@ class AuthController extends Controller
             $hashed = DB::table('personal_access_tokens')->where('tokenable_id', $payload->user->id)->get()[0]->token;
             $valid = hash_equals($hashed, hash('sha256', $signraw));
 
-            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->no_kk;
+            $kk=Siswa::where('id_account', $payload->user->id)->get()[0]->NO_KK;
             $nama=Siswa::where('id_account', $payload->user->id)->get()[0]->nama_lengkap;
             $decryption_key = $kk.$nama;
             if(strlen($decryption_key) > 32){
