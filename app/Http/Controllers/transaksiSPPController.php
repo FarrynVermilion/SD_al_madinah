@@ -320,7 +320,10 @@ class transaksiSPPController extends Controller
     public function edit(string $transaksi_SPP)
     {
         $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP)->first();
-        $before = $transaksi_SPP->status_lunas;
+        if($transaksi_SPP==null){
+            return redirect()->route("transaksi.index")->with("error", "Data tidak ditemukan");
+        }
+        // $before = $transaksi_SPP->status_lunas;
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->NO_KK.$siswa->nama_lengkap;
         $user_pelunas = User::find($transaksi_SPP->created_by);
