@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Transaksi_SPP;
-use App\Models\Verifikasi_SPP;
+use App\Models\verifikasi_SPP;
 use Illuminate\Container\Attributes\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -227,16 +227,17 @@ class AuthController extends Controller
     public function verifikasi_SPP(Request $request){
         $request->validate([
             'token' => 'required',
-            'id_verifikasi' => 'required'
+            'id_verifikasi' => ['required','exists:verifikasi_spp,id_verifikasi'],
         ],[
             'token.required' => 'Token is required',
         ]);
+
         $access_token_user_id = json_decode($this->verify_token($request->token));
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
-        $verifikasi = Verifikasi_SPP::where('id_verifikasi', $request->id_verifikasi)->first();
-        $verifikasi->status_verifikasi = $request->status;
+        $verifikasi = verifikasi_SPP::where('id_verifikasi', $request->id_verifikasi)->first();
+        $verifikasi->status_verifikasi = 1;
         $verifikasi->save();
         return response()->json([
             'message' => 'verifikasi request success',

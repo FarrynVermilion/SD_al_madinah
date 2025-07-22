@@ -16,6 +16,7 @@ class verifikasi_SPP extends Model
         "status_verifikasi"
     ];
     public $timestamps = true;
+    public $incrementing = false;
 
     // public function transaksi()
     // {

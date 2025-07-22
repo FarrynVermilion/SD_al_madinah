@@ -114,7 +114,6 @@ class transaksiSPPController extends Controller
         $kepala_sekolah = transaksi_jabatan_sekolah::where("id_jabatan", 1)
         ->leftJoin("users", "users.id", "=", "transaksi_jabatan_sekolah.id_account")
         ->first();
-
         // DB::beginTransaction();
         // try {
         //     SPP_Siswa::where("status_siswa", "1")
@@ -260,7 +259,7 @@ class transaksiSPPController extends Controller
                 "kelas.nama_kelas",
                 "kelas.tahun_ajaran"
             )
-            ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah , &$test) {
+            ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah) {
                 $key =$spp->no_kk.$spp->nama_lengkap;
                 if (strlen($key) < 32) {
                     $key = str_pad($key, 32, 0);
@@ -285,23 +284,22 @@ class transaksiSPPController extends Controller
                 $transaksi->spp = $spp->nominal;
                 $transaksi->potongan = $spp->nominal_potongan === null ? "0" : $spp->nominal_potongan;
                 $transaksi->bukti_potongan = $spp->bukti_potongan;
-                $transaksi->bulan=$validated["bulan"];
-                $transaksi->semester=$validated["semester"];
-                $transaksi->tahun_ajaran=$spp->tahun_ajaran;
-                $transaksi->nama_kelas=$spp->nama_kelas;
-                $transaksi->status_lunas=json_encode($encode);
-                $transaksi->id_ketua_komite=$ketua_komite->id_transaksi_jabatan_wali??null;
-                $transaksi->nama_ketua_komite=$ketua_komite->nama_wali??null;
-                $transaksi->id_kepala_sekolah=$kepala_sekolah->id_transaksi_jabatan_sekolah??null;
-                $transaksi->kepala_sekolah=$kepala_sekolah->name??null;
+                $transaksi->bulan = $validated["bulan"];
+                $transaksi->semester = $validated["semester"];
+                $transaksi->tahun_ajaran = $spp->tahun_ajaran;
+                $transaksi->nama_kelas = $spp->nama_kelas;
+                $transaksi->status_lunas = json_encode($encode);
+                $transaksi->id_ketua_komite = $ketua_komite->id_transaksi_jabatan_wali??null;
+                $transaksi->nama_ketua_komite = $ketua_komite->nama_wali??null;
+                $transaksi->id_kepala_sekolah = $kepala_sekolah->id_transaksi_jabatan_sekolah??null;
+                $transaksi->kepala_sekolah = $kepala_sekolah->name??null;
                 $transaksi->save();
-                $verifikasi = new verifikasi_SPP();
-                $verifikasi->id_verifikasi = $transaksi->getKey();
-                $verifikasi->status_verifikasi = 0;
-                $verifikasi->save();
+                verifikasi_SPP::create([
+                    "id_verifikasi" => $transaksi->id_transaksi,
+                    "status_verifikasi" => 0
+                ]);
             });
         });
-
         return redirect()->route("transaksi.index")->with("success", "Anda membuat berhasil membuat transaksi");
     }
 
