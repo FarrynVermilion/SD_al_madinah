@@ -45,7 +45,7 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>NO</th>
                   <th>NISN</th>
                   <th>Nama siswa</th>
                   <th>NIS</th>
@@ -156,7 +156,7 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>NO</th>
                   <th>NISN</th>
                   <th>Nama siswa</th>
                   <th>NIS</th>

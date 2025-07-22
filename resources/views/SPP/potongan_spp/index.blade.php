@@ -33,7 +33,7 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th>NO</th>
                   <th>ID</th>
                   <th>Nama Potongan</th>
                   <th>Besar Potongan</th>
