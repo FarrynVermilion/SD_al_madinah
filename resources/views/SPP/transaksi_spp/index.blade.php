@@ -41,116 +41,118 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Nama siswa</th>
-                  <th>NISN</th>
-                  <th>NIS</th>
-                  <th>Kelas</th>
-                  <th>Tahun ajaran</th>
-                  <th>Semester</th>
-                  <th>Bulan</th>
-                  <th>SPP</th>
-                  <th>Potongan</th>
-                  <th>Bukti Potongan</th>
-                  <th>Tagihan</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Nama siswa</th>
+                    <th>NISN</th>
+                    <th>NIS</th>
+                    <th>Kelas</th>
+                    <th>Tahun ajaran</th>
+                    <th>Semester</th>
+                    <th>Bulan</th>
+                    <th>SPP</th>
+                    <th>Potongan</th>
+                    <th>Bukti Potongan</th>
+                    <th>Tagihan</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data as $siswa)
                     <tr>
-                    <td>{{$siswa->nama_lengkap}}</td>
-                    <td>{{$siswa->nisn}}</td>
-                    <td>{{$siswa->id_NIS}}</td>
-                    <td>{{$siswa->nama_kelas}}</td>
-                    <td>{{$siswa->tahun_ajaran}}</td>
-                    @if ($siswa->semester==0)
-                        <td>Gasal</td>
-                        <td>
-                            @switch($siswa->bulan)
-                                @case(1)
-                                    Juli
-                                    @break
-                                @case(2)
-                                    Agustus
-                                    @break
-                                @case(3)
-                                    September
-                                    @break
-                                @break
-                                @case(4)
-                                    Oktober
-                                    @break
-                                @break
-                                @case(5)
-                                    November
-                                    @break
-                                @break
-                                @case(6)
-                                    Desember
-                                    @break
-                                @break
-                                @default
-                            @endswitch
-                        </td>
-                    @else
-                        <td>Genap</td>
-                        <td>
-                            @switch($siswa->bulan)
-                                @case(1)
-                                    Januari
-                                    @break
-                                @case(2)
-                                    Februari
-                                    @break
-                                @case(3)
-                                    Maret
-                                    @break
-                                @break
-                                @case(4)
-                                    April
-                                    @break
-                                @break
-                                @case(5)
-                                    Mei
-                                    @break
-                                @break
-                                @case(6)
-                                    Juni
-                                    @break
-                                @default
-                            @endswitch
-                        </td>
-                    @endif
-                    <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
-                    @if ($siswa->potongan==0)
-                        <td colspan="2">Tidak ada potongan</td>
-                    @else
-                        <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
-                        <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
-                    @endif
-                    <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
-
-                    <td class="td-actions text-left">
-                      <table>
-                        <tr>
-                          <td>
-                            <form method="GET" action="{{route('transaksi.edit',$siswa->id_transaksi)}}" onsubmit="return pembayaran()">
-                              @csrf
-                              <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Lunas</i></button>
-                            </form>
-                          </td>
-                          @if ( Auth::user()->role=='Admin')
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$siswa->nama_lengkap}}</td>
+                        <td>{{$siswa->nisn}}</td>
+                        <td>{{$siswa->id_NIS}}</td>
+                        <td>{{$siswa->nama_kelas}}</td>
+                        <td>{{$siswa->tahun_ajaran}}</td>
+                        @if ($siswa->semester==0)
+                            <td>Gasal</td>
                             <td>
-                                <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
-                                    @csrf
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                                @switch($siswa->bulan)
+                                    @case(1)
+                                        Juli
+                                        @break
+                                    @case(2)
+                                        Agustus
+                                        @break
+                                    @case(3)
+                                        September
+                                        @break
+                                    @break
+                                    @case(4)
+                                        Oktober
+                                        @break
+                                    @break
+                                    @case(5)
+                                        November
+                                        @break
+                                    @break
+                                    @case(6)
+                                        Desember
+                                        @break
+                                    @break
+                                    @default
+                                @endswitch
+                            </td>
+                        @else
+                            <td>Genap</td>
+                            <td>
+                                @switch($siswa->bulan)
+                                    @case(1)
+                                        Januari
+                                        @break
+                                    @case(2)
+                                        Februari
+                                        @break
+                                    @case(3)
+                                        Maret
+                                        @break
+                                    @break
+                                    @case(4)
+                                        April
+                                        @break
+                                    @break
+                                    @case(5)
+                                        Mei
+                                        @break
+                                    @break
+                                    @case(6)
+                                        Juni
+                                        @break
+                                    @default
+                                @endswitch
+                            </td>
+                        @endif
+                        <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
+                        @if ($siswa->potongan==0)
+                            <td colspan="2">Tidak ada potongan</td>
+                        @else
+                            <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
+                            <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
+                        @endif
+                        <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
+
+                        <td class="td-actions text-left">
+                        <table>
+                            <tr>
+                            <td>
+                                <form method="GET" action="{{route('transaksi.edit',$siswa->id_transaksi)}}" onsubmit="return pembayaran()">
+                                @csrf
+                                <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Lunas</i></button>
                                 </form>
                             </td>
-                          @endif
-                        </tr>
-                      </table>
-                    </td>
+                            @if ( Auth::user()->role=='Admin')
+                                <td>
+                                    <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
+                                        @csrf
+                                        <input name="_method" type="hidden" value="DELETE">
+                                        <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                                    </form>
+                                </td>
+                            @endif
+                            </tr>
+                        </table>
+                        </td>
                     </tr>
                 @endforeach
               </tbody>
@@ -173,121 +175,123 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Nama siswa</th>
-                  <th>NISN</th>
-                  <th>NIS</th>
-                  <th>Kelas</th>
-                  <th>Tahun ajaran</th>
-                  <th>Semester</th>
-                  <th>Bulan</th>
-                  <th>SPP</th>
-                  <th>Potongan</th>
-                  <th>Bukti Potongan</th>
-                  <th>Tagihan</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Nama siswa</th>
+                    <th>NISN</th>
+                    <th>NIS</th>
+                    <th>Kelas</th>
+                    <th>Tahun ajaran</th>
+                    <th>Semester</th>
+                    <th>Bulan</th>
+                    <th>SPP</th>
+                    <th>Potongan</th>
+                    <th>Bukti Potongan</th>
+                    <th>Tagihan</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data_dengan_bukti_pembayaran as $siswa)
                     <tr>
-                    <td>{{$siswa->nama_lengkap}}</td>
-                    <td>{{$siswa->nisn}}</td>
-                    <td>{{$siswa->id_NIS}}</td>
-                    <td>{{$siswa->nama_kelas}}</td>
-                    <td>{{$siswa->tahun_ajaran}}</td>
-                    @if ($siswa->semester==0)
-                        <td>Gasal</td>
-                        <td>
-                            @switch($siswa->bulan)
-                                @case(1)
-                                    Juli
-                                    @break
-                                @case(2)
-                                    Agustus
-                                    @break
-                                @case(3)
-                                    September
-                                    @break
-                                @break
-                                @case(4)
-                                    Oktober
-                                    @break
-                                @break
-                                @case(5)
-                                    November
-                                    @break
-                                @break
-                                @case(6)
-                                    Desember
-                                    @break
-                                @break
-                                @default
-                            @endswitch
-                        </td>
-                    @else
-                        <td>Genap</td>
-                        <td>
-                            @switch($siswa->bulan)
-                                @case(1)
-                                    Januari
-                                    @break
-                                @case(2)
-                                    Februari
-                                    @break
-                                @case(3)
-                                    Maret
-                                    @break
-                                @break
-                                @case(4)
-                                    April
-                                    @break
-                                @break
-                                @case(5)
-                                    Mei
-                                    @break
-                                @break
-                                @case(6)
-                                    Juni
-                                    @break
-                                @default
-                            @endswitch
-                        </td>
-                    @endif
-                    <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
-                    @if ($siswa->potongan==0)
-                        <td colspan="2">Tidak ada potongan</td>
-                    @else
-                        <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
-                        <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
-                    @endif
-                    <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
-
-                    <td class="td-actions text-left">
-                      <table>
-                        <tr>
-                          <td>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$siswa->nama_lengkap}}</td>
+                        <td>{{$siswa->nisn}}</td>
+                        <td>{{$siswa->id_NIS}}</td>
+                        <td>{{$siswa->nama_kelas}}</td>
+                        <td>{{$siswa->tahun_ajaran}}</td>
+                        @if ($siswa->semester==0)
+                            <td>Gasal</td>
                             <td>
-                                <button><a href="{{route('transaksi.show', $siswa->id_transaksi)}}"><i class="btn btn-primary">Lihat bukti pembayaran</i></a></button>
+                                @switch($siswa->bulan)
+                                    @case(1)
+                                        Juli
+                                        @break
+                                    @case(2)
+                                        Agustus
+                                        @break
+                                    @case(3)
+                                        September
+                                        @break
+                                    @break
+                                    @case(4)
+                                        Oktober
+                                        @break
+                                    @break
+                                    @case(5)
+                                        November
+                                        @break
+                                    @break
+                                    @case(6)
+                                        Desember
+                                        @break
+                                    @break
+                                    @default
+                                @endswitch
                             </td>
-                          </td>
-                          <td>
-                            <form method="GET" action="{{route('transaksi.edit',$siswa->id_transaksi)}}" onsubmit="return pembayaran()">
-                              @csrf
-                              <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Lunas</i></button>
-                            </form>
-                          </td>
-                          @if ( Auth::user()->role=='Admin')
+                        @else
+                            <td>Genap</td>
                             <td>
-                                <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
-                                    @csrf
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                                @switch($siswa->bulan)
+                                    @case(1)
+                                        Januari
+                                        @break
+                                    @case(2)
+                                        Februari
+                                        @break
+                                    @case(3)
+                                        Maret
+                                        @break
+                                    @break
+                                    @case(4)
+                                        April
+                                        @break
+                                    @break
+                                    @case(5)
+                                        Mei
+                                        @break
+                                    @break
+                                    @case(6)
+                                        Juni
+                                        @break
+                                    @default
+                                @endswitch
+                            </td>
+                        @endif
+                        <td>RP. {{ number_format($siswa->spp,2,',','.') }}</td>
+                        @if ($siswa->potongan==0)
+                            <td colspan="2">Tidak ada potongan</td>
+                        @else
+                            <td>RP. {{ number_format($siswa->potongan,2,',','.') }}</td>
+                            <td><a href="{{ route('DownloadFile', $siswa->bukti_potongan) }}" class="btn btn-primary btn-sm"><i class="material-icons">file_download</i></a> </td>
+                        @endif
+                        <td>RP. {{ number_format($siswa->spp-$siswa->potongan,2,',','.') }}</td>
+
+                        <td class="td-actions text-left">
+                        <table>
+                            <tr>
+                            <td>
+                                <td>
+                                    <button><a href="{{route('transaksi.show', $siswa->id_transaksi)}}"><i class="btn btn-primary">Lihat bukti pembayaran</i></a></button>
+                                </td>
+                            </td>
+                            <td>
+                                <form method="GET" action="{{route('transaksi.edit',$siswa->id_transaksi)}}" onsubmit="return pembayaran()">
+                                @csrf
+                                <button type="submit" class="btn" style="width: 12em;"><i class="material-icons">Lunas</i></button>
                                 </form>
                             </td>
-                          @endif
-                        </tr>
-                      </table>
-                    </td>
+                            @if ( Auth::user()->role=='Admin')
+                                <td>
+                                    <form method="POST" action="{{route('transaksi.destroy',$siswa->id_transaksi)}}" onsubmit="return hapus()">
+                                        @csrf
+                                        <input name="_method" type="hidden" value="DELETE">
+                                        <button type="submit" class="btn btn-danger" style="width: 12em;"><i class="material-icons">Hapus</i></button>
+                                    </form>
+                                </td>
+                            @endif
+                            </tr>
+                        </table>
+                        </td>
                     </tr>
                 @endforeach
               </tbody>

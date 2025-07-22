@@ -37,25 +37,27 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Kelas</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Kelas</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data as $kelas)
                 <tr>
-                  <td>{{ $kelas->id_kelas }}</td>
-                  <td>{{ $kelas->nama_kelas }}</td>
-                  <td class="text-right">
-                    <form action="{{ route('kelas.destroy', $kelas->id_kelas) }}" method="POST" onsubmit="return hapus()">
-                      @csrf
-                      <input name="_method" type="hidden" value="DELETE">
-                      <button type="submit" class="btn btn-danger">
-                            Hapus
-                      </button>
-                    </form>
-                  </td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $kelas->id_kelas }}</td>
+                    <td>{{ $kelas->nama_kelas }}</td>
+                    <td class="text-right">
+                        <form action="{{ route('kelas.destroy', $kelas->id_kelas) }}" method="POST" onsubmit="return hapus()">
+                        @csrf
+                        <input name="_method" type="hidden" value="DELETE">
+                        <button type="submit" class="btn btn-danger">
+                                Hapus
+                        </button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
               </tbody>

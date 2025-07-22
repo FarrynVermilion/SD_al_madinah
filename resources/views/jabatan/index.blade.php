@@ -41,15 +41,17 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Nama jabatan</th>
-                  <th>Jenis jabatan</th>
-                  <th class="disabled-sorting text-left">Isi</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Nama jabatan</th>
+                    <th>Jenis jabatan</th>
+                    <th class="disabled-sorting text-left">Isi</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ( $empty as $jabatan)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>
                             {{$jabatan->nama_jabatan}}
                         </td>
@@ -159,16 +161,18 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Jabatan</th>
-                  <th>Nama</th>
-                  <th>Role</th>
-                  <th>Dibuat</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Jabatan</th>
+                    <th>Nama</th>
+                    <th>Role</th>
+                    <th>Dibuat</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ( $sekolah as $Pengajar)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>
                             {{$Pengajar->nama_jabatan}}
                         </td>
@@ -218,15 +222,17 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Jabatan</th>
-                  <th>Nama</th>
-                  <th>Dibuat</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Jabatan</th>
+                    <th>Nama</th>
+                    <th>Dibuat</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ( $wali as $Wali)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>
                             {{$Wali->nama_jabatan}}
                         </td>

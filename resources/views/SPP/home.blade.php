@@ -55,22 +55,24 @@
             <div class="table-responsive">
               <table class="table">
                 <thead class="text-primary">
-                  <th>
-                    Tahun ajar
-                  </th>
-                  <th>
-                    Semester
-                  </th>
-                  <th>
-                    Bulan
-                  </th>
-                  <th class="text-right">
-                    Jumlah siswa
-                  </th>
+                    <th>NO</th>
+                    <th>
+                        Tahun ajar
+                    </th>
+                    <th>
+                        Semester
+                    </th>
+                    <th>
+                        Bulan
+                    </th>
+                    <th class="text-right">
+                        Jumlah siswa
+                    </th>
                 </thead>
                 <tbody>
                     @foreach ($data as $nunggak)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>{{$nunggak->tahun_ajaran}}</td>
                         <td>{{$nunggak->semester==0?"Gasal": "Genap" }}</td>
                         <td>{{$nunggak->bulan }}</td>

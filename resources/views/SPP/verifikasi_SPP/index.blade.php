@@ -38,23 +38,25 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Nama siswa</th>
-                  <th>NISN</th>
-                  <th>NIS</th>
-                  <th>Kelas</th>
-                  <th>Tahun ajaran</th>
-                  <th>Semester</th>
-                  <th>Bulan</th>
-                  <th>SPP</th>
-                  <th>Potongan</th>
-                  <th>Bukti Potongan</th>
-                  <th>Tagihan</th>
-                  <th>Verifikasi</th>
+                    <th>NO</th>
+                    <th>Nama siswa</th>
+                    <th>NISN</th>
+                    <th>NIS</th>
+                    <th>Kelas</th>
+                    <th>Tahun ajaran</th>
+                    <th>Semester</th>
+                    <th>Bulan</th>
+                    <th>SPP</th>
+                    <th>Potongan</th>
+                    <th>Bukti Potongan</th>
+                    <th>Tagihan</th>
+                    <th>Verifikasi</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($data as $siswa)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>{{$siswa->nama_lengkap}}</td>
                         <td>{{$siswa->nisn}}</td>
                         <td>{{$siswa->id_NIS}}</td>

@@ -41,16 +41,18 @@
             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Creation date</th>
-                  <th class="disabled-sorting text-left">Actions</th>
+                    <th>NO</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Creation date</th>
+                    <th class="disabled-sorting text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ( $users as $user)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>
                             {{$user->name}}
                         </td>

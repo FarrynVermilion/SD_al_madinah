@@ -70,6 +70,7 @@ class AuthController extends Controller
         $response = [
             'token' => base64_encode(json_encode(["typ" => "SANCTUM"])) . '.' .$tokenGen,
             'decryption_key' => base64_encode($decryption_key),
+            // 'dec'=>$decryption_key,
             'valid' => hash_equals($hashed, hash('sha256', $token)),
         ];
 
@@ -165,6 +166,7 @@ class AuthController extends Controller
             'payload'=>$payloads,
             // 'signature'=>$signraw,
             'decryption_key'=>base64_encode($decryption_key),
+            // 'dec'=>$decryption_key,
             'valid'=>hash_equals($hashed, hash('sha256', $signraw)),
             'tempered'=>!$tempered
         ];
