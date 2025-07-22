@@ -42,13 +42,13 @@
                   <th>NISN</th>
                   <th>NIS</th>
                   <th>Kelas</th>
+                  <th>Tahun ajaran</th>
+                  <th>Semester</th>
+                  <th>Bulan</th>
                   <th>SPP</th>
                   <th>Potongan</th>
                   <th>Bukti Potongan</th>
                   <th>Tagihan</th>
-                  <th>Tahun ajaran</th>
-                  <th>Semester</th>
-                  <th>Bulan</th>
                   <th>Verifikasi</th>
                 </tr>
               </thead>
