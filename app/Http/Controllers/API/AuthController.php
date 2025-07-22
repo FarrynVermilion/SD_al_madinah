@@ -265,6 +265,11 @@ class AuthController extends Controller
             ->leftJoin( 'spp_siswa','transaksi_spp.id_spp', '=', 'spp_siswa.id_spp_siswa' )
             ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'database_biodata_siswa.id')
             ->first();
+        if($transksi == null){
+            return response()->json([
+                'message' => 'Transaksi tidak ditemukan atau sudah lunas'
+            ]);
+        }
         if($transksi->id_account != $access_token_user_id->id){
             return response()->json([
                 'message' => 'Anda tidak memiliki akses untuk upload bukti pembayaran transaksi ini'
