@@ -89,10 +89,10 @@
         margin-right: auto;
         text-align: center;
     } */
-    /* p{
+    p{
         text-align: center;
         margin: 0;
-    } */
+    }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -105,43 +105,37 @@
                 <img src="assets/img/smp_logo.jpg">
             </div>
             <div style="text-align: center ; position: absolute; top: 0; ">
-                <table>
-                    <tr>
-                        <td>
-                            <p>DATA SISWA BELUM BAYAR SMP AL-MADINAH</p>
-                            <p>
-                                Dokumen dibuat pertanggal
-                                @switch(date('w'))
-                                    @case(0)
-                                        Minggu
-                                        @break
-                                    @case(1)
-                                        Senin
-                                        @break
-                                    @case(2)
-                                        Selasa
-                                        @break
-                                    @case(3)
-                                        Rabu
-                                        @break
-                                    @case(4)
-                                        Kamis
-                                        @break
-                                    @case(5)
-                                        Jumat
-                                        @break
-                                    @case(6)
-                                        Sabtu
-                                        @break
-                                    @default
-                                @endswitch
-                                {{date('d-m-Y')}}
-                                <br>
-                                Tahun ajaran:{{ $siswa->tahun_ajaran }}
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+                <p>STRUK PEMBAYARAN SISWA</p>
+                <p>
+                    Dokumen dibuat pertanggal
+                    @switch(date('w'))
+                        @case(0)
+                            Minggu
+                            @break
+                        @case(1)
+                            Senin
+                            @break
+                        @case(2)
+                            Selasa
+                            @break
+                        @case(3)
+                            Rabu
+                            @break
+                        @case(4)
+                            Kamis
+                            @break
+                        @case(5)
+                            Jumat
+                            @break
+                        @case(6)
+                            Sabtu
+                            @break
+                        @default
+                    @endswitch
+                    {{date('d-m-Y')}}
+                    <br>
+                    Tahun ajaran:{{ $siswa->tahun_ajaran }}
+                </p>
             </div>
             <hr>
         </header>

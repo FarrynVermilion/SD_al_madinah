@@ -74,8 +74,59 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$nunggak->tahun_ajaran}}</td>
-                        <td>{{$nunggak->semester==0?"Gasal": "Genap" }}</td>
-                        <td>{{$nunggak->bulan }}</td>
+                        @if ($nunggak->semester==0)
+                            <td>Gasal</td>
+                            <td>
+                                @switch( $nunggak->bulan )
+                                    @case(1)
+                                        Juli
+                                        @break
+                                    @case(2)
+                                        Agustus
+                                        @break
+                                    @case(3)
+                                        September
+                                        @break
+                                    @case(4)
+                                        Oktober
+                                        @break
+                                    @case(5)
+                                        November
+                                        @break
+                                    @case(6)
+                                        Desember
+                                        @break
+                                    @default
+                                        @break
+                                @endswitch
+                            </td>
+                        @else
+                            <td>Genap</td>
+                            <td>
+                                @switch( $nunggak->bulan )
+                                    @case(1)
+                                        Januari
+                                        @break
+                                    @case(2)
+                                        Februari
+                                        @break
+                                    @case(3)
+                                        Maret
+                                        @break
+                                    @case(4)
+                                        April
+                                        @break
+                                    @case(5)
+                                        Mei
+                                        @break
+                                    @case(6)
+                                        Juni
+                                        @break
+                                    @default
+                                        @break
+                                @endswitch
+                            </td>
+                        @endif
                         <td class="text-right">
                             {{$nunggak->jumlah}}
                         </td>
