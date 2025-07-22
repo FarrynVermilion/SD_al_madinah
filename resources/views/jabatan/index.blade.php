@@ -61,7 +61,7 @@
                                 Sekolah
                             </td>
                             <td class="text-center">
-                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary btn-round pull-right" >Isi</button>
+                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi wali</button>
                             </td>
                             <div popover id="popover_{{$jabatan->id_jabatan}}">
                                 <div style="width: 50em; height: 25em;" >
@@ -100,7 +100,7 @@
                                 Wali
                             </td>
                             <td class="text-center">
-                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi</button>
+                                <button popovertarget="popover_{{$jabatan->id_jabatan}}" type="button" class="btn btn-primary" >Isi sekolah</button>
                             </td>
                             <div popover id="popover_{{$jabatan->id_jabatan}}">
                                 <div style="width: 50em; height: 25em;" >
@@ -109,7 +109,7 @@
                                         @csrf
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">Tambah jabatan wali : {{$jabatan->nama_jabatan}}</h4>
+                                                    <h4 class="card-title">Tambah jabatan sekolah : {{$jabatan->nama_jabatan}}</h4>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
