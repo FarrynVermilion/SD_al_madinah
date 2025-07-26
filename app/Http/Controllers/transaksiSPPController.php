@@ -268,15 +268,17 @@ class transaksiSPPController extends Controller
                     $key = substr($key, 0, 32);
                 }
                 // ini unuk linux
-                $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "0|'.date("Y-m-d")."|".Auth::user()->name.'|"'), true)["cyphertext"];
+                $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '0|".date("Y-m-d")."|".Auth::user()->name."|'"), true)["cyphertext"];
                 // ini untuk windows
                 // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
-                if(Transaksi_SPP::where("id_spp", $spp->id_spp_siswa)
+                if(Transaksi_SPP::withTrashed()
+                    ->where("id_spp", $spp->id_spp_siswa)
                     ->where("bulan", $validated["bulan"])
                     ->where("semester", $validated["semester"])
                     ->where("tahun_ajaran", $spp->tahun_ajaran)
                     ->exists()){
                     // DB::rollBack();
+                    // return redirect()->route("transaksi.index")->with('errors', "Data sudah ada");
                     return;
                 }
                 $transaksi = new Transaksi_SPP();
@@ -315,9 +317,10 @@ class transaksiSPPController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $transaksi_SPP)
+    public function edit($transaksi_SPP)
     {
-        $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP)->first();
+
+        $transaksi_SPP = Transaksi_SPP::find($transaksi_SPP);
         if($transaksi_SPP==null){
             return redirect()->route("transaksi.index")->with("error", "Data tidak ditemukan");
         }
@@ -335,7 +338,7 @@ class transaksiSPPController extends Controller
             $key = substr($key, 0, 32);
         }
         //ini unuk linux
-        $encode = json_decode(shell_exec('./../kkp_cryptography "'.$key.'" "1|'.date("Y-m-d")."|".$pembuat."|".$pelunas.'"'), true)["cyphertext"];
+        $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '1|".date("Y-m-d")."|".$pembuat."|".$pelunas."'"), true)["cyphertext"];
         // // ini untuk windows
         // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "1|'.date("Y-m-d").'"'), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
@@ -376,7 +379,8 @@ class transaksiSPPController extends Controller
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
         // return ["before" => $before, "after"=> json_encode($encode), "key" => $key];
-        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
+        return $transaksi_SPP;
+        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
     }
 
     /**
