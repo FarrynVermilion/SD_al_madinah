@@ -379,8 +379,8 @@ class transaksiSPPController extends Controller
         $transaksi_SPP->save();
         $transaksi_SPP->delete();
         // return ["before" => $before, "after"=> json_encode($encode), "key" => $key];
-        return $transaksi_SPP;
-        // return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
+        // return $transaksi_SPP;
+        return redirect()->back()->with("success", "Anda berhasil membayar transaksi");
     }
 
     /**
