@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Exception;
 use PDF;
+use PhpParser\Node\Expr\Array_;
 
 class transaksiSPPController extends Controller
 {
@@ -235,7 +236,8 @@ class transaksiSPPController extends Controller
         //     DB::rollBack();
         //     return redirect()->route("transaksi.index")->with('errors', $e->getMessage());
         // }
-        DB::transaction(function () use ($validated, $ketua_komite, $kepala_sekolah) {
+        $errors=[];
+        DB::transaction(function () use ($validated, $ketua_komite, $kepala_sekolah, &$errors) {
             SPP_Siswa::where("status_siswa", "1")
             ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=","database_biodata_siswa.id" )
             ->leftJoin("nominal_spp", "spp_siswa.id_nominal", "=","nominal_spp.id_nominal" )
@@ -259,7 +261,7 @@ class transaksiSPPController extends Controller
                 "kelas.nama_kelas",
                 "kelas.tahun_ajaran"
             )
-            ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah) {
+            ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah, &$errors) {
                 $key =$spp->no_kk.$spp->nama_lengkap;
                 if (strlen($key) < 32) {
                     $key = str_pad($key, 32, 0);
@@ -278,7 +280,61 @@ class transaksiSPPController extends Controller
                     ->where("tahun_ajaran", $spp->tahun_ajaran)
                     ->exists()){
                     // DB::rollBack();
-                    // return redirect()->route("transaksi.index")->with('errors', "Data sudah ada");
+                    $semester = $validated["semester"] === "0" ? "ganjil" : "genap";
+                    $bulan = null;
+                    if ($validated["semester"] === "0") {
+                        switch ($validated["bulan"]) {
+                            case "1":
+                                $bulan = "juli";
+                                break;
+                            case "2":
+                                $bulan = "agustus";
+                                break;
+                            case "3":
+                                $bulan = "september";
+                                break;
+                            case "4":
+                                $bulan = "oktober";
+                                break;
+                            case "5":
+                                $bulan = "november";
+                                break;
+                            case "6":
+                                $bulan = "desember";
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        switch ($validated["bulan"]) {
+                            case "1":
+                                $bulan = "januari";
+                                break;
+                            case "2":
+                                $bulan = "februari";
+                                break;
+                            case "3":
+                                $bulan = "maret";
+                                break;
+                            case "4":
+                                $bulan = "april";
+                                break;
+                            case "5":
+                                $bulan = "mei";
+                                break;
+                            case "6":
+                                $bulan = "juni";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    $str = "Data sudah ada untuk ".$spp->nama_lengkap.
+                            " pada semester ".$semester.
+                            " pada bulan ".$bulan.
+                            " tahun ajaran ".$spp->tahun_ajaran;
+                    // return redirect()->route("transaksi.index")->with('errors', $str);
+                    array_push($errors, $str);
                     return;
                 }
                 $transaksi = new Transaksi_SPP();
@@ -302,6 +358,10 @@ class transaksiSPPController extends Controller
                 ]);
             });
         });
+        if (count($errors) > 0) {
+            $str = implode(",", $errors);
+            return redirect()->route("transaksi.index")->with('errors', $str);
+        }
         return redirect()->route("transaksi.index")->with("success", "Anda membuat berhasil membuat transaksi");
     }
 
