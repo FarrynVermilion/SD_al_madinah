@@ -39,6 +39,7 @@ class transaksiSPPController extends Controller
                 "transaksi_spp.*",
                 "database_biodata_siswa.nama_lengkap",
                 "database_biodata_siswa.nisn",
+                "database_biodata_siswa.NO_KK",
                 "NIS.id_NIS",
             )
             ->whereNull("transaksi_spp.bukti_pembayaran")
@@ -47,6 +48,20 @@ class transaksiSPPController extends Controller
             ->orderBy("transaksi_spp.semester", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
             ->paginate(10);
+        foreach ($data as $d) {
+            if($d->bukti_potongan != null|| trim($d->bukti_potongan) != ""||is_null($d->bukti_potongan)){
+                $key =$d->NO_KK.$d->nama_lengkap;
+                if (strlen($key) < 32) {
+                    $key = str_pad($key, 32, 0);
+                }
+                if (strlen($key) > 32) {
+                    $key = substr($key, 0, 32);
+                }
+                $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$d->bukti_potongan."'");
+                $d->bukti_potongan =substr($decode_potongan, 1, -2);
+            }
+            $d->NO_KK = null;
+        }
 
         $data_dengan_bukti_pembayaran = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
             ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
@@ -56,6 +71,7 @@ class transaksiSPPController extends Controller
                 "transaksi_spp.*",
                 "database_biodata_siswa.nama_lengkap",
                 "database_biodata_siswa.nisn",
+                "database_biodata_siswa.NO_KK",
                 "NIS.id_NIS",
             )
             ->whereNotNull("transaksi_spp.bukti_pembayaran")
@@ -64,6 +80,27 @@ class transaksiSPPController extends Controller
             ->orderBy("transaksi_spp.semester", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
             ->paginate(10);
+        foreach ($data_dengan_bukti_pembayaran as $x) {
+            if($x->bukti_potongan != null|| trim($x->bukti_potongan) != ""||is_null($x->bukti_potongan)||$x->bukti_pembayaran != null|| trim($x->bukti_pembayaran) != ""||is_null($x->bukti_pembayaran))
+            {
+                $key =$x->NO_KK.$x->nama_lengkap;
+                if (strlen($key) < 32) {
+                    $key = str_pad($key, 32, 0);
+                }
+                if (strlen($key) > 32) {
+                    $key = substr($key, 0, 32);
+                }
+            }
+            if($x->bukti_potongan != null|| trim($x->bukti_potongan) != ""||is_null($x->bukti_potongan)){
+                $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_potongan."'");
+                $x->bukti_potongan = substr($decode_potongan, 1, -2);
+            }
+            if($x->bukti_pembayaran != null|| trim($x->bukti_pembayaran) != ""||is_null($x->bukti_pembayaran)){
+                $decode_pembayaran = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_pembayaran."'");
+                $x->bukti_pembayaran =substr($decode_pembayaran, 1, -2);
+            }
+            $x->NO_KK = null;
+        }
         return view("SPP.transaksi_spp.index")->with(["data" => $data, "data_dengan_bukti_pembayaran" => $data_dengan_bukti_pembayaran]);
     }
     /**
@@ -254,7 +291,7 @@ class transaksiSPPController extends Controller
                 )
             ->select(
                 "spp_siswa.*",
-                "database_biodata_siswa.no_kk",
+                "database_biodata_siswa.NO_KK",
                 "database_biodata_siswa.nama_lengkap",
                 "nominal_spp.nominal",
                 "potongan_spp.nominal_potongan",
@@ -262,7 +299,7 @@ class transaksiSPPController extends Controller
                 "kelas.tahun_ajaran"
             )
             ->each(function ($spp) use ( $validated, $ketua_komite, $kepala_sekolah, &$errors) {
-                $key =$spp->no_kk.$spp->nama_lengkap;
+                $key =$spp->NO_KK.$spp->nama_lengkap;
                 if (strlen($key) < 32) {
                     $key = str_pad($key, 32, 0);
                 }
@@ -273,6 +310,12 @@ class transaksiSPPController extends Controller
                 $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '0|".date("Y-m-d")."|".Auth::user()->name."|'"), true)["cyphertext"];
                 // ini untuk windows
                 // $encode = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key.'" "0|'.date("Y-m-d").'"'), true)["cyphertext"];
+
+                if($spp->id_potongan != null){
+                    $encode_bukti_pemotongan = json_decode(shell_exec("./../kkp_cryptography '".$key."' '".$spp->bukti_potongan."'"), true)["cyphertext"];
+                    // $encode_bukti_pemotongan = json_decode(shell_exec('C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe "'.$key."' '".$spp->bukti_potongan."'"), true)["cyphertext"];
+                    $spp->bukti_potongan = json_encode($encode_bukti_pemotongan);
+                }
                 if(Transaksi_SPP::withTrashed()
                     ->where("id_spp", $spp->id_spp_siswa)
                     ->where("bulan", $validated["bulan"])
@@ -371,7 +414,21 @@ class transaksiSPPController extends Controller
     public function show(String $transaksi_SPP)
     {
         $transaksi = Transaksi_SPP::where("id_transaksi", $transaksi_SPP)->first();
-        return FacadesStorage::download("bukti_pembayaran/".$transaksi->bukti_pembayaran);
+        $siswa = Siswa::leftJoin("spp_siswa", "database_biodata_siswa.id", "=", "spp_siswa.id_siswa")
+        ->where("spp_siswa.id_spp_siswa", $transaksi->id_spp)
+        ->select("database_biodata_siswa.NO_KK", "database_biodata_siswa.nama_lengkap")
+        ->first();
+        $key = $siswa->NO_KK.$siswa->nama_lengkap;
+        if (strlen($key) < 32) {
+            $key = str_pad($key, 32, 0);
+        }
+        if (strlen($key) > 32) {
+            $key = substr($key, 0, 32);
+        }
+        $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$transaksi->bukti_pembayaran."'");
+        // $decode_potongan = shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '".$transaksi->bukti_pembayaran."'");
+        $decode_potongan =substr($decode_potongan, 1, -2);
+        return FacadesStorage::download("bukti_pembayaran/".$decode_potongan);
     }
 
     /**
@@ -472,6 +529,7 @@ class transaksiSPPController extends Controller
                 "transaksi_spp.*",
                 "database_biodata_siswa.nama_lengkap",
                 "database_biodata_siswa.nisn",
+                "database_biodata_siswa.NO_KK",
                 "NIS.id_NIS"
             )
             ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
@@ -479,6 +537,57 @@ class transaksiSPPController extends Controller
             ->orderBy("transaksi_spp.semester", "asc")
             ->orderBy("transaksi_spp.bulan", "asc")
             ->paginate(10);
-        return view("SPP.transaksi_spp.index")->with(["data" => $data, "cari_siswa" => $cari]);
+        foreach ($data as $d) {
+            $key =$d->NO_KK.$d->nama_lengkap;
+            if (strlen($key) < 32) {
+                $key = str_pad($key, 32, 0);
+            }
+            if (strlen($key) > 32) {
+                $key = substr($key, 0, 32);
+            }
+            $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$d->bukti_potongan."'");
+            $d->bukti_potongan =substr($decode_potongan, 1, -2);
+            $d->NO_KK = null;
+        }
+        $data_dengan_bukti_pembayaran = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
+            ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
+            ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
+            ->whereNotNull("NIS.id_NIS")
+            ->where("database_biodata_siswa.nama_lengkap", "LIKE", "%".$cari."%")
+            ->select(
+                "transaksi_spp.*",
+                "database_biodata_siswa.nama_lengkap",
+                "database_biodata_siswa.nisn",
+                "database_biodata_siswa.NO_KK",
+                "NIS.id_NIS",
+            )
+            ->whereNotNull("transaksi_spp.bukti_pembayaran")
+            ->orderBy("database_biodata_siswa.nama_lengkap", "asc")
+            ->orderBy("transaksi_spp.tahun_ajaran", "asc")
+            ->orderBy("transaksi_spp.semester", "asc")
+            ->orderBy("transaksi_spp.bulan", "asc")
+            ->paginate(10);
+        foreach ($data_dengan_bukti_pembayaran as $x) {
+            if($x->bukti_potongan != null|| trim($x->bukti_potongan) != ""||is_null($x->bukti_potongan)||trim($x->bukti_potongan) != null|| $x->bukti_pembayaran != ""||is_null($x->bukti_pembayaran))
+            {
+                $key =$x->NO_KK.$x->nama_lengkap;
+                if (strlen($key) < 32) {
+                    $key = str_pad($key, 32, 0);
+                }
+                if (strlen($key) > 32) {
+                    $key = substr($key, 0, 32);
+                }
+            }
+            if($x->bukti_potongan != null|| trim($x->bukti_potongan) != ""||is_null($x->bukti_potongan)){
+                $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_potongan."'");
+                $x->bukti_potongan = substr($decode_potongan, 1, -2);
+            }
+            if($x->bukti_pembayaran != null|| trim($x->bukti_pembayaran) != ""||is_null($x->bukti_pembayaran)){
+                $decode_pembayaran = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_pembayaran."'");
+                $x->bukti_pembayaran =substr($decode_pembayaran, 1, -2);
+            }
+            $x->NO_KK = null;
+        }
+        return view("SPP.transaksi_spp.index")->with(["data" => $data, "cari_siswa" => $cari, "data_dengan_bukti_pembayaran" => $data_dengan_bukti_pembayaran]);
     }
 }

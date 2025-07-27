@@ -283,11 +283,22 @@ class AuthController extends Controller
         // }
 
         $fileNameToStore = null;
+
         if ($request->hasFile('bukti_pembayaran')) {
             $filename = "bukti_pembayaran_".$request->id_transaksi;
             $fileExtension = $request->file('bukti_pembayaran')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
             FacadesStorage::putFileAs('bukti_pembayaran',$request->file('bukti_pembayaran'),$fileNameToStore);
+            $siswa = Siswa::where('id_account',  $access_token_user_id->id )->first();
+            $key =$siswa->NO_KK.$siswa->nama_lengkap;
+            if (strlen($key) < 32) {
+                $key = str_pad($key, 32, 0);
+            }
+            if (strlen($key) > 32) {
+                $key = substr($key, 0, 32);
+            }
+            $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
+            $fileNameToStore = json_encode($encode);
         }
         $transaksi = DB::table('transaksi_spp')
         ->where('id_transaksi', $request->id_transaksi)
