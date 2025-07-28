@@ -472,7 +472,9 @@ class transaksiSPPController extends Controller
         //linux
         //$encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '1|".date("Y-m-d")."|".$pembuat."|".$pelunas."'"), true)["cyphertext"];
         //windows
-        $encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '1|".date("Y-m-d")."|".$pembuat."|".$pelunas."'"), true)["cyphertext"];
+        $command = "C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe \"$key\" \"1|".date("Y-m-d")."|".$pembuat."|".$pelunas."\"";
+        $encode = json_decode(shell_exec($command), true)["cyphertext"];
+        //$encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '1|".date("Y-m-d")."|".$pembuat."|".$pelunas."'"), true)["cyphertext"];
         $transaksi_SPP->status_lunas = json_encode($encode);
         $data_siswa = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
             ->leftJoin("database_biodata_siswa", "spp_siswa.id_siswa", "=", "database_biodata_siswa.id")
