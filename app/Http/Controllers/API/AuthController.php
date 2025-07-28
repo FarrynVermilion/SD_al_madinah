@@ -238,7 +238,6 @@ class AuthController extends Controller
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
-
         $verifikasi = verifikasi_SPP::where('id_verifikasi', $request->id_verifikasi)->first();
         $verifikasi->status_verifikasi = 1;
         $verifikasi->save();
