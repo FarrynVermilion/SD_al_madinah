@@ -204,7 +204,7 @@ class AuthController extends Controller
             ->leftJoin('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
             ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'spp_siswa.id_siswa')
             ->leftJoin('users', 'database_biodata_siswa.id', '=', 'users.id')
-            ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_transaksi')
+            ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_verifikasi')
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
             ->whereNotNull("NIS.id_NIS")
             ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
@@ -238,9 +238,13 @@ class AuthController extends Controller
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
+
         $verifikasi = verifikasi_SPP::where('id_verifikasi', $request->id_verifikasi)->first();
         $verifikasi->status_verifikasi = 1;
         $verifikasi->save();
+        // $verifikasi = Verifikasi_SPP::find($request->id_verifikasi);
+        // $verifikasi->status_verifikasi = 1;
+        // $verifikasi->update();
         return response()->json([
             'message' => 'verifikasi request success',
             'data' => $verifikasi,
@@ -283,7 +287,6 @@ class AuthController extends Controller
         // }
 
         $fileNameToStore = null;
-
         if ($request->hasFile('bukti_pembayaran')) {
             $filename = "bukti_pembayaran_".$request->id_transaksi;
             $fileExtension = $request->file('bukti_pembayaran')->getClientOriginalExtension();
