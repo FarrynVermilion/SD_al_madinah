@@ -94,17 +94,17 @@
         margin: 0;
     }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ public_path('bootstrap') }}/css/bootstrap.min.css" type="text/css" media="all }}">
 </head>
 
 <body>
     <htmlpageheader name="page-header">
-
         <header class="header">
-            <div style="width: 50px; position: absolute; top: 10px; left: 0; ">
-                <img src="assets/img/smp_logo.jpg">
-            </div>
+            <br>
             <div style="text-align: center ; position: absolute; top: 0; ">
+                <div style="width: 50px; position: absolute; top: 0; left: 0; ">
+                    <img src="assets/img/smp_logo.jpg">
+                </div>
                 <p>STRUK PEMBAYARAN SISWA</p>
                 <p>
                     Dokumen dibuat pertanggal
@@ -172,9 +172,9 @@
             </tr>
         </table>
         <br>
-        <table class="table table-bordered table-striped border border-dark" >
-            <thead class="thead-dark">
-                <tr class="row border border-dark table-dark">
+        <table class="table table-bordered table-striped" style="border: 1px solid black !important;">
+            <thead class="" >
+                <tr class="">
                     <th class="col">No Tagihan</th>
                     <th class="col">Tahun ajaran</th>
                     <th class="col">Semester</th>
@@ -184,8 +184,8 @@
                     <th class="col">Total Tagihan</th>
                 </tr>
             </thead>
-            <tbody >
-                <tr class="row border border-dark">
+            <tbody>
+                <tr class="row" style="border: 1px solid black !important;">
                     <td class="col">
                         1
                     </td>
@@ -270,6 +270,5 @@
             </table>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -44,13 +44,14 @@
 <body>
     <htmlpageheader name="page-header">
         <header class="header">
-            <div style="width: 50px; position: absolute; top: 10px; left: 0; ">
-                <img src="assets/img/smp_logo.jpg">
-            </div>
+            <br>
             <div style="text-align: center ; position: absolute; top: 0; ">
                 <table>
                     <tr>
                         <td>
+                            <div style="width: 50px; position: absolute; top: 0; left: 0; ">
+                                <img src="assets/img/smp_logo.jpg">
+                            </div>
                             <p>DATA SISWA BELUM BAYAR SMP AL-MADINAH</p>
                             <p>
                                 Dokumen dibuat pertanggal
