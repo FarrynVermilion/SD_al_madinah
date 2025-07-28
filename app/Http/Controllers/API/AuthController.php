@@ -299,7 +299,10 @@ class AuthController extends Controller
             if (strlen($key) > 32) {
                 $key = substr($key, 0, 32);
             }
+            //linux
             $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
+            //windows
+            // $encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
             $fileNameToStore = json_encode($encode);
         }
         $transaksi = DB::table('transaksi_spp')
