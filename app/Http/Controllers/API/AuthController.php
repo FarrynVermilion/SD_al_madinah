@@ -301,9 +301,21 @@ class AuthController extends Controller
                 $key = substr($key, 0, 32);
             }
             //linux
-            $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
+            //$encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
             //windows
-            // $encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '".$fileNameToStore."'"), true)["cyphertext"];
+            $keyEscaped = escapeshellarg($key);
+            $fileEscaped = escapeshellarg($fileNameToStore);
+            $command = "C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe $keyEscaped $fileEscaped";
+            $output = shell_exec($command);
+            $parsed = json_decode($output, true);
+            if (!is_array($parsed) || !isset($parsed["cyphertext"])) {
+                return response()->json([
+                    'message' => 'Gagal melakukan enkripsi bukti pembayaran',
+                    'debug_shell_output' => $output,
+                ], 500);
+            }
+
+            $encode = $parsed["cyphertext"];
             $fileNameToStore = json_encode($encode);
         }
         $transaksi = DB::table('transaksi_spp')
