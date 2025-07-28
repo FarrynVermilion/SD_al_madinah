@@ -200,14 +200,14 @@ class AuthController extends Controller
         if($access_token_user_id->message != "success"){
             return response()->json(['message' => $access_token_user_id->message]);
         }
+        $akun = $access_token_user_id->id;
         $transction = Transaksi_SPP::withTrashed()
-            ->leftJoin('spp_siswa', 'spp_siswa.id_spp_siswa', '=', 'transaksi_spp.id_spp')
-            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'spp_siswa.id_siswa')
-            ->leftJoin('users', 'database_biodata_siswa.id', '=', 'users.id')
+            ->leftJoin('spp_siswa', 'transaksi_spp.id_spp', '=', 'spp_siswa.id_spp_siswa' )
+            ->leftJoin('database_biodata_siswa', 'spp_siswa.id_siswa', '=', 'database_biodata_siswa.id')
+            ->leftJoin('users', 'database_biodata_siswa.id_account', '=', 'users.id')
             ->leftJoin('verifikasi_spp','transaksi_spp.id_transaksi','=','verifikasi_spp.id_verifikasi')
             ->leftJoin("NIS", "database_biodata_siswa.id", "=", "NIS.id_siswa")
             ->whereNotNull("NIS.id_NIS")
-            ->where('database_biodata_siswa.id_account',$access_token_user_id->id)
             ->select(
                 'transaksi_spp.*',
                 'database_biodata_siswa.nama_lengkap',
@@ -217,6 +217,7 @@ class AuthController extends Controller
                 'database_biodata_siswa.nisn',
                 'NIS.id_NIS'
             )
+            ->where("database_biodata_siswa.id_account", $akun)
             ->orderBy('transaksi_spp.tahun_ajaran', 'desc')
             ->orderBy('transaksi_spp.semester', 'desc')
             ->get();
