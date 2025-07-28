@@ -318,7 +318,7 @@ class transaksiSPPController extends Controller
                 // ini unuk linux
                 $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '0|".date("Y-m-d")."|".Auth::user()->name."|'"), true)["cyphertext"];
                 // ini untuk windows
-                $encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '0|".date("Y-m-d")."|".Auth::user()->name."|'"), true)["cyphertext"];
+                // $encode = json_decode(shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '0|".date("Y-m-d")."|".Auth::user()->name."|'"), true)["cyphertext"];
 
                 if($spp->id_potongan != null){
                     //linux
