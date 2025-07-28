@@ -458,16 +458,23 @@ class transaksiSPPController extends Controller
         // $before = $transaksi_SPP->status_lunas;
         $siswa = Siswa::find(SPP_Siswa::find($transaksi_SPP->id_spp)->id_siswa);
         $key = $siswa->NO_KK.$siswa->nama_lengkap;
-        $user_pelunas = User::find($transaksi_SPP->created_by);
-        $paraf = Paraf::where("created_by", $user_pelunas->id)->first()->image_paraf_path;
-        $pembuat = $user_pelunas->name;
-        $pelunas = Auth::user()->name;
         if (strlen($key) < 32) {
             $key = str_pad($key, 32, 0);
         }
         if (strlen($key) > 32) {
             $key = substr($key, 0, 32);
         }
+        $user_pelunas = User::find($transaksi_SPP->created_by);
+        $paraf = Paraf::where("created_by", $user_pelunas->id)->first()->image_paraf_path;
+        //linux
+        $decode_lunas = shell_exec("./../kkp_decryption '".$key."' '".$transaksi_SPP->status_lunas."'");
+        //windows
+        // $decode_lunas = shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '".$transaksi_SPP->status_lunas."'");
+        $arr = explode("|", $decode_lunas);
+        // $pembuat = $user_pelunas->name;
+        $pembuat = $arr[2];
+        $pelunas = Auth::user()->name;
+
         //linux
         $encode = json_decode(shell_exec("./../kkp_cryptography '".$key."' '1|".date("Y-m-d")."|".$pembuat."|".$pelunas."'"), true)["cyphertext"];
         //windows
