@@ -61,7 +61,7 @@ class transaksiSPPController extends Controller
                 $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$d->bukti_potongan."'");
                 //windows
                 // $decode_potongan = shell_exec('kkp_decryption '.$key.' '.$d->bukti_potongan);
-                $d->bukti_potongan =substr($decode_potongan, 1, -2);
+                $d->bukti_potongan =$decode_potongan;
             }
             $d->NO_KK = null;
         }
@@ -99,14 +99,14 @@ class transaksiSPPController extends Controller
                 $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_potongan."'");
                 //windows
                 // $decode_potongan = shell_exec("C:/xampp/htdocs/kkp_decryption '".$key."' '".$x->bukti_potongan."'");
-                $x->bukti_potongan = substr($decode_potongan, 1, -2);
+                $x->bukti_potongan = $decode_potongan;
             }
             if($x->bukti_pembayaran != null|| trim($x->bukti_pembayaran) != ""||is_null($x->bukti_pembayaran)){
                 //linux
                 $decode_pembayaran = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_pembayaran."'");
                 //windows
                 // $decode_pembayaran = shell_exec("C:/xampp/htdocs/kkp_decryption '".$key."' '".$x->bukti_pembayaran."'");
-                $x->bukti_pembayaran =substr($decode_pembayaran, 1, -2);
+                $x->bukti_pembayaran = $decode_pembayaran;
             }
             $x->NO_KK = null;
         }
@@ -440,7 +440,6 @@ class transaksiSPPController extends Controller
         $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$transaksi->bukti_pembayaran."'");
         //windows
         // $decode_potongan = shell_exec("C:/xampp/htdocs/SD_al_madinah-1/kkp_cryptography.exe '".$key."' '".$transaksi->bukti_pembayaran."'");
-        $decode_potongan =substr($decode_potongan, 1, -2);
         return FacadesStorage::download("bukti_pembayaran/".$decode_potongan);
     }
 
@@ -562,7 +561,7 @@ class transaksiSPPController extends Controller
             $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$d->bukti_potongan."'");
             //windows
             // $decode_potongan = shell_exec('kkp_decryption '.$key.' '.$d->bukti_potongan);
-            $d->bukti_potongan =substr($decode_potongan, 1, -2);
+            $d->bukti_potongan = $decode_potongan;
             $d->NO_KK = null;
         }
         $data_dengan_bukti_pembayaran = Transaksi_SPP::leftJoin("spp_siswa",  "transaksi_spp.id_spp", "=", "spp_siswa.id_spp_siswa")
@@ -599,14 +598,14 @@ class transaksiSPPController extends Controller
                 $decode_potongan = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_potongan."'");
                 //windows
                 // $decode_potongan = shell_exec('kkp_decryption '.$key.' '.$x->bukti_potongan);
-                $x->bukti_potongan = substr($decode_potongan, 1, -2);
+                $x->bukti_potongan = $decode_potongan;
             }
             if($x->bukti_pembayaran != null|| trim($x->bukti_pembayaran) != ""||is_null($x->bukti_pembayaran)){
                 //linux
                 $decode_pembayaran = shell_exec("./../kkp_decryption '".$key."' '".$x->bukti_pembayaran."'");
                 //windows
                 // $decode_pembayaran = shell_exec('kkp_decryption '.$key.' '.$x->bukti_pembayaran);
-                $x->bukti_pembayaran =substr($decode_pembayaran, 1, -2);
+                $x->bukti_pembayaran = $decode_pembayaran;
             }
             $x->NO_KK = null;
         }
