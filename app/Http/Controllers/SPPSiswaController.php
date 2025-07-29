@@ -227,7 +227,7 @@ class SPPSiswaController extends Controller
         $fileNameToStore = null;
         if ($request->hasFile('Bukti_Potongan')) {
             $filename = "bukti_potongan_".$validated["id_siswa"];
-            $fileExtension = $request->file('bukti_potongan')->getClientOriginalExtension();
+            $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
             Storage::putFileAs('bukti_potongan',$request->file('Bukti_Potongan'),$fileNameToStore);
         }
@@ -282,7 +282,7 @@ class SPPSiswaController extends Controller
             $validated["Bukti_Potongan"] = null;
         }else{
             if ($request->hasFile('Bukti_Potongan')) {
-                $filename = "Bukti_Potongan_".$SPP_Siswa->id_siswa;
+                $filename = "Bukti_Potongan".$SPP_Siswa->id_siswa;
                 $fileExtension = $request->file('Bukti_Potongan')->getClientOriginalExtension();
                 $fileNameToStore = $filename.'_'.time().'.'.$fileExtension;
                 Storage::putFileAs('bukti_potongan',$request->file('Bukti_Potongan'),$fileNameToStore);
